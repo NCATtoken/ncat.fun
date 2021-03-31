@@ -1,0 +1,1 @@
+Host the server folder in a PHP-enabled server.
