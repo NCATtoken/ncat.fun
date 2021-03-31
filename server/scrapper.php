@@ -1,7 +1,7 @@
 <?php
 header("Access-Control-Allow-Origin: ncat.fun");
 header("Access-Control-Allow-Headers: *");
-define('CACHE_DURATION', 0);
+define('CACHE_DURATION', 3600);
 
 function fetch()
 {
