@@ -1,7 +1,4 @@
 <?php
-header("Access-Control-Allow-Origin: ncat.fun");
-header("Access-Control-Allow-Headers: *");
-define('CACHE_DURATION', 3600);
 
 function fetch()
 {
@@ -32,15 +29,36 @@ function fetch()
     throw new Exception("Scrapper Error", 1);
 }
 
-try {
-    $data = @json_decode(@file_get_contents('cache.json'), true) ?? [];
-    // if no data or cached expire, refresh
-    if (!isset($data['time']) || ($data['time'] + CACHE_DURATION) < time()) {
-        $data = fetch();
-        file_put_contents('cache.json', json_encode($data));
-    }
-    print json_encode($data);
-} catch (Exception $e) {
-    // do nothing
-    print json_encode(['error' => $e->getMessage()]);
+// add this bot into the telegram group
+// run this in interval using schedular
+// chatid get from from https://api.telegram.org/bot1721335070:AAGXR9p__JqW3aTbXiNCAjZOowUK7YAUx9w/getUpdates
+
+$botToken = '1721335070:AAGXR9p__JqW3aTbXiNCAjZOowUK7YAUx9w';
+$website = "https://api.telegram.org/bot" . $botToken;
+$chatId = -1001191500499; /// <<<< EDIT THIS to the actual chat Id
+
+// @json_decode(@file_get_contents(__DIR__ . '/cache.json'), true) ?? [];
+$data = fetch();
+// no data
+if (!isset($data['time'])) {
+    exit;
 }
+
+$params = [
+    'chat_id' => $chatId,
+    'text' =>
+    "💵 Price: \${$data['price']}\n" .
+    "🌏 Supply: {$data['supply']} NCAT\n" .
+    "💎🤘 Holders: {$data['holders']}\n" .
+    "💰 MarketCap: \${$data['marketcap']}\n" .
+    "🔥 Burned: {$data['burn']} NCAT ({$data['percentage']}%)\n" .
+    "⏰ Update on: " . date('r', $data['time']),
+];
+$ch = curl_init($website . '/sendMessage');
+curl_setopt($ch, CURLOPT_HEADER, false);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_POST, 1);
+curl_setopt($ch, CURLOPT_POSTFIELDS, ($params));
+curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+$result = curl_exec($ch);
+curl_close($ch);

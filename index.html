@@ -62,7 +62,11 @@
                     <li class="nav-item">
                         <a class="nav-link bor" href="#">Connect</a>
                     </li>
+
                 </ul>
+                <div class="text-center small">
+                    1 NCAT = $<span class="price">-</span>
+                </div>
             </div>
     </nav>
     <!-- HEADER AREA ENDS -->
@@ -202,12 +206,15 @@
                         <div class="col-lg-7 col-md-6">
                             <div class="about-txt">
                                 <h3 style="color:#e07891;">Token Stuff</h3>
-                                <p>Total Supply: 1 Quadrillion NCAT<br>
+                                <p>
+                                    Total Supply: 1 Quadrillion NCAT<br>
                                     Circulating Supply: <span id="circulating">0</span> NCAT<br>
                                     Holders: <span id="holders">0</span> Cats<br>
+                                    Market Cap: $<span id="marketcap">0</span><br>
+                                    1 NCAT = $<span class="price">0</span><br>
                                 </p>
                                 <h3 style="color:#e07891;">Burn Schedule</h3>
-                                <p>Total NCAT Burned: <span id="burn">0</span> NCAT</p>
+                                <p>Total NCAT Burned: <span id="burn">0</span> NCAT (<span id="percentage"></span>%)</p>
                             </div>
                         </div>
                     </div>
@@ -337,12 +344,13 @@
 <script>
     $(function () {
         // load stats from server
-        $.get('http://localhost:8000/scrapper.php', function (r) {
-            console.log(r);
+        $.get('/server/scrapper.php', function (r) {
             $('#circulating').html(r.supply);
             $('#holders').html(r.holders);
-            $('#burn').html(r.balance);
-            console.log(r.balance / r.supply);
+            $('#burn').html(r.burn);
+            $('#percentage').html(r.percentage);
+            $('#marketcap').html(r.marketcap);
+            $('.price').html(r.price);
         }, 'json');
     });
 </script>
