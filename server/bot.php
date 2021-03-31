@@ -17,11 +17,11 @@ function fetch()
         $data = [
             'burn' => number_format($burn),
             'time' => time(),
-            'price' => number_format($marketcap / $supply, 10),
+            'price' => number_format($marketcap / $total, 10),
             'supply' => number_format($supply),
             'holders' => number_format($holders),
             'percentage' => number_format($burn / $total * 100, 2),
-            'marketcap' => number_format($marketcap),
+            'marketcap' => number_format($marketcap * ($supply / $total)),
         ];
         return $data;
     }
@@ -47,10 +47,10 @@ if (!isset($data['time'])) {
 $params = [
     'chat_id' => $chatId,
     'text' =>
+    "💵 Price: \${$data['price']}\n" .
     "🌏 Supply: {$data['supply']} NCAT\n" .
     "💎🤘 Holders: {$data['holders']}\n" .
     "💰 MarketCap: \${$data['marketcap']}\n" .
-    "💵 Price: \${$data['price']}\n" .
     "🔥 Burned: {$data['burn']} NCAT ({$data['percentage']}%)\n" .
     "⏰ Update on: " . date('r', $data['time']),
 ];
