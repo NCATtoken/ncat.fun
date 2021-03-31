@@ -33,8 +33,7 @@ function fetch()
 }
 
 try {
-    $data = [];
-    // @json_decode(@file_get_contents('cache.json'), true) ?? [];
+    $data = @json_decode(@file_get_contents('cache.json'), true) ?? [];
     // if no data or cached expire, refresh
     if (!isset($data['time']) || ($data['time'] + CACHE_DURATION) < time()) {
         $data = fetch();
