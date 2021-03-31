@@ -65,7 +65,7 @@
 
                 </ul>
                 <div class="text-center small">
-                    1 NCAT = $<span id="price">-</span>
+                    1 NCAT = $<span class="price">-</span>
                 </div>
             </div>
     </nav>
@@ -211,7 +211,7 @@
                                     Circulating Supply: <span id="circulating">0</span> NCAT<br>
                                     Holders: <span id="holders">0</span> Cats<br>
                                     Market Cap: $<span id="marketcap">0</span><br>
-                                    1 NCAT = $<span id="price">0</span><br>
+                                    1 NCAT = $<span class="price">0</span><br>
                                 </p>
                                 <h3 style="color:#e07891;">Burn Schedule</h3>
                                 <p>Total NCAT Burned: <span id="burn">0</span> NCAT (<span id="percentage"></span>%)</p>
@@ -350,7 +350,7 @@
             $('#burn').html(r.burn);
             $('#percentage').html(r.percentage);
             $('#marketcap').html(r.marketcap);
-            $('#price').html(r.price);
+            $('.price').html(r.price);
         }, 'json');
     });
 </script>
