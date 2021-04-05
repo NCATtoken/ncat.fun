@@ -29,20 +29,18 @@ function fetch()
     throw new Exception("Scrapper Error", 1);
 }
 
-// add this bot into the telegram group
-// run this in interval using schedular
-// chatid get from from https://api.telegram.org/bot1721335070:AAGXR9p__JqW3aTbXiNCAjZOowUK7YAUx9w/getUpdates
-
-$botToken = '1721335070:AAGXR9p__JqW3aTbXiNCAjZOowUK7YAUx9w';
-$website = "https://api.telegram.org/bot" . $botToken;
-$chatId = -1001191500499; /// <<<< EDIT THIS to the actual chat Id
-
-// @json_decode(@file_get_contents(__DIR__ . '/cache.json'), true) ?? [];
 $data = fetch();
 // no data
 if (!isset($data['time'])) {
     exit;
 }
+// cache local
+file_put_contents('cache.json', json_encode($data));
+
+// send to telegram
+$botToken = '1721335070:AAEdoMs7KKs-dcF0OvVApIvoCPiA1fa8488';
+$website = "https://api.telegram.org/bot" . $botToken;
+$chatId = -1001191500499; /// <<<< chatid get from from https://api.telegram.org/bot1721335070:AAGXR9p__JqW3aTbXiNCAjZOowUK7YAUx9w/getUpdates
 
 $params = [
     'chat_id' => $chatId,
@@ -56,9 +54,18 @@ $params = [
 ];
 $ch = curl_init($website . '/sendMessage');
 curl_setopt($ch, CURLOPT_HEADER, false);
-curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS, ($params));
 curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
+$result = curl_exec($ch);
+curl_close($ch);
+
+// send to firebase
+$ch = curl_init('https://nyan-4a2e5-default-rtdb.firebaseio.com/ncat.json?auth=GOoJWOAF7xNPgVUZhGjSk0avmEf3kcu3RCjYqLdu');
+curl_setopt($ch, CURLOPT_HEADER, false);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "PUT");
+curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
 $result = curl_exec($ch);
 curl_close($ch);

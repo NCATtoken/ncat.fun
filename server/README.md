@@ -1,1 +1,1 @@
-Host the server folder in a PHP-enabled server.
+Bot is run in a webserver and post data to Firebase for website.

@@ -344,7 +344,7 @@
 <script>
     $(function () {
         // load stats from server
-        $.get('/server/scrapper.php', function (r) {
+        $.get('https://nyan-4a2e5-default-rtdb.firebaseio.com/ncat.json', function (r) {
             $('#circulating').html(r.supply);
             $('#holders').html(r.holders);
             $('#burn').html(r.burn);
