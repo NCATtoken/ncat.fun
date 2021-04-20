@@ -1,0 +1,27 @@
+<div class="bg-white">
+    <div class="container py-5">
+
+        <div class="row">
+            <div class="col-12 col-sm-6 col-lg-4" *ngFor="let item of webpages">
+                <h3>
+                    <a [routerLink]="['/p',item.slug,item.id]">{{item.title}}</a>
+                </h3>
+                <p class="text-muted small">{{item.published_at | date:'shortDate'}} by {{item.author}}</p>
+                <div>{{item.summary}}</div>
+            </div>
+        </div>
+
+        <div *ngIf="!loading && webpages.length == 0" class="text-center">
+            <p><img src="assets/balloon.gif" height="150"></p>
+            <p>No article at the moment</p>
+        </div>
+
+        <div #Loadmore inViewport (inViewportAction)="onIntersection($event)">
+            <div *ngIf="loading" class="text-center">
+                <p><img src="assets/balloon.gif" alt="" height="150"></p>
+                <p>Loading more articles...</p>
+            </div>
+        </div>
+
+    </div>
+</div>

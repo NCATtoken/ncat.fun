@@ -1,0 +1,54 @@
+<div class="bg-white py-5">
+
+    <div *ngIf="notfound; else Show" class="text-center p-5 text-danger">
+        <h1>404</h1>
+        <img src="assets/cat-404.gif" alt="" class="img-fluid">
+        <div>Meow! The URL is boinked.</div>
+    </div>
+
+    <ng-template #Show>
+
+        <div class="container" *ngIf="merchandise; else Loading">
+            <div class="row">
+                <div class="col-12 col-lg-4 mb-3">
+                    <ngb-carousel *ngIf="merchandise.media.length > 0">
+                        <ng-template ngbSlide>
+                            <div class="picsum-img-wrapper">
+                                <strapi-media *ngFor="let item of merchandise.media" [media]="item" class="img-fluid w-100"></strapi-media>
+                            </div>
+                        </ng-template>
+                    </ngb-carousel>
+                    <!-- carousel -->
+                </div>
+
+                <div class="col">
+                    <!-- content and buy button -->
+                    <h1 class="text-primary mb-3">
+                        {{merchandise.title}}
+                    </h1>
+                    <p class="text-muted">Published on: {{merchandise.published_at | date : 'short'}} by {{merchandise.author}}</p>
+                    <div class="mb-5" [innerHtml]="merchandise.content | markdown"></div>
+
+                    <div class="nes-container with-title is-rounded">
+                        <div class="d-flex align-items-center">
+                            <i class="nes-icon coin"></i>
+                            <div class="flex-grow-1 mx-2">Add to Cart</div>
+                            <div class="nes-field mr-2">
+                                <input type="number" class="nes-input" [(ngModel)]="quantity" placeholder="Qty" style="width:100px">
+                            </div>
+                            <button class="nes-btn is-success" (click)="addCart()">Add</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ng-template #Loading>
+            <div class="text-center p-5">
+                <h1>Purrrr</h1>
+                <img src="assets/cat-loading.gif" class="img-fluid">
+            </div>
+        </ng-template>
+
+    </ng-template>
+</div>

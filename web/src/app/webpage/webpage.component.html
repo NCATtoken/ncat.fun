@@ -1,0 +1,27 @@
+<div class="bg-white py-5">
+
+    <div *ngIf="notfound; else Show" class="text-center p-5 text-danger">
+        <h1>404</h1>
+        <img src="assets/cat-404.gif" alt="" class="img-fluid">
+        <div>Meow! The URL is boinked.</div>
+    </div>
+
+    <ng-template #Show>
+
+        <div class="container" *ngIf="webpage; else Loading">
+            <h1 class="text-primary mb-3">
+                {{webpage.title}}
+            </h1>
+            <p class="text-muted">Published on: {{webpage.published_at | date : 'short'}} by {{webpage.author}}</p>
+            <div [innerHtml]="webpage.content | markdown"></div>
+        </div>
+
+        <ng-template #Loading>
+            <div class="text-center p-5">
+                <h1>Purrrr</h1>
+                <img src="assets/cat-loading.gif" alt="" class="img-fluid">
+            </div>
+        </ng-template>
+
+    </ng-template>
+</div>

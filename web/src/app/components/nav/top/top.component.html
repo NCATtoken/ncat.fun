@@ -1,0 +1,34 @@
+<nav class="navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container navbar px-2">
+        <a class="navbar-brand d-flex align-items-center" href="#">
+            <img class="d-none d-sm-block" src="assets/logo.png" alt="" height="40px">
+            <span>NCAT</span>
+        </a>
+        <a href="#tokenomics" class="d-lg-none nes-btn is-warning ml-auto mr-4">
+            ${{session.price.price * 1000000 | number : '.4' }}/M
+        </a>
+        <button class="navbar-toggler" (click)="isMenuCollapsed = !isMenuCollapsed">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div [ngbCollapse]="isMenuCollapsed" class="collapse navbar-collapse">
+            <ul ngbNav class="navbar-nav">
+                <ng-container *ngFor="let link of (session.metadata.top_nav || links)">
+                    <li [ngbNavItem]="link.fragment" class="nav-item" *ngIf="!link.items">
+                        <a class="nav-link" (click)="isMenuCollapsed=true" [href]="link.url || link.fragment" [target]="link.url ? '_blank' : ''">{{ link.title }}</a>
+                    </li>
+
+                    <li ngbDropdown [ngbNavItem]="link.fragment" class="nav-item" *ngIf="link.items">
+                        <a ngbNavLink ngbDropdownToggle>{{ link.title }}</a>
+                        <div ngbDropdownMenu>
+                            <a class="dropdown-item" (click)="isMenuCollapsed=true" *ngFor="let item of link.items" [href]="item.url || item.fragment" [target]="item.url ? '_blank' : ''">{{ item.title }}</a>
+                        </div>
+                    </li>
+                </ng-container>
+            </ul>
+            <a href="#tokenomics" class="nes-btn is-warning ml-auto d-none d-lg-block">
+                1M NCAT = ${{session.price.price * 1000000 | number : '.4' }}
+            </a>
+        </div>
+
+    </div>
+</nav>

@@ -1,0 +1,47 @@
+<div class="bg-primary px-3 pb-5">
+    <h1 class="text-dark text-center">
+        <img src="assets/logo.png" alt="" height="150px">
+        <span class="d-none d-sm-inline-block"> NCAT Token</span>
+    </h1>
+
+
+    <div *ngIf="session.metadata.fold_content; else DefaultContent">
+        <div [innerHtml]="session.metadata.fold_content"></div>
+    </div>
+
+    <ng-template #DefaultContent>
+        <div class="container d-flex align-items-end">
+            <img src="assets/BB.png" alt="" class="dialog-head">
+            <div class="nes-balloon from-left nes-pointer mb-5">
+                <p>
+                    NCAT is a community driven project, fair launched meme token built on the Binance Smart Chain. We continue to build based on community feedback and full governance (DAO).
+                </p>
+                <p>
+                    Download and Read our <a [href]="environment.whitepaper" target="_blank" class="nes-btn is-primary">WhitePaper</a> here
+                </p>
+            </div>
+        </div>
+
+        <a name="trade"></a>
+
+        <div class="container d-flex align-items-end flex-row-reverse">
+            <img src="assets/AA.png" alt="" class="dialog-head">
+            <div class="nes-balloon from-right nes-pointer mb-5">
+                <p>
+                    You can trade NCAT on
+                    <a [href]="environment.pancakeswap" target="_blank" class="nes-btn is-success">Pancake Swap</a>
+                    and
+                    <a [href]="environment.whitebit" target="_blank" class="nes-btn is-warning">WhiteBit</a>
+                </p>
+                <div class="text-dark">
+                    <h3>Need Help?</h3>
+                    <li>
+                        <a [href]="environment.howtobuy">
+                            How to buy on Pancake Swap
+                        </a>
+                    </li>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</div>

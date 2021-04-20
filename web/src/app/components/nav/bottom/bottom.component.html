@@ -1,0 +1,36 @@
+<section id="footer" class="bg-secondary py-5">
+    <div class="container">
+        <a name="footer"></a>
+        <div class="row">
+            <div *ngFor="let _link of (session.metadata.bottom_nav || links)" [class]="_link.class ||'col'" class="mb-3">
+
+                <!-- if have groups -->
+                <ng-container *ngIf="_link.groups">
+                    <div *ngFor="let group of _link.groups" class="mb-3">
+                        <h6>{{group.title}}</h6>
+                        <div *ngFor="let link of group.items">
+                            <div *ngIf="link.content" [innerHtml]="link.content"></div>
+                            <a *ngIf="!link.content" [href]="link.url || link.fragment" [target]="link.url ? '_blank' : ''">
+                                <i class="nes-icon is-small" [class]="link.icon" *ngIf="link.icon"></i>
+                                {{ link.title }}
+                            </a>
+                        </div>
+                    </div>
+                </ng-container>
+
+                <h6 *ngIf="_link.title">{{_link.title}}</h6>
+
+                <div *ngFor="let link of _link.items">
+                    <div *ngIf="link.content" [innerHtml]="link.content"></div>
+                    <a *ngIf="!link.content" [href]="link.url || link.fragment" [target]="link.url ? '_blank' : ''">
+                        <i class="nes-icon is-small" [class]="link.icon" *ngIf="link.icon"></i>
+                        {{ link.title }}
+                    </a>
+                </div>
+            </div>
+        </div>
+        <p class="text-center small">
+            Copyright © {{year}}. All rights reserved by <a href="#">NCAT TOKEN</a>
+        </p>
+    </div>
+</section>
