@@ -1,0 +1,28 @@
+.nes-balloon {
+  max-width: 640px;
+}
+
+.d-flex:nth-child(odd) {
+  flex-direction: row-reverse !important;
+
+  .nes-balloon {
+    margin-right: auto;
+  }
+
+
+  .dialog-head {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+}
+
+
+.d-flex:nth-child(even) {
+  justify-content: flex-end !important;
+
+  .nes-balloon {
+    margin-left: auto;
+  }
+
+
+}

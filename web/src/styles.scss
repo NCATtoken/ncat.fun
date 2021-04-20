@@ -1,0 +1,44 @@
+@charset "utf-8";
+@import url("https://fonts.googleapis.com/css?family=Press+Start+2P");
+@import "~nes.css/css/nes.css";
+
+$primary: #e07891;
+$font-family-base: "Press Start 2P";
+$font-size-base: 0.75rem;
+$secondary: #e7e7e7;
+
+@import "~bootstrap/scss/bootstrap.scss";
+
+body {
+  background-color: var(--secondary);
+  padding-top: 50px;
+}
+
+@media only screen and (max-width: 575px) {
+  h1 {
+    font-size: 1.5em;
+  }
+
+  h2 {
+    font-size: 1.25em;
+  }
+
+  h3,
+  h4,
+  h5 {
+    font-size: 1em;
+  }
+}
+
+.dialog-head {
+  height: 15vw;
+  max-height: 120px;
+}
+
+.nes-container,
+.nes-balloon {
+  strong {
+    font-weight: normal;
+    color: var(--primary);
+  }
+}

@@ -1,0 +1,145 @@
+<div class="bg-white py-5">
+    <div class="container" *ngIf="session.cart.items.length > 0; else Empty">
+        <div class="nes-container with-title is-rounded">
+            <a name="cart"></a>
+            <div class="title">Your Cart</div>
+
+            <div class="d-flex align-items-center mb-3" *ngFor="let item of session.cart.items">
+                <button class="nes-btn is-error" (click)="removeitem(item)">-</button>
+                <div class="mx-2" style="width:80px">
+                    <strapi-media [media]="item.product.media[0].formats.thumbnail" class="w-100"></strapi-media>
+                </div>
+                <div class="flex-grow-1">
+                    {{item.product.title}}<br>
+                </div>
+                <div>
+                    ${{item.amount | number : '.2-2'}}<br>
+                    <span class="text-muted">Qty: {{item.quantity}}</span>
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="flex-grow-1 text-right">
+                    Subtotal
+                </div>
+                <div class="w-25 text-right">
+                    ${{session.cart.subtotal | number : '.2-2'}}
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="flex-grow-1 text-right">
+                    Discount
+                </div>
+                <div class="w-25 text-right">
+                    ${{session.cart.discount | number : '.2-2'}}
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="flex-grow-1 text-right">
+                    Tax
+                </div>
+                <div class="w-25 text-right">
+                    ${{session.cart.subtotal | number : '.2-2'}}
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="flex-grow-1 text-right">
+                    Shipping
+                </div>
+                <div class="w-25 text-right">
+                    ${{session.cart.shipping | number : '.2-2'}}
+                </div>
+            </div>
+
+            <div class="d-flex align-items-center mb-3">
+                <div class="flex-grow-1 text-right">
+                    Total
+                </div>
+                <div class="w-25 text-right">
+                    ${{session.cart.total | number : '.2-2'}}
+                </div>
+            </div>
+        </div>
+
+        <div class="text-center my-3 mb-5">
+            <a class=" nes-btn is-primary" [routerLink]="['/merchandise']">Continue Shopping</a>
+        </div>
+
+        <div class="nes-container with-title is-rounded">
+            <div class="title">Checkout</div>
+            <p>
+                Fill in your particular.
+            </p>
+            <div class="nes-field mb-3">
+                <label>Your Name</label>
+                <input type="text" class="nes-input" placeholder="John Appleseed">
+            </div>
+            <div class="row">
+                <div class="col">
+                    <div class="nes-field mb-3">
+                        <label>Phone</label>
+                        <input type="text" class="nes-input" placeholder="1800000">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="nes-field mb-3">
+                        <label>Email</label>
+                        <input type="text" class="nes-input" placeholder="john@apple.com">
+                    </div>
+                </div>
+            </div>
+            <div class="nes-field mb-3">
+                <label>Address</label>
+                <input type="text" class="nes-input" placeholder="1 Palo Alto">
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="nes-field mb-3">
+                        <label>City</label>
+                        <input type="text" class="nes-input" placeholder="Texas">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="nes-field mb-3">
+                        <label>Zipcode</label>
+                        <input type="text" class="nes-input" placeholder="1234">
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col">
+                    <div class="nes-field mb-3">
+                        <label>State</label>
+                        <input type="text" class="nes-input" placeholder="Austin">
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="nes-field mb-3">
+                        <label>Country</label>
+                        <input type="text" class="nes-input" placeholder="USA">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="my-3 text-center">
+            <button class="nes-btn is-success" (click)="checkout()">Checkout</button>
+        </div>
+
+    </div>
+
+    <ng-template #Empty>
+        <div class="text-center p-5">
+            <h1>Purrrr</h1>
+            <p>Your cart is empty</p>
+            <img src="assets/cat-feed.gif" alt="" class="img-fluid"><br>
+            <a class=" nes-btn is-primary" [routerLink]="['/merchandise']">Go Shopping</a>
+        </div>
+    </ng-template>
+
+</div>

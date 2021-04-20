@@ -1,0 +1,32 @@
+<div class="container py-5">
+    <div class="text-center mb-5">
+        <h1>$NCAT Merchandise</h1>
+        <p>Not yet ready, do not buy</p>
+    </div>
+    <div class="row">
+        <div class="col-6 col-md-4 col-lg-3 mb-3 d-flex align-items-stretch" *ngFor="let item of merchandises">
+            <div class="nes-container is-centered with-title is-rounded bg-white w-100 p-0 nes-pointer d-flex flex-column" [routerLink]="['/m',item.slug,item.id]">
+                <h5 class="my-2">{{item.title}}</h5>
+                <div class="flex-grow-1">
+                    <div class="h-100 d-flex">
+                        <strapi-media class="w-100 img-fluid align-self-center" [media]="item.media[0]" *ngIf="item.media.length > 0"></strapi-media>
+                    </div>
+                </div>
+                <h5 class="my-2 text-primary">${{item.price}}</h5>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!loading && merchandises.length == 0" class="text-center">
+        <p><img src="assets/balloon.gif" height="150"></p>
+        <p>No merchandise at the moment</p>
+    </div>
+
+    <div #Loadmore inViewport (inViewportAction)="onIntersection($event)">
+        <div *ngIf="loading" class="text-center">
+            <p><img src="assets/balloon.gif" alt="" height="150"></p>
+            <p>Loading more merchandise...</p>
+        </div>
+    </div>
+
+</div>

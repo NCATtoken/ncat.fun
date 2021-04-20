@@ -1,0 +1,21 @@
+<div class="bg-light px-3 py-5">
+    <div class="container">
+        <h1 class="text-center my-3">
+            Features
+            <br>
+            <i class="nes-icon star is-large"></i>
+        </h1>
+        <div class="row">
+            <div class="col-12 col-md-6 mb-3" *ngFor="let item of features">
+                <div class="nes-container is-centered with-title is-rounded">
+                    <h3 class="title">{{item.title}}</h3>
+                    <strapi-media style="height:5em" *ngIf="item.icon; else NoIcon"></strapi-media>
+                    <ng-template #NoIcon>
+                        <img src="assets/AA.png" alt="" style="height:5em">
+                    </ng-template>
+                    <p [innerHtml]="item.content | markdown"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
