@@ -1,0 +1,50 @@
+{
+  "kind": "collectionType",
+  "collectionName": "merchandises",
+  "info": {
+    "name": "Merchandise",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": true
+  },
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "content": {
+      "type": "richtext"
+    },
+    "price": {
+      "type": "decimal"
+    },
+    "preoder": {
+      "type": "boolean"
+    },
+    "out_of_stock": {
+      "type": "boolean"
+    },
+    "media": {
+      "collection": "file",
+      "via": "related",
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos"
+      ],
+      "plugin": "upload",
+      "required": false
+    },
+    "likes": {
+      "type": "integer"
+    },
+    "author": {
+      "type": "string"
+    },
+    "slug": {
+      "type": "string"
+    }
+  }
+}
