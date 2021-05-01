@@ -5,6 +5,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularWebStorageModule } from 'angular-web-storage';
 import { InViewportModule } from 'ng-in-viewport';
+import { NgxPayPalModule } from 'ngx-paypal';
 import { ApiHttpService } from 'src/services/api-http.service';
 import { SessionService } from 'src/services/session.service';
 import { AppRoutingModule } from './app-routing.module';
@@ -24,6 +25,7 @@ import { MerchandisesComponent } from './merchandises/merchandises.component';
 import { NumPipe } from './num.pipe';
 import { WebpageComponent } from './webpage/webpage.component';
 import { WebpagesComponent } from './webpages/webpages.component';
+import { TrackOrderComponent } from './track-order/track-order.component';
 
 
 @NgModule({
@@ -44,6 +46,7 @@ import { WebpagesComponent } from './webpages/webpages.component';
     MerchandiseComponent,
     MerchandisesComponent,
     CartComponent,
+    TrackOrderComponent,
   ],
   imports: [
     BrowserModule,
@@ -53,6 +56,7 @@ import { WebpagesComponent } from './webpages/webpages.component';
     InViewportModule,
     FormsModule,
     AngularWebStorageModule,
+    NgxPayPalModule,
   ],
   providers: [
     ApiHttpService,

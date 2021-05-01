@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
+import { SessionStorageService } from 'angular-web-storage';
 import { environment } from 'src/environments/environment';
+import * as blockchain from "../services/blockchain";
 import { ApiHttpService } from './api-http.service';
 import { Cart, Metadata, Price } from './models.definitioins';
-import { SessionStorageService } from 'angular-web-storage';
 
-import * as blockchain from "../services/blockchain";
 declare let window: any;
 
 @Injectable({
   providedIn: 'root'
 })
 export class SessionService {
+
 
   price: Price = {};
   address: string | null = null;
@@ -30,7 +31,7 @@ export class SessionService {
   }
 
   constructor(private http: ApiHttpService, private storage: SessionStorageService) {
-    this.cart = Object.assign(storage.get('cart') || {}, new Cart);
+    this.cart = Object.assign(new Cart, storage.get('cart') || {});
     this.updatePrice();
     this.updateMetadata();
   }
@@ -51,12 +52,13 @@ export class SessionService {
   // cart
   saveCart() {
     this.cart.subtotal = 0;
+    this.cart.shipping = 6; // hardcode
     this.cart.items.forEach(e => {
       this.cart.subtotal += e.amount;
     });
-    this.cart.total = this.cart.subtotal;
+    this.cart.tax = parseFloat((this.cart.subtotal * environment.tax / 100).toFixed(2));
+    this.cart.total = this.cart.subtotal + this.cart.tax + this.cart.shipping;
     this.storage.set('cart', this.cart);
-    console.log(this.cart);
   }
 
   //  wallet action

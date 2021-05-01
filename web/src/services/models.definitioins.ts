@@ -69,21 +69,12 @@ export class Cart {
     shipping: number = 0;
     discount: number = 0;
     total: number = 0;
-    address: {
-        name?: string,
-        email?: string,
-        phone?: string,
-        address?: string,
-        address2?: string,
-        zipcode?: string,
-        city?: string,
-        state?: string,
-        country?: string,
-    } = {};
-    status: string = 'new';
     wallet_address: string = '';
 
     constructor() {
     }
+
+}
+export class Order {
 
 }

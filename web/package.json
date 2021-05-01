@@ -27,6 +27,7 @@
     "marked": "^2.0.3",
     "nes.css": "^2.3.0",
     "ng-in-viewport": "^6.1.5",
+    "ngx-paypal": "^7.0.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"

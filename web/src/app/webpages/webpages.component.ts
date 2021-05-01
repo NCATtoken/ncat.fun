@@ -21,7 +21,6 @@ export class WebpagesComponent implements OnInit {
   }
 
   onIntersection({ target, visible }: { target: Element; visible: boolean }): void {
-    console.log(target, visible);
     if (this.end) {
       return;
     }
