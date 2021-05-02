@@ -53,8 +53,17 @@ export interface Merchandise {
     preorder?: boolean;
     out_of_stock?: boolean;
     published_at?: string;
+    variations_title?: string;
+    variations2_title?: string;
+    variations3_title?: string;
+    variations?: ProductVariation[];
+    variations2?: ProductVariation[];
+    variations3?: ProductVariation[];
 }
 
+export interface ProductVariation {
+    title: string;
+}
 export interface Media {
     mime?: string;
     name?: string;
@@ -63,7 +72,7 @@ export interface Media {
 }
 
 export class Cart {
-    items: { product: Merchandise, quantity: number, amount: number }[] = [];
+    items: { product: Merchandise, variations: string[], quantity: number, amount: number }[] = [];
     subtotal: number = 0;
     tax: number = 0;
     shipping: number = 0;

@@ -35,10 +35,33 @@ export class CartComponent implements OnInit {
   checkout() {
     if (!this.agree) return;
 
+    let payload = Object.assign({ cart: this.session.cart, status: 'new', wallet_address: this.session.cart.wallet_address }, this.buyer, this.shipping);
+
+    this.http.post(this.http.createUrl('orders'), payload)
+      .subscribe((res) => {
+        this.paypalCheckout(res);
+      }, (error) => {
+        if (error.error?.data?.errors) {
+          try {
+            alert(Object.values(error.error?.data?.errors).map((a) => (a as []).join("\n")).join("\n"));
+            return;
+          } catch (e) {
+            //
+          }
+        }
+        alert(error.message);
+      });
+  }
+
+  paypalCheckout(order: any) {
+    console.log(order);
+
     var items = this.session.cart.items.map((e): ITransactionItem => {
+      var vars = e.variations.filter((v) => v).join(", ");
       return {
-        name: e.product.title!,
+        name: e.product.title + (vars ? ` (${vars})` : ''),
         quantity: e.quantity.toString(),
+        category: 'PHYSICAL_GOODS',
         unit_amount: {
           currency_code: 'USD',
           value: e.product.price!.toFixed(2),
@@ -91,13 +114,14 @@ export class CartComponent implements OnInit {
       },
 
       onClientAuthorization: async (data) => {
-        let payload = Object.assign({ refno: data.id, cart: this.session.cart, paypal: data, status: 'new', wallet_address: this.session.cart.wallet_address }, this.buyer, this.shipping);
+        let payload = { refno: data.id, paypal: data, status: 'paid' };
 
-        this.http.post(this.http.createUrl('orders'), payload).subscribe((res) => {
+        this.http.put(this.http.createUrlWithPathVariables('orders', [order.id]), payload).subscribe((res) => {
           this.session.cart = new Cart;
+          this.session.saveCart();
           this.router.navigate(['/track', data.id]);
         }, (error) => {
-          alert(error);
+          alert(error.message);
         }, () => {
           delete this.payPalConfig;
         });

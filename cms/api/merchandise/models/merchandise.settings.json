@@ -45,6 +45,24 @@
     },
     "slug": {
       "type": "string"
+    },
+    "variations": {
+      "collection": "product-variation"
+    },
+    "variations2": {
+      "collection": "product-variation"
+    },
+    "variations_title": {
+      "type": "string"
+    },
+    "variations2_title": {
+      "type": "string"
+    },
+    "variations3": {
+      "collection": "product-variation"
+    },
+    "variations3_title": {
+      "type": "string"
     }
   }
 }

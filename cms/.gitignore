@@ -9,7 +9,6 @@ Icon
 .Spotlight-V100
 .Trashes
 ._*
-dump
 
 
 ############################
@@ -113,3 +112,5 @@ exports
 *.cache
 build
 .strapi-updater.json
+dump
+

@@ -16,6 +16,9 @@ export class MerchandiseComponent implements OnInit {
   merchandise!: Merchandise;
   notfound = false;
   quantity = 1;
+  variations1 = '';
+  variations2 = '';
+  variations3 = '';
 
   constructor(private route: ActivatedRoute, private router: Router, private http: ApiHttpService, public session: SessionService, config: NgbCarouselConfig) {
     route.params.subscribe((params) => {
@@ -42,7 +45,9 @@ export class MerchandiseComponent implements OnInit {
   }
 
   addCart() {
-    this.session.cart.items.push({ product: this.merchandise, quantity: this.quantity, amount: this.quantity * (this.merchandise?.price || 0) });
+    this.session.cart.items.push({
+      product: this.merchandise, variations: [this.variations1, this.variations2, this.variations3], quantity: this.quantity, amount: this.quantity * (this.merchandise?.price || 0)
+    });
     this.session.saveCart();
     this.router.navigate(['/cart'], { fragment: 'cart' });
   }
