@@ -12,7 +12,7 @@
                 <h4 class="text-primary">{{item.title}}</h4>
                 <p [innerHtml]="item.content | markdown"></p>
                 <p>
-                    <strapi-media style="max-width:250px" [media]="item.media" *ngIf="item.media"></strapi-media>
+                    <strapi-media style="width:100%;max-width:250px" [media]="item.media" *ngIf="item.media"></strapi-media>
                 </p>
                 <p *ngIf="item.link">
                     <a class="nes-btn is-primary" [href]="item.link" target="_blank">{{item.link_title}}</a>
