@@ -17,6 +17,7 @@ export class CartComponent implements OnInit {
   shipping: IAddressPortable = { country_code: 'US' };
   buyer = { name: '', phone: '', email: '' };
   agree = false;
+  sending = false;
   environment = environment;
 
   constructor(public session: SessionService, private router: Router, private http: ApiHttpService) { }
@@ -35,11 +36,14 @@ export class CartComponent implements OnInit {
   checkout() {
     if (!this.agree) return;
 
+    this.sending = true;
+
     let payload = Object.assign({ cart: this.session.cart, status: 'new', wallet_address: this.session.cart.wallet_address }, this.buyer, this.shipping);
 
     this.http.post(this.http.createUrl('orders'), payload)
       .subscribe((res) => {
         this.paypalCheckout(res);
+        this.sending = false;
       }, (error) => {
         if (error.error?.data?.errors) {
           try {
@@ -49,6 +53,7 @@ export class CartComponent implements OnInit {
             //
           }
         }
+        this.sending = false;
         alert(error.message);
       });
   }
