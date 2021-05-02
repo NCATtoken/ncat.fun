@@ -10,7 +10,7 @@
 
         <div class="container" *ngIf="merchandise; else Loading">
             <div class="row">
-                <div class="col-12 col-sm-8 col-lg-6 mb-3 mx-auto">
+                <div class="col-12 col-sm-8 col-xl-6 mb-3 mx-auto">
                     <ngb-carousel *ngIf="merchandise.media.length > 0">
                         <ng-template ngbSlide *ngFor="let item of merchandise.media">
                             <strapi-media [media]="item" class="img-fluid w-100"></strapi-media>
