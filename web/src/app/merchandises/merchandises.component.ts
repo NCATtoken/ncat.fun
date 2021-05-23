@@ -11,10 +11,10 @@ export class MerchandisesComponent implements OnInit {
 
   merchandises: Merchandise[] = [];
   start = 0;
-  limit = 25;
+  limit = 40;
   loading = false;
   end = false;
-
+  order = 'price:desc';
 
   constructor(private http: ApiHttpService) { }
 
@@ -22,22 +22,22 @@ export class MerchandisesComponent implements OnInit {
   }
 
   onIntersection({ target, visible }: { target: Element; visible: boolean }): void {
-    console.log(target, visible);
-    if (this.end) {
+    if (this.end || this.loading) {
       return;
     }
     // load more
     this.loading = true;
     this.http.get(this.http.createUrlWithQueryParameters('merchandises', (qs) => {
-      qs.push('_sort', 'published_at');
+      qs.push('_sort', this.order);
       qs.push('_start', this.start);
       qs.push('_limit', this.limit);
     })).subscribe((res: any) => {
       this.merchandises = this.merchandises.concat(res);
-      console.log(res);
       this.start += res.length;
       this.end = (res.length < this.limit);
-    }, null, () => {
+    }, (e) => {
+      //
+    }, () => {
       this.loading = false;
     });
   }

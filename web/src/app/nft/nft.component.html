@@ -1,0 +1,140 @@
+<div class="bg-primary py-5">
+
+    <!-- <h1 class="text-dark text-center">
+        <img src="assets/logo.png" alt="" height="150px">
+        <span class="d-none d-sm-inline-block">NFT</span>
+    </h1> -->
+
+    <section id="heading" class="container mb-3 d-flex justify-content-center">
+        <div *ngIf="!isCorrectChain" class="nes-container is-rounded bg-danger text-white mx-auto">
+            <b>Wrong Network</b>! Please select BSC from MetaMask.
+        </div>
+
+        <div class="nes-container is-rounded bg-info text-white text-center" *ngIf="currentAccount === '' && isCorrectChain">
+            <p>
+                Connect your wallet to start exploring NCAT NFT.
+            </p>
+            <button class="nes-btn is-warning" (click)="connectWallet()">
+                Connect Wallet
+            </button>
+        </div>
+    </section>
+
+    <ng-container *ngIf="currentAccount !== '' && isCorrectChain">
+
+        <div class="flex-grow-1 text-right text-truncate d-sm-none small">
+            {{currentAccount | shortaddress}}
+        </div>
+
+        <section id="menu" class="container mb-3">
+            <div class=" d-flex align-items-center">
+                <button class="nes-btn mr-2" [class]="viewing==='' ? 'is-primary':''" (click)="viewing=''">
+                    ?
+                </button>
+                <button class="nes-btn mr-2" [class]="viewing===Screen.POUND ? 'is-primary':''" (click)="viewPound()">
+                    <span class="nes-icon is-small coin"></span>
+                    Pound
+                </button>
+                <button class="nes-btn mr-2" [class]="viewing===Screen.GALLERY ? 'is-primary':''" (click)="viewGallery()">
+                    <span class="nes-icon is-small trophy"></span>
+                    Gallery
+                </button>
+                <div class="flex-grow-1 text-right text-truncate d-none d-sm-block small">
+                    {{currentAccount | shortaddress}}
+                </div>
+            </div>
+        </section>
+
+        <section class="container mb-3 flex-column-reverse flex-sm-row d-flex justify-content-left align-items-start align-items-sm-end" *ngIf="viewing === '' && currentAccount !== '' && isCorrectChain">
+            <img src="assets/BB.png" class="dialog-head">
+            <div class="nes-balloon from-left">
+                <h5>How to use NFT</h5>
+                <ol>
+                    <li>Mint your very own NCAT NFT at the <u>Pound</u></li>
+                    <li>View your owned NFTs in the <u>Gallery</u></li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Pound -->
+        <section id="pound" *ngIf="viewing === Screen.POUND" class="container">
+            <p>Easily mint your very own NCAT NFT by sending your NCAT tokens to the burner!</p>
+            <div class="row">
+                <div class="col-12 col-md-4 mb-3 d-flex align-items-stretch">
+                    <div class="nes-container bg-white is-rounded with-title is-centered">
+                        <p class="title">1. Approve</p>
+                        <p>Approve the Pound to spend your NCATs in order to mint!</p>
+                        <button *ngIf="poundNCATAllowance === bigZero && !approving" class="nes-btn is-warning" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="approvePound()" [disabled]="currentAccount === '' || !isCorrectChain">
+                            Approve Pound
+                        </button>
+                        <button *ngIf="approving" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
+                            Approving
+                        </button>
+                        <button *ngIf="poundNCATAllowance > bigZero" class="nes-btn is-disabled" style="width:100%;">
+                            Approved
+                        </button>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mb-3 d-flex align-items-stretch">
+                    <div class="nes-container bg-white is-rounded with-title is-centered">
+                        <p class="title">2. Mint</p>
+                        <p>Specify the number of NFTs you'd like to mint in exchange for burning NCAT!</p>
+                        <form (ngSubmit)="f.form.valid" #f="ngForm">
+                            <input required type="number" class="nes-input" [(ngModel)]="NFTtoMint" (ngModelChange)="onBurnInputChange()" placeholder="Qty" name="qty" style="width:100%" #qty="ngModel" [ngClass]="{'is-error':!qty.valid}">
+                            <br />
+                            <br />
+                            <button *ngIf="poundNCATAllowance > bigZero && !burning" class="nes-btn is-error" style="width:100%;" (click)="commitBurnSwap()" [ngClass]="f.form.valid && NCATtoBurn > 0? 'is-success' : 'is-disabled'" type="submit" [disabled]="!f.form.valid && (!NCATtoBurn || NCATtoBurn === 0) ">
+                                Burn {{NCATtoBurn}} NCAT
+                            </button>
+                            <button *ngIf="burning" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
+                                Burning
+                            </button>
+                            <button *ngIf="poundNCATAllowance === bigZero" class="nes-btn is-warning" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="approvePound()" [disabled]="currentAccount === '' || !isCorrectChain">
+                                Approve Pound
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mb-3 d-flex align-items-stretch">
+                    <div class="nes-container bg-white is-rounded with-title is-centered">
+                        <p class="title">3. Claim</p>
+                        <p>Draws from the random NCAT NFTs from the pound and issues ownership to you!</p>
+                        <button *ngIf="!revealing" class="nes-btn is-success" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="revealNCATs()" [disabled]="currentAccount === '' || !isCorrectChain">
+                            Reveal
+                        </button>
+                        <button *ngIf="revealing" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
+                            Revealing
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery -->
+        <section id="gallery" *ngIf="viewing === Screen.GALLERY" class="container">
+            <div class="card-columns" *ngIf="nftMetadata.length > 0; else NoNFT">
+                <div class="card" *ngFor="let item of nftMetadata">
+                    <div class="nes-container is-rounded bg-white p-1">
+                        <img [src]="item.image" class="img-fluid w-100">
+                        <div>
+                            {{item.name}}: {{item.index}}
+                        </div>
+                        <div class="small text-muted">
+                            {{item.description}}
+                        </div>
+                        <div *ngFor="let attribute of item.attributes" class="d-flex align-items-center justify-content-between">
+                            <span class="badge badge-primary text-light">{{attribute.trait_type}}</span>
+                            <span>{{attribute.value}}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <ng-template #NoNFT>
+                <div class="text-center">
+                    <p><img src="assets/balloon.gif" height="150"></p>
+                    <p>You do not have any NFT minted. Visit the <u>Pound</u> and mint your own NFT.</p>
+                </div>
+            </ng-template>
+        </section>
+    </ng-container>
+</div>

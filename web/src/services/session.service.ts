@@ -1,10 +1,13 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
+import { SessionStorageService } from 'angular-web-storage';
 import { environment } from 'src/environments/environment';
+import * as blockchain from "../services/blockchain";
 import { ApiHttpService } from './api-http.service';
 import { Cart, Metadata, Price } from './models.definitioins';
-import { SessionStorageService } from 'angular-web-storage';
+import detectEthereumProvider from '@metamask/detect-provider';
+import { ethers } from 'ethers';
 
-import * as blockchain from "../services/blockchain";
+
 declare let window: any;
 
 @Injectable({
@@ -13,26 +16,14 @@ declare let window: any;
 export class SessionService {
 
   price: Price = {};
-  address: string | null = null;
-  balance: number = 0;
   metadata: Metadata = {};
   cart: Cart;
 
-  get haveWallet(): boolean {
-    return window.ethereum?.isConnected();
-  }
-
-  get walletConnected(): boolean {
-    if (this.address !== window.ethereum?.selectedAddress) {
-      this.getBalance();
-    }
-    return window.ethereum?.selectedAddress !== null;
-  }
-
   constructor(private http: ApiHttpService, private storage: SessionStorageService) {
-    this.cart = Object.assign(storage.get('cart') || {}, new Cart);
+    this.cart = Object.assign(new Cart, storage.get('cart') || {});
     this.updatePrice();
     this.updateMetadata();
+
   }
 
   updatePrice() {
@@ -51,35 +42,15 @@ export class SessionService {
   // cart
   saveCart() {
     this.cart.subtotal = 0;
+    this.cart.shipping = 6; // hardcode
     this.cart.items.forEach(e => {
       this.cart.subtotal += e.amount;
     });
-    this.cart.total = this.cart.subtotal;
+    this.cart.tax = parseFloat((this.cart.subtotal * environment.tax / 100).toFixed(2));
+    this.cart.total = this.cart.subtotal + this.cart.tax + this.cart.shipping;
     this.storage.set('cart', this.cart);
-    console.log(this.cart);
   }
 
-  //  wallet action
-  async connectwallet() {
-    if (window.ethereum === undefined) {
-      return;
-    }
-    window.ethereum.enable().then(() => {
-      this.getBalance();
-    });
-  }
-
-
-  private async getBalance(): Promise<any> {
-    this.address = window.ethereum.selectedAddress;
-    blockchain.getBalance(this.address).then((result) => {
-      this.balance = result;
-      // get new balance every 30s
-      setTimeout(() => this.getBalance(), 30000);
-    });
-  }
-
-  //
 
   updateMetadata() {
     this.http.get(this.http.createUrl('metadata'))
@@ -93,4 +64,5 @@ export class SessionService {
         setTimeout(() => this.updatePrice(), 15 * 60 * 1000);
       });
   }
+
 }

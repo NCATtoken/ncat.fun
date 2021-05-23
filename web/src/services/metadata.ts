@@ -8,7 +8,7 @@ export const metadata = {
         {
             title: 'More', items: [
                 { title: 'DAO', fragment: '#dao' },
-                { title: 'NFT', fragment: '#nft' },
+                { title: 'NFT', fragment: 'nft' },
             ]
         },
     ],

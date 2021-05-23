@@ -53,8 +53,17 @@ export interface Merchandise {
     preorder?: boolean;
     out_of_stock?: boolean;
     published_at?: string;
+    variations_title?: string;
+    variations2_title?: string;
+    variations3_title?: string;
+    variations?: ProductVariation[];
+    variations2?: ProductVariation[];
+    variations3?: ProductVariation[];
 }
 
+export interface ProductVariation {
+    title: string;
+}
 export interface Media {
     mime?: string;
     name?: string;
@@ -63,27 +72,18 @@ export interface Media {
 }
 
 export class Cart {
-    items: { product: Merchandise, quantity: number, amount: number }[] = [];
+    items: { product: Merchandise, variations: string[], quantity: number, amount: number }[] = [];
     subtotal: number = 0;
     tax: number = 0;
     shipping: number = 0;
     discount: number = 0;
     total: number = 0;
-    address: {
-        name?: string,
-        email?: string,
-        phone?: string,
-        address?: string,
-        address2?: string,
-        zipcode?: string,
-        city?: string,
-        state?: string,
-        country?: string,
-    } = {};
-    status: string = 'new';
     wallet_address: string = '';
 
     constructor() {
     }
+
+}
+export class Order {
 
 }

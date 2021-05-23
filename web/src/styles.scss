@@ -7,6 +7,12 @@ $font-family-base: "Press Start 2P";
 $font-size-base: 0.75rem;
 $secondary: #e7e7e7;
 
+$grid-breakpoints: (xs: 0,
+  sm: 440px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px);
+
 @import "~bootstrap/scss/bootstrap.scss";
 
 body {
@@ -41,4 +47,27 @@ body {
     font-weight: normal;
     color: var(--primary);
   }
+}
+
+
+.page-content {
+  img {
+    max-width: 100%;
+  }
+}
+
+
+.card-columns {
+  @include media-breakpoint-only(sm) {
+    column-count: 2;
+  }
+
+  @include media-breakpoint-only(md) {
+    column-count: 3;
+  }
+
+  @include media-breakpoint-only(xl) {
+    column-count: 4;
+  }
+
 }
