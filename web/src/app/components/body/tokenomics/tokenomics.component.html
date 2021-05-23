@@ -38,14 +38,21 @@
             <div class="text-right">{{session.price.percentage}}% (<a target="_blank" [href]="environment.burnAddress">View Burn Tx</a>) </div>
         </div>
 
-        <div *ngIf="session.haveWallet && (showbalance || session.walletConnected)" class="mt-5">
-            <ng-container *ngIf="session.walletConnected; else ConnectWallet">
+        <div *ngIf="showbalance && !isCorrectChain">
+            <div class="nes-container is-rounded bg-danger text-white mx-auto my-3">
+                <b>Wrong Network</b>! Please select BSC from MetaMask.
+            </div>
+        </div>
+
+
+        <div *ngIf="showbalance && isCorrectChain" class="mt-5">
+            <ng-container *ngIf="isConnectedToWallet; else ConnectWallet">
                 <div class="nes-container is-centered is-dark with-title is-rounded">
-                    <h3 class="title">{{session.address?.substr(0,6)}}...{{session.address?.substr(-4,4)}}</h3>
+                    <h3 class="title">{{metamask.currentAccount | shortaddress}}</h3>
                     <div><img src="assets/balloon.gif" alt="" style="height:100px"></div>
                     <i class="nes-icon coin is-small"></i>
-                    {{session.balance / 10e17 | number:'.3'}}B $NCAT /
-                    ~USD {{session.balance / 1000000000 * session.price.price | number:'.2-2'}}<br>
+                    {{currentBalance / 10e17 | number:'.3'}}B $NCAT /
+                    ~USD {{currentBalance / 1000000000 * session.price.price | number:'.2-2'}}<br>
                 </div>
             </ng-container>
             <ng-template #ConnectWallet>
@@ -56,7 +63,7 @@
                     <p class="text-muted">Read only permission. Does not provide permission to transfer Token.</p>
                     <p class="text-center">
                         <button class="nes-btn mr-3" (click)="showbalance=false">Cancel</button>
-                        <button class="nes-btn is-success" (click)="session.connectwallet()">Connect</button>
+                        <button class="nes-btn is-success" (click)="connectwallet()">Connect</button>
                     </p>
                 </div>
             </ng-template>

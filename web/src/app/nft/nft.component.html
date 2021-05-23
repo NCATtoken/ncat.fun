@@ -17,26 +17,32 @@
             <button class="nes-btn is-warning" (click)="connectWallet()">
                 Connect Wallet
             </button>
-            <!-- <span *ngIf="currentAccount !== ''  && isCorrectChain ">
-                {{currentAccount | shortaddress}}
-            </span> -->
         </div>
     </section>
 
     <ng-container *ngIf="currentAccount !== '' && isCorrectChain">
 
+        <div class="flex-grow-1 text-right text-truncate d-sm-none small">
+            {{currentAccount | shortaddress}}
+        </div>
+
         <section id="menu" class="container mb-3">
-            <button class="nes-btn mr-2" [class]="viewing==='' ? 'is-primary':''" (click)="viewing=''">
-                ?
-            </button>
-            <button class="nes-btn mr-2" [class]="viewing===Screen.POUND ? 'is-primary':''" (click)="viewPound()">
-                <span class="nes-icon is-small coin"></span>
-                Pound
-            </button>
-            <button class="nes-btn mr-2" [class]="viewing===Screen.GALLERY ? 'is-primary':''" (click)="viewGallery()">
-                <span class="nes-icon is-small trophy"></span>
-                Gallery
-            </button>
+            <div class=" d-flex align-items-center">
+                <button class="nes-btn mr-2" [class]="viewing==='' ? 'is-primary':''" (click)="viewing=''">
+                    ?
+                </button>
+                <button class="nes-btn mr-2" [class]="viewing===Screen.POUND ? 'is-primary':''" (click)="viewPound()">
+                    <span class="nes-icon is-small coin"></span>
+                    Pound
+                </button>
+                <button class="nes-btn mr-2" [class]="viewing===Screen.GALLERY ? 'is-primary':''" (click)="viewGallery()">
+                    <span class="nes-icon is-small trophy"></span>
+                    Gallery
+                </button>
+                <div class="flex-grow-1 text-right text-truncate d-none d-sm-block small">
+                    {{currentAccount | shortaddress}}
+                </div>
+            </div>
         </section>
 
         <section class="container mb-3 flex-column-reverse flex-sm-row d-flex justify-content-left align-items-start align-items-sm-end" *ngIf="viewing === '' && currentAccount !== '' && isCorrectChain">
@@ -54,47 +60,52 @@
         <section id="pound" *ngIf="viewing === Screen.POUND" class="container">
             <p>Easily mint your very own NCAT NFT by sending your NCAT tokens to the burner!</p>
             <div class="row">
-
-                <div class="col m-3 nes-container bg-white is-rounded with-title is-centered">
-                    <p class="title">1. Approve</p>
-                    <p>Approve the Pound to spend your NCATs in order to mint!</p>
-                    <button *ngIf="poundNCATAllowance === bigZero && !approving" class="nes-btn is-warning" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="approvePound()" [disabled]="currentAccount === '' || !isCorrectChain">
-                        Approve Pound
-                    </button>
-                    <button *ngIf="approving" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
-                        Approving
-                    </button>
-                    <button *ngIf="poundNCATAllowance > bigZero" class="nes-btn is-disabled" style="width:100%;">
-                        Approved
-                    </button>
-                </div>
-                <div class="col m-3 nes-container bg-white is-rounded with-title is-centered">
-                    <p class="title">2. Mint</p>
-                    <p>Specify the number of NFTs you'd like to mint in exchange for burning NCAT!</p>
-                    <form (ngSubmit)="f.form.valid" #f="ngForm">
-                        <input required type="number" class="nes-input" [(ngModel)]="NFTtoMint" (ngModelChange)="onBurnInputChange()" placeholder="Qty" name="qty" style="width:100%" #qty="ngModel" [ngClass]="{'is-error':!qty.valid}">
-                        <br />
-                        <br />
-                        <button *ngIf="poundNCATAllowance > bigZero && !burning" class="nes-btn is-error" style="width:100%;" (click)="commitBurnSwap()" [ngClass]="f.form.valid && NCATtoBurn > 0? 'is-success' : 'is-disabled'" type="submit" [disabled]="!f.form.valid && (!NCATtoBurn || NCATtoBurn === 0) ">
-                            Burn {{NCATtoBurn}} NCAT
-                        </button>
-                        <button *ngIf="burning" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
-                            Burning
-                        </button>
-                        <button *ngIf="poundNCATAllowance === bigZero" class="nes-btn is-warning" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="approvePound()" [disabled]="currentAccount === '' || !isCorrectChain">
+                <div class="col-12 col-md-4 mb-3 d-flex align-items-stretch">
+                    <div class="nes-container bg-white is-rounded with-title is-centered">
+                        <p class="title">1. Approve</p>
+                        <p>Approve the Pound to spend your NCATs in order to mint!</p>
+                        <button *ngIf="poundNCATAllowance === bigZero && !approving" class="nes-btn is-warning" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="approvePound()" [disabled]="currentAccount === '' || !isCorrectChain">
                             Approve Pound
                         </button>
-                    </form>
+                        <button *ngIf="approving" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
+                            Approving
+                        </button>
+                        <button *ngIf="poundNCATAllowance > bigZero" class="nes-btn is-disabled" style="width:100%;">
+                            Approved
+                        </button>
+                    </div>
                 </div>
-                <div class="col m-3 nes-container bg-white is-rounded with-title is-centered">
-                    <p class="title">3. Claim</p>
-                    <p>Draws from the random NCAT NFTs from the pound and issues ownership to you!</p>
-                    <button *ngIf="!revealing" class="nes-btn is-success" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="revealNCATs()" [disabled]="currentAccount === '' || !isCorrectChain">
-                        Reveal
-                    </button>
-                    <button *ngIf="revealing" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
-                        Revealing
-                    </button>
+                <div class="col-12 col-md-4 mb-3 d-flex align-items-stretch">
+                    <div class="nes-container bg-white is-rounded with-title is-centered">
+                        <p class="title">2. Mint</p>
+                        <p>Specify the number of NFTs you'd like to mint in exchange for burning NCAT!</p>
+                        <form (ngSubmit)="f.form.valid" #f="ngForm">
+                            <input required type="number" class="nes-input" [(ngModel)]="NFTtoMint" (ngModelChange)="onBurnInputChange()" placeholder="Qty" name="qty" style="width:100%" #qty="ngModel" [ngClass]="{'is-error':!qty.valid}">
+                            <br />
+                            <br />
+                            <button *ngIf="poundNCATAllowance > bigZero && !burning" class="nes-btn is-error" style="width:100%;" (click)="commitBurnSwap()" [ngClass]="f.form.valid && NCATtoBurn > 0? 'is-success' : 'is-disabled'" type="submit" [disabled]="!f.form.valid && (!NCATtoBurn || NCATtoBurn === 0) ">
+                                Burn {{NCATtoBurn}} NCAT
+                            </button>
+                            <button *ngIf="burning" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
+                                Burning
+                            </button>
+                            <button *ngIf="poundNCATAllowance === bigZero" class="nes-btn is-warning" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="approvePound()" [disabled]="currentAccount === '' || !isCorrectChain">
+                                Approve Pound
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                <div class="col-12 col-md-4 mb-3 d-flex align-items-stretch">
+                    <div class="nes-container bg-white is-rounded with-title is-centered">
+                        <p class="title">3. Claim</p>
+                        <p>Draws from the random NCAT NFTs from the pound and issues ownership to you!</p>
+                        <button *ngIf="!revealing" class="nes-btn is-success" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="revealNCATs()" [disabled]="currentAccount === '' || !isCorrectChain">
+                            Reveal
+                        </button>
+                        <button *ngIf="revealing" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
+                            Revealing
+                        </button>
+                    </div>
                 </div>
             </div>
         </section>

@@ -7,6 +7,7 @@ import _ from 'lodash';
 import { environment } from 'src/environments/environment.prod';
 import { ApiHttpService } from 'src/services/api-http.service';
 import { approveNCAT, balanceOf, commitSwapNCAT, createNCATContractInstance, createNFTContractInstance, createPoundContractInstance, defaultProvider, getAllowance, getDecimals, getSwapCost, ipfsDirHash, nftPoundAddress, revealNCATs, tokenOfOwnerByIndex } from 'src/services/blockchain';
+import { MetaMaskService } from 'src/services/metamask.service';
 import { SessionService } from 'src/services/session.service';
 // const Web3 = require('web3');
 
@@ -57,7 +58,7 @@ export class NFTComponent implements OnInit {
 
   // Account and chain checks
   currentAccount = "";
-  correctChainId = 0;
+  // correctChainId = 0;
   isCorrectChain = true;
 
   // Pending transaction
@@ -72,127 +73,39 @@ export class NFTComponent implements OnInit {
   NCATtoBurn = 0;
 
   // Gallery
-  sampledata: Metadata[] = [{
-    index: 1,
-    name: 'NFT',
-    description: 'Someone',
-    image: 'assets/nft.gif',
-    attributes: [
-      {
-        trait_type: TraitType.COLLECTION,
-        value: 'value',
-      },
-      {
-        trait_type: TraitType.RARITY,
-        value: 'value',
-      },
-      {
-        trait_type: TraitType.TYPE,
-        value: 'value',
-      }
-    ],
-  }, {
-    index: 2,
-    name: 'NFT',
-    description: 'Someone',
-    image: 'assets/nft.gif',
-    attributes: [
-      {
-        trait_type: TraitType.RARITY,
-        value: 'value',
-      }
-    ],
-  }, {
-    index: 3,
-    name: 'NFT',
-    description: 'Someone',
-    image: 'assets/nft.gif',
-    attributes: [
-      {
-        trait_type: TraitType.RARITY,
-        value: 'value',
-      }
-    ],
-  }, {
-    index: 3,
-    name: 'NFT',
-    description: 'Someone',
-    image: 'assets/nft.gif',
-    attributes: [
-      {
-        trait_type: TraitType.RARITY,
-        value: 'value',
-      }
-    ],
-  }];
+  sampledata: Metadata[] = [
+    { index: 1, name: 'DCA from UFO', description: 'Disco Alient Cat, Dollar Cost Average, which is it?', image: 'assets/nft.gif', attributes: [{ trait_type: TraitType.COLLECTION, value: '1/10', }, { trait_type: TraitType.RARITY, value: 'Legendary', }, { trait_type: TraitType.TYPE, value: 'Weapon', }], },
+    { index: 2, name: 'DCA from UFO', description: 'Disco Alient Cat, Dollar Cost Average, which is it?', image: 'assets/nft.gif', attributes: [{ trait_type: TraitType.COLLECTION, value: '2/5', }, { trait_type: TraitType.RARITY, value: 'Rare', }, { trait_type: TraitType.TYPE, value: 'Gem', }], },
+    { index: 3, name: 'DCA from UFO', description: 'Disco Alient Cat, Dollar Cost Average, which is it?', image: 'assets/nft.gif', attributes: [{ trait_type: TraitType.COLLECTION, value: '1/80', }, { trait_type: TraitType.RARITY, value: 'Common', }, { trait_type: TraitType.TYPE, value: 'Card', }], },
+  ];
 
   ownedTokenIds: number[] = [];
   nftMetadata: Metadata[] = [];
 
-  constructor(private ngZone: NgZone, private route: ActivatedRoute, private router: Router, private http: ApiHttpService, public session: SessionService, config: NgbCarouselConfig) {
-    // customize default values of carousels used by this component tree
-    config.interval = 5000;
-    config.wrap = true;
-    config.keyboard = true;
-    config.pauseOnHover = true;
+  constructor(private ngZone: NgZone, private http: ApiHttpService, public metamask: MetaMaskService) {
   }
 
   async ngOnInit(): Promise<void> {
-    this.provider = await detectEthereumProvider({ mustBeMetaMask: true });
+    this.metamask.chainEvents.subscribe((event) => {
 
-    this.correctChainId = (await defaultProvider.getNetwork()).chainId;
-    this.ngZone.run(() => {
-      this.isCorrectChain = parseInt((this.provider as any).chainId) === this.correctChainId;
-    });
+      this.ngZone.run(() => {
 
-    this.ethersInjectedProvider = new ethers.providers.Web3Provider((this.provider as any));
+        if (event == 'start') {
+          this.provider = this.metamask.provider;
+          this.ethersInjectedProvider = this.metamask.ethersInjectedProvider;
+        }
 
-    // Attempt to grab accounts if already unlocked
-    (this.provider as any)
-      .request({ method: 'eth_accounts' })
-      .then((accounts: Array<string>) => {
-        this.ngZone.run(() => {
-          if (accounts.length > 0) {
-            this.currentAccount = accounts[0];
-          }
-        });
-      })
-      .catch((err: Error) => {
-        console.error(err);
+        this.isCorrectChain = this.metamask.isCorrectChain;
+        this.currentAccount = this.metamask.currentAccount;
+        console.log('event', this.isCorrectChain, this.currentAccount);
+
+        if (this.isCorrectChain) {
+          this.getPoundAllowance();
+          this.getSwapCost();
+          this.getOwnedNFTs();
+        }
       });
-
-    // Detect account changes
-    if (this.provider) {
-      (this.provider as any)
-        .on('accountsChanged', (accounts: Array<string>) => {
-          this.ngZone.run(() => {
-            if (accounts.length === 0) {
-              this.currentAccount = '';
-              console.log('Please connect to MetaMask.');
-            } else if (accounts[0] !== this.currentAccount) {
-              this.currentAccount = accounts[0];
-              this.getPoundAllowance();
-            }
-          });
-
-        });
-    }
-
-    // Detect chain changes
-    if (this.provider) {
-      (this.provider as any)
-        .on('chainChanged', (chainId: number) => {
-          this.ngZone.run(() => {
-            this.isCorrectChain = parseInt((this.provider as any).chainId) === this.correctChainId;
-          });
-        });
-    }
-
-
-    this.getPoundAllowance();
-    this.getSwapCost();
-
-    this.getOwnedNFTs();
+    });
   }
 
   async getPoundAllowance(): Promise<any> {
@@ -261,34 +174,7 @@ export class NFTComponent implements OnInit {
   }
 
   async connectWallet() {
-    const handleAccountsChanged = (accounts: Array<string>) => {
-      if (accounts.length === 0) {
-        // MetaMask is locked or the user has not connected any accounts
-        console.log('Please connect to MetaMask.');
-      } else if (accounts[0] !== this.currentAccount) {
-        this.currentAccount = accounts[0];
-        // Do any other work!
-      }
-    }
-
-    if (this.provider) {
-      // From now on, this should always be true:
-      // provider === window.ethereum
-      (this.provider as any)
-        .request({ method: 'eth_requestAccounts' })
-        .then(handleAccountsChanged)
-        .catch((err: any) => {
-          if (err.code === 4001) {
-            // EIP-1193 userRejectedRequest error
-            // If this happens, the user rejected the connection request.
-            console.log('Please connect to MetaMask.');
-          } else {
-            console.error(err);
-          }
-        });
-    } else {
-      console.log('Please install MetaMask!');
-    }
+    return this.metamask.connectWallet();
   }
 
   async disconnectWallet() {

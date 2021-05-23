@@ -26,6 +26,7 @@ import { WebpagesComponent } from './webpages/webpages.component';
 import { TrackOrderComponent } from './track-order/track-order.component';
 import { NFTComponent } from './nft/nft.component';
 import { MarkdownPipe, NumPipe, ShortAddressPipe } from 'src/services/pipes';
+import { MetaMaskService } from 'src/services/metamask.service';
 
 
 @NgModule({
@@ -63,6 +64,7 @@ import { MarkdownPipe, NumPipe, ShortAddressPipe } from 'src/services/pipes';
   providers: [
     ApiHttpService,
     SessionService,
+    MetaMaskService,
   ],
   bootstrap: [AppComponent]
 })

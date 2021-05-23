@@ -7,6 +7,12 @@ $font-family-base: "Press Start 2P";
 $font-size-base: 0.75rem;
 $secondary: #e7e7e7;
 
+$grid-breakpoints: (xs: 0,
+  sm: 440px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px);
+
 @import "~bootstrap/scss/bootstrap.scss";
 
 body {
