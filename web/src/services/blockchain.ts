@@ -83,12 +83,12 @@ export const revealNCATs = async (contract: Contract) => {
 
 // NFT Contract functions
 
-export const balanceOf = async(contract: Contract, owner: any) => {
+export const balanceOf = async (contract: Contract, owner: any) => {
     const balance = await contract.balanceOf(owner);
     return balance;
 }
 
-export const tokenOfOwnerByIndex = async(contract: Contract, owner: any, index: number) => {
+export const tokenOfOwnerByIndex = async (contract: Contract, owner: any, index: number) => {
     const tokenId = await contract.tokenOfOwnerByIndex(owner, index);
     return tokenId;
 }

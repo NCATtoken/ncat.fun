@@ -19,14 +19,13 @@ import { BottomComponent } from './components/nav/bottom/bottom.component';
 import { TopComponent } from './components/nav/top/top.component';
 import { StrapiMediaComponent } from './components/strapi-media/strapi-media.component';
 import { HomeComponent } from './home/home.component';
-import { MarkdownPipe } from './markdown.pipe';
 import { MerchandiseComponent } from './merchandise/merchandise.component';
 import { MerchandisesComponent } from './merchandises/merchandises.component';
-import { NumPipe } from './num.pipe';
 import { WebpageComponent } from './webpage/webpage.component';
 import { WebpagesComponent } from './webpages/webpages.component';
 import { TrackOrderComponent } from './track-order/track-order.component';
 import { NFTComponent } from './nft/nft.component';
+import { MarkdownPipe, NumPipe, ShortAddressPipe } from 'src/services/pipes';
 
 
 @NgModule({
@@ -36,12 +35,10 @@ import { NFTComponent } from './nft/nft.component';
     BottomComponent,
     HomeComponent,
     WebpageComponent,
-    NumPipe,
     TokenomicsComponent,
     FeaturesComponent,
     RoadmapComponent,
     FoldComponent,
-    MarkdownPipe,
     StrapiMediaComponent,
     WebpagesComponent,
     MerchandiseComponent,
@@ -49,6 +46,9 @@ import { NFTComponent } from './nft/nft.component';
     NFTComponent,
     CartComponent,
     TrackOrderComponent,
+    NumPipe,
+    MarkdownPipe,
+    ShortAddressPipe,
   ],
   imports: [
     BrowserModule,

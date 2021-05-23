@@ -1,0 +1,6 @@
+.card-columns .card {
+    border: none;
+    background: transparent;
+    // display: inline-block;
+    -webkit-column-break-inside: avoid;
+}

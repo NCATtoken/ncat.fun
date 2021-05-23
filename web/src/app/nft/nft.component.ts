@@ -1,14 +1,14 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
-import { ApiHttpService } from 'src/services/api-http.service';
-import { SessionService } from 'src/services/session.service';
 import detectEthereumProvider from '@metamask/detect-provider';
-import { defaultProvider, approveNCAT, createNCATContractInstance, createPoundContractInstance, nftPoundAddress, getAllowance, commitSwapNCAT, revealNCATs, getSwapCost, getDecimals, createNFTContractInstance, balanceOf, tokenOfOwnerByIndex, ipfsDirHash } from 'src/services/blockchain';
+import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ethers } from 'ethers';
 import _ from 'lodash';
-const Web3 = require('web3');
+import { environment } from 'src/environments/environment.prod';
+import { ApiHttpService } from 'src/services/api-http.service';
+import { approveNCAT, balanceOf, commitSwapNCAT, createNCATContractInstance, createNFTContractInstance, createPoundContractInstance, defaultProvider, getAllowance, getDecimals, getSwapCost, ipfsDirHash, nftPoundAddress, revealNCATs, tokenOfOwnerByIndex } from 'src/services/blockchain';
+import { SessionService } from 'src/services/session.service';
+// const Web3 = require('web3');
 
 enum Screen {
   POUND = "pound",
@@ -41,6 +41,10 @@ interface Metadata {
   providers: [NgbCarouselConfig],
 })
 export class NFTComponent implements OnInit {
+
+  // enums
+  Screen = Screen;
+
   // Constants
   bigZero = ethers.BigNumber.from(0).toBigInt()
 
@@ -54,7 +58,7 @@ export class NFTComponent implements OnInit {
   // Account and chain checks
   currentAccount = "";
   correctChainId = 0;
-  isCorrectChain = false;
+  isCorrectChain = true;
 
   // Pending transaction
   approving = false
@@ -68,8 +72,62 @@ export class NFTComponent implements OnInit {
   NCATtoBurn = 0;
 
   // Gallery
-  ownedTokenIds = <Array<number>>[]
-  nftMetadata = <Array<Metadata>>[]
+  sampledata: Metadata[] = [{
+    index: 1,
+    name: 'NFT',
+    description: 'Someone',
+    image: 'assets/nft.gif',
+    attributes: [
+      {
+        trait_type: TraitType.COLLECTION,
+        value: 'value',
+      },
+      {
+        trait_type: TraitType.RARITY,
+        value: 'value',
+      },
+      {
+        trait_type: TraitType.TYPE,
+        value: 'value',
+      }
+    ],
+  }, {
+    index: 2,
+    name: 'NFT',
+    description: 'Someone',
+    image: 'assets/nft.gif',
+    attributes: [
+      {
+        trait_type: TraitType.RARITY,
+        value: 'value',
+      }
+    ],
+  }, {
+    index: 3,
+    name: 'NFT',
+    description: 'Someone',
+    image: 'assets/nft.gif',
+    attributes: [
+      {
+        trait_type: TraitType.RARITY,
+        value: 'value',
+      }
+    ],
+  }, {
+    index: 3,
+    name: 'NFT',
+    description: 'Someone',
+    image: 'assets/nft.gif',
+    attributes: [
+      {
+        trait_type: TraitType.RARITY,
+        value: 'value',
+      }
+    ],
+  }];
+
+  ownedTokenIds: number[] = [];
+  nftMetadata: Metadata[] = [];
 
   constructor(private ngZone: NgZone, private route: ActivatedRoute, private router: Router, private http: ApiHttpService, public session: SessionService, config: NgbCarouselConfig) {
     // customize default values of carousels used by this component tree
@@ -80,10 +138,10 @@ export class NFTComponent implements OnInit {
   }
 
   async ngOnInit(): Promise<void> {
-    this.provider = await detectEthereumProvider({mustBeMetaMask: true});
+    this.provider = await detectEthereumProvider({ mustBeMetaMask: true });
 
     this.correctChainId = (await defaultProvider.getNetwork()).chainId;
-    this.ngZone.run( () => {
+    this.ngZone.run(() => {
       this.isCorrectChain = parseInt((this.provider as any).chainId) === this.correctChainId;
     });
 
@@ -91,43 +149,45 @@ export class NFTComponent implements OnInit {
 
     // Attempt to grab accounts if already unlocked
     (this.provider as any)
-    .request({ method: 'eth_accounts' })
-    .then((accounts: Array<string>) => {
-      this.ngZone.run( () => {
-        if (accounts.length > 0) {
-          this.currentAccount = accounts[0];
-        }
+      .request({ method: 'eth_accounts' })
+      .then((accounts: Array<string>) => {
+        this.ngZone.run(() => {
+          if (accounts.length > 0) {
+            this.currentAccount = accounts[0];
+          }
+        });
+      })
+      .catch((err: Error) => {
+        console.error(err);
       });
-    })
-    .catch((err: Error) => {
-      console.error(err);
-    });
 
     // Detect account changes
     if (this.provider) {
       (this.provider as any)
-      .on('accountsChanged', (accounts: Array<string>) => {
-        this.ngZone.run( () => {
-          if (accounts.length === 0) {
-            console.log('Please connect to MetaMask.');
-          } else if (accounts[0] !== this.currentAccount) {
-            this.currentAccount = accounts[0];
-          }
-        });
+        .on('accountsChanged', (accounts: Array<string>) => {
+          this.ngZone.run(() => {
+            if (accounts.length === 0) {
+              this.currentAccount = '';
+              console.log('Please connect to MetaMask.');
+            } else if (accounts[0] !== this.currentAccount) {
+              this.currentAccount = accounts[0];
+              this.getPoundAllowance();
+            }
+          });
 
-        this.getPoundAllowance();
-      });
+        });
     }
 
     // Detect chain changes
     if (this.provider) {
       (this.provider as any)
-      .on('chainChanged', (chainId: number) => {
-        this.ngZone.run( () => {
-          this.isCorrectChain = parseInt((this.provider as any).chainId) === this.correctChainId;
+        .on('chainChanged', (chainId: number) => {
+          this.ngZone.run(() => {
+            this.isCorrectChain = parseInt((this.provider as any).chainId) === this.correctChainId;
+          });
         });
-      });
     }
+
 
     this.getPoundAllowance();
     this.getSwapCost();
@@ -140,12 +200,12 @@ export class NFTComponent implements OnInit {
       if (this.provider) {
         const ncat = createNCATContractInstance(this.ethersInjectedProvider.getSigner());
         const allowance = await getAllowance(ncat, this.currentAccount, nftPoundAddress);
-        this.ngZone.run( () => {
+        this.ngZone.run(() => {
           this.poundNCATAllowance = allowance.toBigInt();
         });
       }
     } else {
-      setTimeout(async () => {await this.getPoundAllowance()}, 1000);
+      setTimeout(async () => { await this.getPoundAllowance() }, 1000);
     }
   }
 
@@ -156,12 +216,12 @@ export class NFTComponent implements OnInit {
         const cost = await getSwapCost(pound);
         const ncat = createNCATContractInstance(this.ethersInjectedProvider.getSigner());
         const decimals = await getDecimals(ncat);
-        this.ngZone.run( () => {
-          this.NCATCostPerNFT = cost/(10**decimals);
+        this.ngZone.run(() => {
+          this.NCATCostPerNFT = cost / (10 ** decimals);
         });
       }
     } else {
-      setTimeout(async () => {await this.getSwapCost()}, 1000);
+      setTimeout(async () => { await this.getSwapCost() }, 1000);
     }
   }
 
@@ -170,34 +230,33 @@ export class NFTComponent implements OnInit {
       if (this.provider) {
         const nft = createNFTContractInstance(this.ethersInjectedProvider.getSigner());
         const balance = await balanceOf(nft, this.currentAccount);
-        
+
         let tokenIds: Array<number> = [];
         _.range(balance).map(async (index) => {
           const tokenId = await tokenOfOwnerByIndex(nft, this.currentAccount, index)
           tokenIds.push(tokenId);
         })
-      
-        console.log(tokenIds)
-        this.ngZone.run( () => {
+
+        console.log('tokens:', tokenIds)
+        this.ngZone.run(() => {
           this.ownedTokenIds = tokenIds;
         });
       }
     } else {
-      setTimeout(async () => {await this.getOwnedNFTs()}, 1000);
+      setTimeout(async () => { await this.getOwnedNFTs() }, 1000);
     }
   }
 
   async getNFTMetadata(): Promise<any> {
     if (this.currentAccount && this.ownedTokenIds.length > 0) {
-      this.nftMetadata = []
-        this.ownedTokenIds.forEach(async (tokenId) => {
-          this.http.get(`https://ipfs.io/ipfs/${ipfsDirHash}/${tokenId}.json`).subscribe((res: any) => {
-            this.nftMetadata.push(res);
-            console.log(this.nftMetadata)
-          })
+      this.ownedTokenIds.forEach(async (tokenId) => {
+        this.http.get(`https://ipfs.io/ipfs/${ipfsDirHash}/${tokenId}.json`).subscribe((res: any) => {
+          this.nftMetadata.push(res);
+          console.log('nfts', this.nftMetadata)
         })
+      })
     } else {
-      setTimeout(async () => {await this.getNFTMetadata()}, 1000);
+      setTimeout(async () => { await this.getNFTMetadata() }, 1000);
     }
   }
 
@@ -216,17 +275,17 @@ export class NFTComponent implements OnInit {
       // From now on, this should always be true:
       // provider === window.ethereum
       (this.provider as any)
-      .request({ method: 'eth_requestAccounts' })
-      .then(handleAccountsChanged)
-      .catch((err: any) => {
-        if (err.code === 4001) {
-          // EIP-1193 userRejectedRequest error
-          // If this happens, the user rejected the connection request.
-          console.log('Please connect to MetaMask.');
-        } else {
-          console.error(err);
-        }
-      });
+        .request({ method: 'eth_requestAccounts' })
+        .then(handleAccountsChanged)
+        .catch((err: any) => {
+          if (err.code === 4001) {
+            // EIP-1193 userRejectedRequest error
+            // If this happens, the user rejected the connection request.
+            console.log('Please connect to MetaMask.');
+          } else {
+            console.error(err);
+          }
+        });
     } else {
       console.log('Please install MetaMask!');
     }
@@ -242,19 +301,19 @@ export class NFTComponent implements OnInit {
 
   viewGallery() {
     this.viewing = Screen.GALLERY
-
+    if (!environment.production && this.nftMetadata.length == 0) this.nftMetadata = this.sampledata;
     this.getNFTMetadata();
   }
 
   onBurnInputChange() {
-    this.ngZone.run( () => {
-      this.NCATtoBurn = (this.NCATCostPerNFT || 0)*this.NFTtoMint;
+    this.ngZone.run(() => {
+      this.NCATtoBurn = (this.NCATCostPerNFT || 0) * this.NFTtoMint;
     });
   }
 
   async approvePound() {
     try {
-      this.ngZone.run( () => {
+      this.ngZone.run(() => {
         this.approving = true;
       });
       const ncat = createNCATContractInstance(this.ethersInjectedProvider.getSigner());
@@ -265,15 +324,15 @@ export class NFTComponent implements OnInit {
       alert(e.data ? e.data.message : e.message);
       console.log(e);
     } finally {
-      this.ngZone.run( () => {
+      this.ngZone.run(() => {
         this.approving = false;
       });
     }
   }
-  
+
   async commitBurnSwap() {
     try {
-      this.ngZone.run( () => {
+      this.ngZone.run(() => {
         this.burning = true;
       });
       const pound = createPoundContractInstance(this.ethersInjectedProvider.getSigner());
@@ -284,25 +343,29 @@ export class NFTComponent implements OnInit {
       alert(e.data ? e.data.message : e.message);
       console.log(e);
     } finally {
-      this.ngZone.run( () => {
+      this.ngZone.run(() => {
         this.burning = false;
       });
     }
   }
-  
+
   async revealNCATs() {
     try {
-      this.ngZone.run( () => {
+      this.ngZone.run(() => {
         this.revealing = true;
       });
       const pound = createPoundContractInstance(this.ethersInjectedProvider.getSigner());
       const txHash = await revealNCATs(pound);
       alert(`Revealed!\nTransaction hash: ${txHash}\nView your NFT in the gallery!`);
+
+      this.ngZone.run(() => {
+        this.viewGallery();
+      });
     } catch (e) {
       alert(e.data ? e.data.message : e.message);
       console.log(e);
     } finally {
-      this.ngZone.run( () => {
+      this.ngZone.run(() => {
         this.revealing = false;
       });
     }
