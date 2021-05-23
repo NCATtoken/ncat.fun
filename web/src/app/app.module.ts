@@ -26,6 +26,7 @@ import { NumPipe } from './num.pipe';
 import { WebpageComponent } from './webpage/webpage.component';
 import { WebpagesComponent } from './webpages/webpages.component';
 import { TrackOrderComponent } from './track-order/track-order.component';
+import { NFTComponent } from './nft/nft.component';
 
 
 @NgModule({
@@ -45,6 +46,7 @@ import { TrackOrderComponent } from './track-order/track-order.component';
     WebpagesComponent,
     MerchandiseComponent,
     MerchandisesComponent,
+    NFTComponent,
     CartComponent,
     TrackOrderComponent,
   ],
