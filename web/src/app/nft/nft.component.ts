@@ -99,7 +99,7 @@ export class NFTComponent implements OnInit {
         this.currentAccount = this.metamask.currentAccount;
         console.log('event', this.isCorrectChain, this.currentAccount);
 
-        if (this.isCorrectChain) {
+        if (this.isCorrectChain && this.currentAccount) {
           this.getPoundAllowance();
           this.getSwapCost();
           this.getOwnedNFTs();
@@ -150,7 +150,6 @@ export class NFTComponent implements OnInit {
           tokenIds.push(tokenId);
         })
 
-        console.log('tokens:', tokenIds)
         this.ngZone.run(() => {
           this.ownedTokenIds = tokenIds;
         });
@@ -162,10 +161,10 @@ export class NFTComponent implements OnInit {
 
   async getNFTMetadata(): Promise<any> {
     if (this.currentAccount && this.ownedTokenIds.length > 0) {
+      this.nftMetadata = [];
       this.ownedTokenIds.forEach(async (tokenId) => {
         this.http.get(`https://ipfs.io/ipfs/${ipfsDirHash}/${tokenId}.json`).subscribe((res: any) => {
           this.nftMetadata.push(res);
-          console.log('nfts', this.nftMetadata)
         })
       })
     } else {
@@ -187,7 +186,7 @@ export class NFTComponent implements OnInit {
 
   viewGallery() {
     this.viewing = Screen.GALLERY
-    if (!environment.production && this.nftMetadata.length == 0) this.nftMetadata = this.sampledata;
+    if (!environment.production && this.ownedTokenIds.length == 0) this.nftMetadata = this.sampledata;
     this.getNFTMetadata();
   }
 

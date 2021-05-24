@@ -37,7 +37,7 @@
                 </button>
                 <button class="nes-btn mr-2" [class]="viewing===Screen.GALLERY ? 'is-primary':''" (click)="viewGallery()">
                     <span class="nes-icon is-small trophy"></span>
-                    Gallery
+                    Gallery ({{ownedTokenIds.length}})
                 </button>
                 <div class="flex-grow-1 text-right text-truncate d-none d-sm-block small">
                     {{currentAccount | shortaddress}}
@@ -117,7 +117,7 @@
                     <div class="nes-container is-rounded bg-white p-1">
                         <img [src]="item.image" class="img-fluid w-100">
                         <div>
-                            {{item.name}}: {{item.index}}
+                            {{item.index}}. {{item.name}}
                         </div>
                         <div class="small text-muted">
                             {{item.description}}
