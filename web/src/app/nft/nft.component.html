@@ -116,11 +116,8 @@
                 <div class="card" *ngFor="let item of nftMetadata">
                     <div class="nes-container is-rounded bg-white p-1">
                         <img [src]="item.image" class="img-fluid w-100">
-                        <div>
-                            {{item.index}}. {{item.name}}
-                        </div>
-                        <div class="small text-muted">
-                            {{item.description}}
+                        <div class="small text-muted my-1">
+                            {{item.index}}. {{item.description}}
                         </div>
                         <div *ngFor="let attribute of item.attributes" class="d-flex align-items-center justify-content-between">
                             <span class="badge badge-primary text-light">{{attribute.trait_type}}</span>
