@@ -119,9 +119,9 @@
                         <div class="small text-muted my-1">
                             {{item.index}}. {{item.description}}
                         </div>
-                        <div *ngFor="let attribute of item.attributes" class="d-flex align-items-center justify-content-between">
+                        <div *ngFor="let attribute of item.attributes">
                             <span class="badge badge-primary text-light">{{attribute.trait_type}}</span>
-                            <span>{{attribute.value}}</span>
+                            <div>{{attribute.value}}</div>
                         </div>
                     </div>
                 </div>
