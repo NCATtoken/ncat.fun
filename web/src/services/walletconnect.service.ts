@@ -69,42 +69,51 @@ export class WalletConnectService {
   }
 
   async connectWallet() {
-    await this.provider.enable();
+    console.log("connecting")
+    try {
+      console.log("enabling");
+      await this.provider.enable();
+      console.log("enabled");
 
-    if (this.ethersInjectedProvider) {
-      (this.ethersInjectedProvider as any)
-        .request({ method: 'eth_accounts' })
-        .then((accounts: Array<string>) => {
-          if (accounts.length > 0) {
-            this.currentAccount = accounts[0];
-          }
-          this.chainEvents.emit('accountsChanged');
-        })
-        .catch((err: Error) => {
-          console.error(err);
-        });
-  
-      // Detect account changes
-      (this.ethersInjectedProvider as any)
-        .on('accountsChanged', (accounts: Array<string>) => {
-          if (accounts.length === 0) {
-            this.currentAccount = '';
-            console.log('Please connect to MetaMask.');
-          } else if (accounts[0] !== this.currentAccount) {
-            this.currentAccount = accounts[0];
-          }
-          this.chainEvents.emit('accountsChanged');
-        });
-  
-      // Detect chain changes
-      (this.ethersInjectedProvider as any)
-        .on('chainChanged', (chainId: string) => {
-          // recommended
-          window.document.location.reload();
-          // this.currentAccount = '';
-          // this.isCorrectChain = (parseInt(chainId) === this.correctChainId);
-          // this.chainEvents.emit('chainChanged');
-        });
+      if (this.ethersInjectedProvider) {
+        (this.ethersInjectedProvider as any)
+          .request({ method: 'eth_accounts' })
+          .then((accounts: Array<string>) => {
+            if (accounts.length > 0) {
+              this.currentAccount = accounts[0];
+            }
+            this.chainEvents.emit('accountsChanged');
+          })
+          .catch((err: Error) => {
+            console.error(err);
+          });
+    
+        // Detect account changes
+        (this.ethersInjectedProvider as any)
+          .on('accountsChanged', (accounts: Array<string>) => {
+            if (accounts.length === 0) {
+              this.currentAccount = '';
+              console.log('Please connect to MetaMask.');
+            } else if (accounts[0] !== this.currentAccount) {
+              this.currentAccount = accounts[0];
+            }
+            this.chainEvents.emit('accountsChanged');
+          });
+    
+        // Detect chain changes
+        (this.ethersInjectedProvider as any)
+          .on('chainChanged', (chainId: string) => {
+            // recommended
+            window.document.location.reload();
+            // this.currentAccount = '';
+            // this.isCorrectChain = (parseInt(chainId) === this.correctChainId);
+            // this.chainEvents.emit('chainChanged');
+          });
+      }
+    } catch (e) {
+      await this.provider.disconnect();
+      throw e
     }
+    
   }
 }

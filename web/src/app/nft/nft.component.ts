@@ -87,7 +87,6 @@ export class NFTComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.metamask.chainEvents.subscribe((event) => {
-
       this.ngZone.run(() => {
 
         if (event == 'start') {
@@ -97,13 +96,13 @@ export class NFTComponent implements OnInit {
 
         this.isCorrectChain = this.metamask.isCorrectChain;
         this.currentAccount = this.metamask.currentAccount;
-        console.log('event', this.isCorrectChain, this.currentAccount);
 
         if (this.isCorrectChain && this.currentAccount) {
           this.getPoundAllowance();
           this.getSwapCost();
           this.getOwnedNFTs();
         }
+        
       });
     });
 
@@ -118,7 +117,6 @@ export class NFTComponent implements OnInit {
 
         this.isCorrectChain = this.walletconnect.isCorrectChain;
         this.currentAccount = this.walletconnect.currentAccount;
-        console.log('event', this.isCorrectChain, this.currentAccount);
 
         if (this.isCorrectChain && this.currentAccount) {
           this.getPoundAllowance();
@@ -193,12 +191,46 @@ export class NFTComponent implements OnInit {
     }
   }
 
-  async connectWallet() {
-    return this.metamask.connectWallet();
+  async connectMetamask() {
+    if (document !== null) {
+      (document as any).getElementById('providers-dialog').close();
+    }
+    await this.metamask.connectWallet();
+
+    this.provider = this.metamask.provider;
+    this.ethersInjectedProvider = this.metamask.ethersInjectedProvider;
+
+    this.isCorrectChain = this.metamask.isCorrectChain;
+    this.currentAccount = this.metamask.currentAccount;
+
+    if (this.isCorrectChain && this.currentAccount) {
+      this.getPoundAllowance();
+      this.getSwapCost();
+      this.getOwnedNFTs();
+    }
   }
 
-  async connectWC() {
-    return this.walletconnect.connectWallet();
+  async connectWalletConnect() {
+    if (document !== null) {
+      (document as any).getElementById('providers-dialog').close();
+    }
+    try {
+      await this.walletconnect.connectWallet();
+
+      this.provider = this.walletconnect.provider;
+      this.ethersInjectedProvider = this.walletconnect.ethersInjectedProvider;
+  
+      this.isCorrectChain = this.walletconnect.isCorrectChain;
+      this.currentAccount = this.walletconnect.currentAccount;
+  
+      if (this.isCorrectChain && this.currentAccount) {
+        this.getPoundAllowance();
+        this.getSwapCost();
+        this.getOwnedNFTs();
+      }
+    } catch (e) {
+      console.log(e)
+    }
   }
 
   async disconnectWallet() {
