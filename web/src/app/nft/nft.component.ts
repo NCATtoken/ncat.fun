@@ -9,7 +9,7 @@ import { ApiHttpService } from 'src/services/api-http.service';
 import { approveNCAT, balanceOf, commitSwapNCAT, createNCATContractInstance, createNFTContractInstance, createPoundContractInstance, defaultProvider, getAllowance, getDecimals, getSwapCost, ipfsDirHash, nftPoundAddress, revealNCATs, tokenOfOwnerByIndex } from 'src/services/blockchain';
 import { MetaMaskService } from 'src/services/metamask.service';
 import { SessionService } from 'src/services/session.service';
-// const Web3 = require('web3');
+import { WalletConnectService } from 'src/services/walletconnect.service';
 
 enum Screen {
   POUND = "pound",
@@ -82,7 +82,7 @@ export class NFTComponent implements OnInit {
   ownedTokenIds: number[] = [];
   nftMetadata: Metadata[] = [];
 
-  constructor(private ngZone: NgZone, private http: ApiHttpService, public metamask: MetaMaskService) {
+  constructor(private ngZone: NgZone, private http: ApiHttpService, public metamask: MetaMaskService, public walletconnect: WalletConnectService) {
   }
 
   async ngOnInit(): Promise<void> {
@@ -97,6 +97,27 @@ export class NFTComponent implements OnInit {
 
         this.isCorrectChain = this.metamask.isCorrectChain;
         this.currentAccount = this.metamask.currentAccount;
+        console.log('event', this.isCorrectChain, this.currentAccount);
+
+        if (this.isCorrectChain && this.currentAccount) {
+          this.getPoundAllowance();
+          this.getSwapCost();
+          this.getOwnedNFTs();
+        }
+      });
+    });
+
+    this.walletconnect.chainEvents.subscribe((event) => {
+
+      this.ngZone.run(() => {
+
+        if (event == 'start') {
+          this.provider = this.walletconnect.provider;
+          this.ethersInjectedProvider = this.walletconnect.ethersInjectedProvider;
+        }
+
+        this.isCorrectChain = this.walletconnect.isCorrectChain;
+        this.currentAccount = this.walletconnect.currentAccount;
         console.log('event', this.isCorrectChain, this.currentAccount);
 
         if (this.isCorrectChain && this.currentAccount) {
@@ -174,6 +195,10 @@ export class NFTComponent implements OnInit {
 
   async connectWallet() {
     return this.metamask.connectWallet();
+  }
+
+  async connectWC() {
+    return this.walletconnect.connectWallet();
   }
 
   async disconnectWallet() {

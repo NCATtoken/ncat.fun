@@ -14,11 +14,31 @@
             <p>
                 Connect your wallet to start exploring NCAT NFT.
             </p>
-            <button class="nes-btn is-warning" (click)="connectWallet()">
+            <button class="nes-btn is-warning" onclick="document.getElementById('dialog-default').showModal();">
                 Connect Wallet
             </button>
         </div>
     </section>
+    <button type="button" class="nes-btn is-primary" onclick="document.getElementById('dialog-default').showModal();">
+    Open dialog
+    </button>
+    <dialog class="nes-dialog align-items-center" id="dialog-default">
+    <form method="dialog">
+        <menu class="dialog-menu" style="padding: 0px">
+        <button class="nes-btn mr-2" (click)="connectWallet()">
+            <img class="nes-avatar" alt="Gravatar image example" src="https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg" style="image-rendering: pixelated;">
+            Metamask
+        </button>
+        <button class="nes-btn mr-2" (click)="connectWC()">
+            <img class="nes-avatar" alt="Gravatar image example" src="https://raw.githubusercontent.com/WalletConnect/walletconnect-assets/master/svg/walletconnect-logo.svg" style="image-rendering: pixelated;">
+            WalletConnect
+        </button>
+        </menu>
+    </form>
+        <menu class="dialog-menu flex-column-reverse" style="padding: 0px">
+            <button class="nes-btn is-primary" onclick="document.getElementById('dialog-default').close();">Cancel</button>
+        </menu>
+    </dialog>
 
     <ng-container *ngIf="currentAccount !== '' && isCorrectChain">
 
