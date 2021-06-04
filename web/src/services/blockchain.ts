@@ -7,7 +7,6 @@ const contract = '0x0cF011A946f23a03CeFF92A4632d5f9288c6C70D';
 export const nftAddress = '0x00d540dec7ea96BE8c4208e97274380597AED4a8';
 export const nftPoundAddress = '0x9bC84d544340f6963f09CE8C55aAbaf03DF680cA';
 export const defaultProvider = getDefaultProvider("https://bsc-dataseed.binance.org/");
-export const ipfsDirHash = "QmYfpLftJytwGyeisa9SXpG4pVHezekfM8kuHX9FNCgEmx"
 const roContract = new Contract(contract, abi, defaultProvider);
 
 export const getBalance = (address: any): Promise<number> => {
