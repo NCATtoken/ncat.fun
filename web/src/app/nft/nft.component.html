@@ -37,7 +37,7 @@
                 </button>
                 <button class="nes-btn mr-2" [class]="viewing===Screen.GALLERY ? 'is-primary':''" (click)="viewGallery()">
                     <span class="nes-icon is-small trophy"></span>
-                    Gallery
+                    Gallery ({{ownedTokenIds.length}})
                 </button>
                 <div class="flex-grow-1 text-right text-truncate d-none d-sm-block small">
                     {{currentAccount | shortaddress}}
@@ -105,6 +105,9 @@
                         <button *ngIf="revealing" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
                             Revealing
                         </button>
+                        <div class="text-danger">
+                            You must perform Step 3 after mint within 256 blocks
+                        </div>
                     </div>
                 </div>
             </div>
@@ -116,15 +119,12 @@
                 <div class="card" *ngFor="let item of nftMetadata">
                     <div class="nes-container is-rounded bg-white p-1">
                         <img [src]="item.image" class="img-fluid w-100">
-                        <div>
-                            {{item.name}}: {{item.index}}
+                        <div class="small text-muted my-1">
+                            {{item.index}}. {{item.description}}
                         </div>
-                        <div class="small text-muted">
-                            {{item.description}}
-                        </div>
-                        <div *ngFor="let attribute of item.attributes" class="d-flex align-items-center justify-content-between">
+                        <div *ngFor="let attribute of item.attributes">
                             <span class="badge badge-primary text-light">{{attribute.trait_type}}</span>
-                            <span>{{attribute.value}}</span>
+                            <div>{{attribute.value}}</div>
                         </div>
                     </div>
                 </div>
