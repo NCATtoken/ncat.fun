@@ -92,6 +92,9 @@
                             <button *ngIf="poundNCATAllowance === bigZero" class="nes-btn is-warning" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="approvePound()" [disabled]="currentAccount === '' || !isCorrectChain">
                                 Approve Pound
                             </button>
+                            <div class="text-danger">
+                                You must perform Step 3 after mint within 256 blocks
+                            </div>
                         </form>
                     </div>
                 </div>
@@ -105,9 +108,6 @@
                         <button *ngIf="revealing" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
                             Revealing
                         </button>
-                        <div class="text-danger">
-                            You must perform Step 3 after mint within 256 blocks
-                        </div>
                     </div>
                 </div>
             </div>
