@@ -6,7 +6,7 @@ import { ethers } from 'ethers';
 import _ from 'lodash';
 import { environment } from 'src/environments/environment.prod';
 import { ApiHttpService } from 'src/services/api-http.service';
-import { approveNCAT, balanceOf, commitSwapNCAT, createNCATContractInstance, createNFTContractInstance, createPoundContractInstance, defaultProvider, getAllowance, getDecimals, getSwapCost, ipfsDirHash, nftPoundAddress, revealNCATs, tokenOfOwnerByIndex } from 'src/services/blockchain';
+import { approveNCAT, balanceOf, commitSwapNCAT, createNCATContractInstance, createNFTContractInstance, createPoundContractInstance, defaultProvider, getAllowance, getDecimals, getSwapCost, nftPoundAddress, revealNCATs, tokenOfOwnerByIndex } from 'src/services/blockchain';
 import { MetaMaskService } from 'src/services/metamask.service';
 import { SessionService } from 'src/services/session.service';
 import { WalletConnectService } from 'src/services/walletconnect.service';
@@ -183,7 +183,7 @@ export class NFTComponent implements OnInit {
     if (this.currentAccount && this.ownedTokenIds.length > 0) {
       this.nftMetadata = [];
       this.ownedTokenIds.forEach(async (tokenId) => {
-        this.http.get(`https://ipfs.io/ipfs/${ipfsDirHash}/${tokenId}.json`).subscribe((res: any) => {
+        this.http.get(`https://ncat.fun/assets/metadata/${tokenId}.json`).subscribe((res: any) => {
           this.nftMetadata.push(res);
         })
       })
