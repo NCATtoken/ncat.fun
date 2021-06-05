@@ -6,11 +6,11 @@
     </h1> -->
 
     <section id="heading" class="container mb-3 d-flex justify-content-center">
-        <div *ngIf="!isCorrectChain" class="nes-container is-rounded bg-danger text-white mx-auto">
+        <div *ngIf="!isCorrectChain && isMetamask" class="nes-container is-rounded bg-danger text-white mx-auto">
             <b>Wrong Network</b>! Please select BSC from MetaMask.
         </div>
 
-        <div class="nes-container is-rounded bg-info text-white text-center" *ngIf="currentAccount === '' && isCorrectChain">
+        <div class="nes-container is-rounded bg-info text-white text-center" *ngIf="currentAccount === ''">
             <p>
                 Connect your wallet to start exploring NCAT NFT.
             </p>
@@ -21,7 +21,6 @@
     </section>
 
     <dialog class="nes-dialog align-items-center" id="providers-dialog">
-    <form method="dialog">
         <menu class="dialog-menu" style="padding: 0px">
         <button class="nes-btn mr-2" (click)="connectMetamask()">
             <img class="nes-avatar" alt="Gravatar image example" src="https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg" style="image-rendering: pixelated;">
@@ -32,13 +31,12 @@
             WalletConnect
         </button>
         </menu>
-    </form>
         <menu class="dialog-menu flex-column-reverse" style="padding: 0px">
             <button class="nes-btn is-primary" onclick="document.getElementById('providers-dialog').close();">Cancel</button>
         </menu>
     </dialog>
 
-    <ng-container *ngIf="currentAccount !== '' && isCorrectChain">
+    <ng-container *ngIf="currentAccount !== ''">
 
         <div class="flex-grow-1 text-right text-truncate d-sm-none small">
             <button onclick="document.getElementById('account-dialog').showModal();">{{currentAccount | shortaddress}}</button>
@@ -134,7 +132,7 @@
                             Revealing
                         </button>
                         <div class="text-danger">
-                            You must perform Step 3 after mint within 256 blocks
+                            You must perform Step 3 within 256 blocks after minting
                         </div>
                     </div>
                 </div>

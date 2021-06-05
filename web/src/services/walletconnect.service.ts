@@ -2,6 +2,9 @@ import { Injectable, EventEmitter } from '@angular/core';
 import * as blockchain from "./blockchain";
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from 'ethers';
+import WalletConnect from '@walletconnect/browser';
+import WalletConnectQRModal from'@walletconnect/qrcode-modal';
+import Web3 from 'web3';
 
 
 declare let window: any;
@@ -12,8 +15,9 @@ declare let window: any;
 export class WalletConnectService {
 
   //  wallet action
-  provider = <WalletConnectProvider>{};
-  ethersInjectedProvider = <ethers.providers.Web3Provider>{};
+  web3Provider = <WalletConnectProvider>{};
+  browserProvider = <WalletConnect>{};
+  ethersInjectedProvider = <ethers.providers.JsonRpcProvider>{};
   correctChainId = 0;
   currentAccount = '';
   isCorrectChain = false;
@@ -36,17 +40,20 @@ export class WalletConnectService {
     this.correctChainId = (await blockchain.defaultProvider.getNetwork()).chainId;
 
     //  Create WalletConnect Provider
-    const provider = new WalletConnectProvider({
+    this.web3Provider = new WalletConnectProvider({
+      chainId: 56,
       rpc: {  
         56: blockchain.nodeURL,
       },
     });
 
-    this.provider = provider;
-    this.ethersInjectedProvider = new ethers.providers.Web3Provider(provider);
-    const { chainId } = await this.ethersInjectedProvider.getNetwork()
 
-    this.isCorrectChain = chainId === this.correctChainId;
+    // Unused
+    // this.browserProvider = new WalletConnect({
+    //   bridge: 'https://bridge.walletconnect.org',
+    //   qrcodeModal: WalletConnectQRModal
+    // });
+
     this.currentAccount = '';
 
     this.chainEvents.emit('start');
@@ -68,52 +75,70 @@ export class WalletConnectService {
       });
   }
 
-  async connectWallet() {
-    console.log("connecting")
+  async connectWallet(onConnect: (account: string, web3Provider: ethers.providers.JsonRpcProvider) => void, onSessionUpdate: (account: string) => void, onDisconnect: () => void) {
     try {
-      console.log("enabling");
-      await this.provider.enable();
-      console.log("enabled");
+      // Browser Provider
+      // this.walletConnect(onConnect, onSessionUpdate, onDisconnect);
 
-      if (this.ethersInjectedProvider) {
-        (this.ethersInjectedProvider as any)
-          .request({ method: 'eth_accounts' })
-          .then((accounts: Array<string>) => {
-            if (accounts.length > 0) {
-              this.currentAccount = accounts[0];
-            }
-            this.chainEvents.emit('accountsChanged');
-          })
-          .catch((err: Error) => {
-            console.error(err);
-          });
-    
-        // Detect account changes
-        (this.ethersInjectedProvider as any)
-          .on('accountsChanged', (accounts: Array<string>) => {
-            if (accounts.length === 0) {
-              this.currentAccount = '';
-              console.log('Please connect to MetaMask.');
-            } else if (accounts[0] !== this.currentAccount) {
-              this.currentAccount = accounts[0];
-            }
-            this.chainEvents.emit('accountsChanged');
-          });
-    
-        // Detect chain changes
-        (this.ethersInjectedProvider as any)
-          .on('chainChanged', (chainId: string) => {
-            // recommended
-            window.document.location.reload();
-            // this.currentAccount = '';
-            // this.isCorrectChain = (parseInt(chainId) === this.correctChainId);
-            // this.chainEvents.emit('chainChanged');
-          });
-      }
+      // Web3 Provider
+      this.web3ProviderConnect(onConnect, onSessionUpdate, onDisconnect);
     } catch (e) {
-      await this.provider.disconnect();
       throw e
     }
     
+  }
+
+  async web3ProviderConnect(onConnect: (account: string, web3Provider: ethers.providers.JsonRpcProvider) => void, onSessionUpdate: (account: string) => void, onDisconnect: () => void) {
+    const accounts = await this.web3Provider.enable();
+
+    this.ethersInjectedProvider = new ethers.providers.Web3Provider(this.web3Provider);
+
+    onConnect(accounts[0], this.ethersInjectedProvider);
+
+    if (this.web3Provider) {
+      // Detect disconnection
+      this.web3Provider
+        .on('disconnect', (code: number, reason: string) => {
+          // recommended
+          console.log("user disconnected");
+          onDisconnect();
+        });
+    }
+  }
+
+  // Unused
+  async walletConnect(onConnect: (account: string, web3Provider: ethers.providers.JsonRpcProvider) => void, onSessionUpdate: (account: string) => void, onDisconnect: () => void) {
+    if (!this.browserProvider.connected) {
+      this.browserProvider.createSession();
+      const uri = this.browserProvider.uri;
+
+      WalletConnectQRModal.open(uri, () => {
+        console.log("qr modal closed");
+      })
+    }
+
+  
+    this.browserProvider.on("connect", (error: any, payload: any) => {
+      if (error) throw error;
+
+      WalletConnectQRModal.close();
+
+      const { accounts, chainId } = payload.params[0];
+      this.currentAccount = accounts[0];
+      onConnect(this.currentAccount, this.browserProvider as any);
+    });
+    
+    this.browserProvider.on('session_update', (error: any, payload: any) => {
+      if (error) throw error;
+
+      const { accounts, chainId} = payload.params[0];
+      this.currentAccount = accounts[0];
+      onSessionUpdate(this.currentAccount);
+    })
+
+    this.browserProvider.on('disconnect', () => {
+      console.log("user disconnected");
+      onDisconnect();
+    })
   }
 }
