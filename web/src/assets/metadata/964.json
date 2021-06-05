@@ -1,0 +1,20 @@
+{
+	"name": "",
+	"index": 964,
+	"description": "NCAT NFT",
+	"image": "https://ncat.fun/assets/NFT_0004.gif",
+	"attributes": [
+		{
+			"trait_type": "Collection",
+			"value": "1"
+		},
+		{
+			"trait_type": "Rarity",
+			"value": "Legendary"
+		},
+		{
+			"trait_type": "Type",
+			"value": "ALIEN 8-Bit NCAT"
+		}
+	]
+}
