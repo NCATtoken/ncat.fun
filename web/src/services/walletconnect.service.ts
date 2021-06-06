@@ -56,7 +56,6 @@ export class WalletConnectService {
         .on('disconnect', () => {
           this.currentAccount = '';
           this.chainEvents.emit('disconnected');
-
         });
 
       // (this.provider as WalletConnectProvider)

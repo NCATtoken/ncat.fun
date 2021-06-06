@@ -209,18 +209,14 @@ export class NFTComponent implements OnInit {
   }
 
   async disconnectWallet() {
-    if (!confirm('Disconnect your wallet?')) return;
-
-    if (this.metamask.provider) {
+    if (this.isMetamask) {
+      alert('You need to manually disconnect site from Metamask plugin');
       this.metamask.disconnect();
-      return;
-    } else if (this.walletconnect.provider) {
-      this.walletconnect.disconnect();
-      return;
     }
-    this.currentAccount = '';
-    this.isCorrectChain = false;
-    this.isMetamask = false;
+    else {
+      if (!confirm('Disconnect your wallet?')) return;
+      this.walletconnect.disconnect();
+    }
   }
 
   viewPound() {
