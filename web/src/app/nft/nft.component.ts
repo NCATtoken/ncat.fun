@@ -1,14 +1,11 @@
 import { Component, NgZone, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import detectEthereumProvider from '@metamask/detect-provider';
 import { NgbCarouselConfig } from '@ng-bootstrap/ng-bootstrap';
 import { ethers } from 'ethers';
 import _ from 'lodash';
 import { environment } from 'src/environments/environment.prod';
 import { ApiHttpService } from 'src/services/api-http.service';
-import { approveNCAT, balanceOf, commitSwapNCAT, createNCATContractInstance, createNFTContractInstance, createPoundContractInstance, defaultProvider, getAllowance, getDecimals, getSwapCost, nftPoundAddress, revealNCATs, tokenOfOwnerByIndex } from 'src/services/blockchain';
+import { approveNCAT, balanceOf, commitSwapNCAT, createNCATContractInstance, createNFTContractInstance, createPoundContractInstance, getAllowance, getDecimals, getSwapCost, nftPoundAddress, revealNCATs, tokenOfOwnerByIndex } from 'src/services/blockchain';
 import { MetaMaskService } from 'src/services/metamask.service';
-import { SessionService } from 'src/services/session.service';
 import { WalletConnectService } from 'src/services/walletconnect.service';
 
 enum Screen {
@@ -88,6 +85,11 @@ export class NFTComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     this.metamask.chainEvents.subscribe((event) => {
+      if (!this.metamask.provider) {
+        console.log('No metamask');
+        return;
+      }
+      console.log('metamask event', event);
       this.ngZone.run(() => {
 
         if (event == 'start') {
@@ -96,23 +98,28 @@ export class NFTComponent implements OnInit {
         }
 
         this.isCorrectChain = this.metamask.isCorrectChain;
-        this.isMetamask = true;
         this.currentAccount = this.metamask.currentAccount;
 
         if (this.isCorrectChain && this.currentAccount) {
+          this.isMetamask = true;
           this.getPoundAllowance();
           this.getSwapCost();
           this.getOwnedNFTs();
         }
-        
+
       });
     });
 
     this.walletconnect.chainEvents.subscribe((event) => {
-
+      if (!this.walletconnect.provider) {
+        console.log('No walletconect');
+        return;
+      }
+      console.log('walletconnect event', event);
       this.ngZone.run(() => {
 
         if (event == 'start') {
+          this.provider = this.walletconnect.provider;
           this.ethersInjectedProvider = this.walletconnect.ethersInjectedProvider;
         }
 
@@ -120,6 +127,7 @@ export class NFTComponent implements OnInit {
         this.currentAccount = this.walletconnect.currentAccount;
 
         if (this.isCorrectChain && this.currentAccount) {
+          this.isMetamask = false;
           this.getPoundAllowance();
           this.getSwapCost();
           this.getOwnedNFTs();
@@ -193,66 +201,23 @@ export class NFTComponent implements OnInit {
   }
 
   async connectMetamask() {
-    if (document !== null) {
-      (document as any).getElementById('providers-dialog').close();
-    }
     await this.metamask.connectWallet();
-
-    this.provider = this.metamask.provider;
-    this.ethersInjectedProvider = this.metamask.ethersInjectedProvider;
-
-    this.isCorrectChain = this.metamask.isCorrectChain;
-    this.isMetamask = true;
-    this.currentAccount = this.metamask.currentAccount;
-
-    if (this.isCorrectChain && this.currentAccount) {
-      this.getPoundAllowance();
-      this.getSwapCost();
-      this.getOwnedNFTs();
-    }
   }
 
   async connectWalletConnect() {
-    if (document !== null) {
-      (document as any).getElementById('providers-dialog').close();
-    }
-    try {
-      this.walletconnect.connectWallet((account, provider) => {
-        this.ngZone.run(async () => {
-          this.ethersInjectedProvider = provider;
-      
-          this.isCorrectChain = true;
-          this.isMetamask = false;
-          this.currentAccount = account
-
-
-          const ncat = createNCATContractInstance(provider.getSigner());
-          const allowance = await getAllowance(ncat, this.currentAccount, nftPoundAddress);
-      
-          if (this.currentAccount) {
-            this.getPoundAllowance();
-            this.getSwapCost();
-            this.getOwnedNFTs();
-          }
-        })
-      }, (account) => {
-        this.currentAccount = account
-      
-        if (this.currentAccount) {
-          this.getPoundAllowance();
-          this.getSwapCost();
-          this.getOwnedNFTs();
-        }
-      }, () => {
-        this.currentAccount = ''
-      });
-
-    } catch (e) {
-      console.log(e)
-    }
+    await this.walletconnect.connectWallet();
   }
 
   async disconnectWallet() {
+    if (!confirm('Disconnect your wallet?')) return;
+
+    if (this.metamask.provider) {
+      this.metamask.disconnect();
+      return;
+    } else if (this.walletconnect.provider) {
+      this.walletconnect.disconnect();
+      return;
+    }
     this.currentAccount = '';
     this.isCorrectChain = false;
     this.isMetamask = false;
