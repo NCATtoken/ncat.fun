@@ -6,24 +6,40 @@
     </h1> -->
 
     <section id="heading" class="container mb-3 d-flex justify-content-center">
-        <div *ngIf="!isCorrectChain" class="nes-container is-rounded bg-danger text-white mx-auto">
+        <div *ngIf="!isCorrectChain && isMetamask" class="nes-container is-rounded bg-danger text-white mx-auto">
             <b>Wrong Network</b>! Please select BSC from MetaMask.
         </div>
 
-        <div class="nes-container is-rounded bg-info text-white text-center" *ngIf="currentAccount === '' && isCorrectChain">
+        <div class="nes-container is-rounded bg-info text-white text-center" *ngIf="currentAccount === ''">
             <p>
                 Connect your wallet to start exploring NCAT NFT.
             </p>
-            <button class="nes-btn is-warning" (click)="connectWallet()">
+            <button class="nes-btn is-warning" onclick="document.getElementById('providers-dialog').showModal();">
                 Connect Wallet
             </button>
         </div>
     </section>
 
-    <ng-container *ngIf="currentAccount !== '' && isCorrectChain">
+    <dialog class="nes-dialog align-items-center" id="providers-dialog">
+        <menu class="dialog-menu" style="padding: 0px">
+        <button class="nes-btn mr-2" (click)="connectMetamask()">
+            <img class="nes-avatar" alt="Gravatar image example" src="https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg" style="image-rendering: pixelated;">
+            Metamask
+        </button>
+        <button class="nes-btn mr-2" (click)="connectWalletConnect()">
+            <img class="nes-avatar" alt="Gravatar image example" src="https://raw.githubusercontent.com/WalletConnect/walletconnect-assets/master/svg/walletconnect-logo.svg" style="image-rendering: pixelated;">
+            WalletConnect
+        </button>
+        </menu>
+        <menu class="dialog-menu flex-column-reverse" style="padding: 0px">
+            <button class="nes-btn is-primary" onclick="document.getElementById('providers-dialog').close();">Cancel</button>
+        </menu>
+    </dialog>
+
+    <ng-container *ngIf="currentAccount !== ''">
 
         <div class="flex-grow-1 text-right text-truncate d-sm-none small">
-            {{currentAccount | shortaddress}}
+            <button onclick="document.getElementById('account-dialog').showModal();">{{currentAccount | shortaddress}}</button>
         </div>
 
         <section id="menu" class="container mb-3">
@@ -40,7 +56,17 @@
                     Gallery ({{ownedTokenIds.length}})
                 </button>
                 <div class="flex-grow-1 text-right text-truncate d-none d-sm-block small">
-                    {{currentAccount | shortaddress}}
+                    <button class="nes-btn is-warning" onclick="document.getElementById('account-dialog').showModal();">{{currentAccount | shortaddress}}</button>
+
+    
+                    <dialog class="nes-dialog align-items-center" id="account-dialog">
+                        {{currentAccount}}
+                        <div class=" d-flex align-items-center">
+                            <button class="nes-btn" style="margin:10px" onclick="document.getElementById('account-dialog').close(); document.getElementById('providers-dialog').showModal();">Switch Provider</button>
+                            <button class="nes-btn is-error" style="margin:10px" (click)="disconnectWallet()">Disconnect</button>
+                            <button class="nes-btn is-primary" onclick="document.getElementById('account-dialog').close();">Close</button>
+                        </div>
+                    </dialog>       
                 </div>
             </div>
         </section>
@@ -108,6 +134,9 @@
                         <button *ngIf="revealing" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
                             Revealing
                         </button>
+                        <div class="text-danger">
+                            You must perform Step 3 within 256 blocks after minting
+                        </div>
                     </div>
                 </div>
             </div>
