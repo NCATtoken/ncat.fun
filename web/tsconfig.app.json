@@ -3,7 +3,66 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "./out-tsc/app",
-    "types": []
+    "types": [],
+    "paths": {
+  "stream": [
+    "./node_modules/stream-browserify"
+  ],
+  "os": [
+    "./node_modules/os-browserify"
+  ],
+  "crypto": [
+    "./node_modules/crypto-browserify"
+  ],
+  "http": [
+    "./node_modules/stream-http"
+  ],
+  "https": [
+    "./node_modules/https-browserify"
+  ],
+  "console": [
+    "./node_modules/console-browserify"
+  ],
+  "constants": [
+    "./node_modules/constants-browserify"
+  ],
+  "domain": [
+    "./node_modules/domain-browser"
+  ],
+  "events": [
+    "./node_modules/events"
+  ],
+  "path": [
+    "./node_modules/path-browserify"
+  ],
+  "querystring": [
+    "./node_modules/querystring"
+  ],
+  "timers": [
+    "./node_modules/timers-browserify"
+  ],
+  "tty": [
+    "./node_modules/tty-browserify"
+  ],
+  "url": [
+    "./node_modules/url"
+  ],
+  "util": [
+    "./node_modules/util"
+  ],
+  "zlib": [
+    "./node_modules/browserify-zlib"
+  ],
+  "string_decoder": [
+    "./node_modules/string_decoder"
+  ],
+  "assert": [
+    "./node_modules/assert"
+  ],
+  "punycode": [
+    "./node_modules/punycode"
+  ]
+}
   },
   "files": [
     "src/main.ts",

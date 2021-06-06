@@ -16,7 +16,7 @@ declare let window: any;
 export class MetaMaskService {
 
   //  wallet action
-  provider = <unknown>{};
+  provider: any = null;
   ethersInjectedProvider = <ethers.providers.Web3Provider>{};
   correctChainId = 0;
   currentAccount = '';
@@ -75,9 +75,6 @@ export class MetaMaskService {
         .on('chainChanged', (chainId: string) => {
           // recommended
           window.document.location.reload();
-          // this.currentAccount = '';
-          // this.isCorrectChain = (parseInt(chainId) === this.correctChainId);
-          // this.chainEvents.emit('chainChanged');
         });
     }
 
@@ -100,23 +97,25 @@ export class MetaMaskService {
       });
   }
 
-  async connectWallet() {
-    const handleAccountsChanged = (accounts: Array<string>) => {
-      if (accounts.length === 0) {
-        // MetaMask is locked or the user has not connected any accounts
-        console.log('Please connect to MetaMask.');
-      } else if (accounts[0] !== this.currentAccount) {
-        this.currentAccount = accounts[0];
-        // Do any other work!
-      }
+  handleAccountsChanged = (accounts: Array<string>) => {
+    if (accounts.length === 0) {
+      // MetaMask is locked or the user has not connected any accounts
+      console.log('Please connect to MetaMask.');
+    } else if (accounts[0] !== this.currentAccount) {
+      this.currentAccount = accounts[0];
+      // Do any other work!
     }
+  }
+
+  async connectWallet() {
+
 
     if (this.provider) {
       // From now on, this should always be true:
       // provider === window.ethereum
       (this.provider as any)
         .request({ method: 'eth_requestAccounts' })
-        .then(handleAccountsChanged)
+        .then(this.handleAccountsChanged)
         .catch((err: any) => {
           if (err.code === 4001) {
             // EIP-1193 userRejectedRequest error
@@ -129,5 +128,16 @@ export class MetaMaskService {
     } else {
       console.log('Please install MetaMask!');
     }
+  }
+
+  async disconnect() {
+    // todo: really disconnect metamask
+    if (this.provider.close) {
+      // no longer works...
+      this.provider.close();
+    }
+    this.currentAccount = '';
+    this.chainEvents.emit('disconnect');
+    return;
   }
 }
