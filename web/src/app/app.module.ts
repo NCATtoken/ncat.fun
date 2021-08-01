@@ -27,6 +27,7 @@ import { TrackOrderComponent } from './track-order/track-order.component';
 import { NFTComponent } from './nft/nft.component';
 import { MarkdownPipe, NumPipe, ShortAddressPipe } from 'src/services/pipes';
 import { MetaMaskService } from 'src/services/metamask.service';
+import { ProjectsComponent } from './components/body/projects/projects.component';
 
 
 @NgModule({
@@ -50,6 +51,7 @@ import { MetaMaskService } from 'src/services/metamask.service';
     NumPipe,
     MarkdownPipe,
     ShortAddressPipe,
+    ProjectsComponent,
   ],
   imports: [
     BrowserModule,

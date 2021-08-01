@@ -1,0 +1,14 @@
+.featured-item {
+    height: 40vh;
+    min-height: 200px;
+    padding: 20px;
+    background-size: cover;
+    background-position: center;
+}
+
+.slidetext {
+    position: absolute;
+    bottom: 0;
+    background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5));
+
+}

@@ -2,6 +2,7 @@ export interface Metadata {
     top_nav?: Links[];
     bottom_nav?: Links[];
     fold_content?: string;
+    where_to_trade?: string;
 }
 export interface LinkItems {
     title?: string;
