@@ -88,3 +88,31 @@ export class Cart {
 export class Order {
 
 }
+
+
+/**
+-- 2021-09-05 17:06:51.0330
+ALTER TABLE "public"."proposals" ADD COLUMN "budget" int8 DEFAULT 0;
+ALTER TABLE "public"."proposals" ADD COLUMN "require_budget" bool DEFAULT 'false';
+ALTER TABLE "public"."proposals" ADD COLUMN "contact" varchar(255);
+ALTER TABLE "public"."proposals" ADD COLUMN "contact_type" varchar(255);
+ALTER TABLE "public"."proposals" ADD COLUMN "has_expire" bool DEFAULT 'false';
+ALTER TABLE "public"."proposals" ADD COLUMN "expire_date" timestamptz;
+*/
+export interface Proposal {
+    id?: number;
+    title?: string;
+    author?: string;
+    content?: string;
+    state?: string;
+    expiration?: string;
+    voters?: string[];
+    for?: string;
+    against?: string;
+    budget?: string;
+    require_budget: boolean;
+    contact?: string;
+    contact_type?: string;
+    has_expire: boolean;
+    expire_date?: string;
+}

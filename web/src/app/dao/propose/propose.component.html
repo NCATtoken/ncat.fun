@@ -1,0 +1,88 @@
+<div class="bg-white py-5">
+    <div class="container">
+        <h1>Create Proposal</h1>
+
+        <ng-container *ngIf="!sending; else Sending">
+            <form (ngSubmit)="f.form.valid && propose()" #f="ngForm">
+                <div class="nes-field mt-4">
+                    <label>Title</label>
+                    <p class="text-muted">Min 20 characters.</p>
+                    <input type="text" class="nes-input" placeholder="" required minlength="20" maxlength="255" [(ngModel)]="proposal.title" name="title" #title="ngModel" [ngClass]="{'is-error':!title.valid}">
+                </div>
+
+                <div class="nes-field mt-4">
+                    <label>Description</label>
+                    <p class="text-muted">
+                        Min 500 characters. Please be as thorough as possible in the description and include resources needed to execute.
+                    </p>
+                    <textarea class="nes-input" placeholder="" minlength="500" required [(ngModel)]="proposal.content" name="content" #content="ngModel" [ngClass]="{'is-error':!content.valid}" (keyup)="autogrow($event)">
+                    </textarea>
+                </div>
+
+
+                <div class="nes-field mt-4">
+                    <label><span class="nes-icon coin is-small"></span> Funding</label>
+                    <label>
+                        <input type="checkbox" class="nes-checkbox" [(ngModel)]="proposal.require_budget" [value]="true" name="require_budget" />
+                        <span>This proposal require funding</span>
+                    </label>
+                    <div *ngIf="proposal.require_budget">
+                        <input type="number" class="nes-input" required placeholder="Amount in USD" [(ngModel)]="proposal.budget" name="budget" #budget="ngModel" [ngClass]="{'is-error':!budget.valid}">
+                    </div>
+                </div>
+
+
+                <div class="nes-field mt-4">
+                    <label>Expire Date</label>
+                    <label>
+                        <input type="checkbox" class="nes-checkbox" [(ngModel)]="proposal.has_expire" [value]="true" name="has_expire" />
+                        <span>This proposal will expire after a date</span>
+                    </label>
+                    <div *ngIf="proposal.has_expire">
+                        <input type="date" class="nes-input" required placeholder="Enter date in YYYY-MM-DD" [(ngModel)]="proposal.expire_date" name="expire_date" #expire_date="ngModel" [ngClass]="{'is-error':!expire_date.valid}">
+                    </div>
+                </div>
+
+                <div class="nes-field mt-4">
+                    <label>Contact Information</label>
+                    <p class="text-muted">We may need to contact you for more information and / or when the proposal is accepted and funded. Please leave your contact method. This info will not be shared to public.</p>
+                    <div class="row">
+                        <div class="col">
+                            <input type="text" minlength="3" maxlength="255" class="nes-input" required placeholder="@username" [(ngModel)]="proposal.contact" name="contact" #contact="ngModel" [ngClass]="{'is-error':!contact.valid}">
+                        </div>
+                        <div class="col">
+                            <div class="nes-select" [ngClass]="{'is-error':!contact_type.valid}">
+                                <select [(ngModel)]="proposal.contact_type" name="contact_type" #contact_type="ngModel" [required]="!!proposal.contact">
+                                    <option>Telegram</option>
+                                    <option>Twitter</option>
+                                    <option>Discord</option>
+                                    <option>Phone</option>
+                                    <option>Email</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5">
+                    <label>
+                        <input type="checkbox" class="nes-checkbox" required [(ngModel)]="agree" name="agree" />
+                        <span>I agree to be reached out for further clarification of the proposal (if necessary).</span>
+                    </label>
+                </div>
+
+                <div class="my-3 text-center">
+                    <button class="nes-btn is-error mr-2" (click)="cancel($event)">Cancel</button>
+                    <button class="nes-btn" [ngClass]="f.form.valid && agree ? 'is-success' : ''" type="submit" [disabled]="!f.form.valid || !agree">Create Proposal</button>
+                </div>
+            </form>
+        </ng-container>
+
+        <ng-template #Sending>
+            <div class="text-center p-5">
+                <h1>Purrrr</h1>
+                <img src="assets/cat-loading.gif" class="img-fluid">
+            </div>
+        </ng-template>
+    </div>
+</div>

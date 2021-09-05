@@ -2,6 +2,7 @@
 export const environment = {
   production: true,
   tax: 8.25,
+  daoBaseurl: 'https://dao.ncat.fun',
   apiBaseurl: 'https://cms.ncat.fun',
   contactus: 'mailto:admin@ncat.fun',
   burnAddress: 'https://bscscan.com/token/0x0cF011A946f23a03CeFF92A4632d5f9288c6C70D?a=0x0000000000000000000000000000000000000001',

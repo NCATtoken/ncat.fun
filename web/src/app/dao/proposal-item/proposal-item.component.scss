@@ -1,0 +1,26 @@
+.badge {
+
+    &.voting {
+        background-color: yellow;
+    }
+
+    &.research {
+        background-color: orange;
+    }
+
+    &.funding {
+        background-color: orange;
+    }
+
+    &.implementation {
+        background-color: orange;
+    }
+
+    &.completed {
+        background-color: green;
+    }
+
+    &.rejected {
+        background-color: red;
+    }
+}

@@ -1,0 +1,295 @@
+<svg id="graph-div" width="100%"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink" height="1212.2265625" style="max-width: 626.0011596679688px;" viewBox="0 0 626.0011596679688 1212.2265625">
+    <style>#graph-div {font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;fill:#333;}#graph-div .error-icon{fill:#faf;}#graph-div .error-text{fill:#005500;stroke:#005500;}#graph-div .edge-thickness-normal{stroke-width:2px;}#graph-div .edge-thickness-thick{stroke-width:3.5px;}#graph-div .edge-pattern-solid{stroke-dasharray:0;}#graph-div .edge-pattern-dashed{stroke-dasharray:3;}#graph-div .edge-pattern-dotted{stroke-dasharray:2;}#graph-div .marker{fill:#0b0b0b;stroke:#0b0b0b;}#graph-div .marker.cross{stroke:#0b0b0b;}#graph-div svg{font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:16px;}#graph-div .label{font-family:"trebuchet ms",verdana,arial,sans-serif;color:#333;}#graph-div .cluster-label text{fill:#005500;}#graph-div .cluster-label span{color:#005500;}#graph-div .label text,#graph-div span{fill:#333;color:#333;}#graph-div .node rect,#graph-div .node circle,#graph-div .node ellipse,#graph-div .node polygon,#graph-div .node path{fill:yellow;stroke:#f9e;stroke-width:1px;}#graph-div .node .label{text-align:center;}#graph-div .node.clickable{cursor:pointer;}#graph-div .arrowheadPath{fill:undefined;}#graph-div .edgePath .path{stroke:#0b0b0b;stroke-width:1.5px;}#graph-div .flowchart-link{stroke:#0b0b0b;fill:none;}#graph-div .edgeLabel{background-color:white;text-align:center;}#graph-div .edgeLabel rect{opacity:0.5;background-color:white;fill:white;}#graph-div .cluster rect{fill:#faf;stroke:hsl(300, 60%, 73.3333333333%);stroke-width:1px;}#graph-div .cluster text{fill:#005500;}#graph-div .cluster span{color:#005500;}#graph-div div.mermaidTooltip{position:absolute;text-align:center;max-width:200px;padding:2px;font-family:"trebuchet ms",verdana,arial,sans-serif;font-size:12px;background:#faf;border:1px solid undefined;border-radius:2px;pointer-events:none;z-index:100;}#graph-div :root{--mermaid-font-family:"trebuchet ms",verdana,arial,sans-serif;}</style>
+    <g>
+        <g class="output">
+            <g class="clusters">
+                <g class="cluster" id="flowchart-Accepted-61636" transform="translate(262.1958999633789,606.9734420776367)" style="opacity: 1;">
+                    <rect width="508.3917999267578" height="581.8500061035156" x="-254.1958999633789" y="-290.9250030517578"></rect>
+                    <g class="label" transform="translate(0, -276.92498779296875)" id="graph-divText">
+                        <g transform="translate(-33.453125,-12)">
+                            <foreignObject width="66.90625" height="24">
+                                <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Accepted</div>
+                            </foreignObject>
+                        </g>
+                    </g>
+                </g>
+            </g>
+            <g class="edgePaths">
+                <g class="edgePath LS-P LE-V" id="L-P-V" style="opacity: 1;">
+                    <path class="path" d="M449.8171901702881,93.34375L449.8171901702881,97.51041666666667C449.8171901702881,101.67708333333333,449.8171901702881,110.01041666666667,449.9005235036214,118.4270834604899C449.98385683695477,126.84375025431314,450.1505235036214,135.34375050862627,450.23385683695477,139.59375063578284L450.31719017028814,143.8437507629394" marker-end="url(#arrowhead62482)" style="fill:none"></path>
+                    <defs>
+                        <marker id="arrowhead62482" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath LS-V LE-R" id="L-V-R" style="opacity: 1;">
+                    <path class="path" d="M420.9042927032061,213.13554079585754L404.49322607164146,224.12102383419446C388.08215944007685,235.10650687253133,355.2600261769476,257.0774729492051,338.84895954538297,274.2296226542087C322.43789291381836,291.3817723592122,322.43789291381836,303.7151056925456,322.5212262471517,314.1317724863688C322.60455958048504,324.54843928019204,322.7712262471517,333.0484395345051,322.85455958048504,337.2984396616617L322.93789291381836,341.54843978881826" marker-end="url(#arrowhead62483)" style="fill:none"></path>
+                    <defs>
+                        <marker id="arrowhead62483" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath LS-R LE-F" id="L-R-F" style="opacity: 1;">
+                    <path class="path" d="M322.9378929138184,457.2265632629394L322.85455958048504,463.3098964691162C322.77122624715173,469.39322967529296,322.60455958048504,481.55989608764645,322.60455958048504,493.8932294209799C322.6045595804851,506.2265627543132,322.7712262471518,518.7265630086265,322.85455958048516,524.9765631357831L322.93789291381853,531.2265632629397" marker-end="url(#arrowhead62484)" style="fill:none"></path>
+                    <defs>
+                        <marker id="arrowhead62484" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath LS-F LE-I" id="L-F-I" style="opacity: 1;">
+                    <path class="path" d="M284.6425051005602,601.0577379496814L254.08092898394662,613.5236360457143C223.51935286733308,625.9895341417472,162.396200634106,650.921330333813,134.7564723265297,672.7589999038491C107.11674401895338,694.5966694738851,112.96043963702787,713.3402124218915,115.8822874460651,722.7119838958946L118.80413525510235,732.0837553698977" marker-end="url(#arrowhead62485)" style="fill:none"></path>
+                    <defs>
+                        <marker id="arrowhead62485" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath LS-I LE-X" id="L-I-X" style="opacity: 1;">
+                    <path class="path" d="M178.24243682385062,832.6907663011494L189.49832013051193,843.5587127725236C200.75420343717323,854.4266592438977,223.26597005049578,876.1625521866462,234.52185335715706,893.197165324687C245.77773666381836,910.2317784627279,245.77773666381836,922.5651117960612,271.25669765839524,939.2545495933088C296.73565865297206,955.9439873905563,347.6935806421258,976.9895296517184,373.1725416367026,987.5123007822993L398.65150263127947,998.0350719128803" marker-end="url(#arrowhead62486)" style="fill:none"></path>
+                    <defs>
+                        <marker id="arrowhead62486" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath LS-I LE-C" id="L-I-C" style="opacity: 1;">
+                    <path class="path" d="M111.19720644438573,847.0608813711433L106.91622697880126,855.5338086641851C102.63524751321678,864.0067359572271,94.07328858204785,880.9525905433107,89.79230911646339,895.5921845030193C85.5113296508789,910.2317784627279,85.5113296508789,922.5651117960612,85.5113296508789,941.9440180460612C85.5113296508789,961.3229242960612,85.5113296508789,987.7474034627279,85.5113296508789,1012.1718826293945C85.5113296508789,1036.5963617960613,85.5113296508789,1059.0208409627278,110.73117866477115,1079.6877998348873C135.9510276786634,1100.3547587070468,186.39072570644785,1119.2641972846993,211.61057472034008,1128.7189165735253L236.8304237342323,1138.1736358623516" marker-end="url(#arrowhead62487)" style="fill:none"></path>
+                    <defs>
+                        <marker id="arrowhead62487" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath LS-R LE-X" id="L-R-X" style="opacity: 1;">
+                    <path class="path" d="M350.9491556615306,429.2153020411065L361.0411588724018,439.9671787842554C371.13316208327296,450.71905552740435,391.3171685050154,472.22280901370215,401.40917171588654,498.15189942567434C411.5011749267578,524.0809898376465,411.5011749267578,554.435417175293,411.5011749267578,584.7898445129395C411.5011749267578,615.1442718505859,411.5011749267578,645.4986991882324,411.5011749267578,680.1796894073486C411.5011749267578,714.8606796264648,411.5011749267578,753.8682327270508,411.5011749267578,790.8757858276367C411.5011749267578,827.8833389282227,411.5011749267578,862.8908920288086,411.5011749267578,886.5613352457682C411.5011749267578,910.2317784627279,411.5011749267578,922.5651117960612,413.6589445817149,935.2549093099941C415.8167142366719,947.9447068239269,420.1322535465859,960.9909685184593,422.29002320154297,967.5140993657255L424.44779285650003,974.0372302129919" marker-end="url(#arrowhead62488)" style="fill:none"></path>
+                    <defs>
+                        <marker id="arrowhead62488" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath LS-F LE-X" id="L-F-X" style="opacity: 1;">
+                    <path class="path" d="M355.8327503781041,606.4582667727747L373.8517065528797,618.0240767316253C391.8706627276553,629.5898866904761,427.90857507720654,652.7215066081775,445.9275312519822,683.7910931173211C463.9464874267578,714.8606796264648,463.9464874267578,753.8682327270508,463.9464874267578,790.8757858276367C463.9464874267578,827.8833389282227,463.9464874267578,862.8908920288086,463.9464874267578,886.5613352457682C463.9464874267578,910.2317784627279,463.9464874267578,922.5651117960612,461.78871777180075,935.2549093099941C459.63094811684374,947.9447068239269,455.3154088069297,960.9909685184593,453.15763915197266,967.5140993657255L450.9998694970156,974.0372302129919" marker-end="url(#arrowhead62489)" style="fill:none"></path>
+                    <defs>
+                        <marker id="arrowhead62489" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath LS-R LE-I" id="L-R-I" style="opacity: 1;">
+                    <path class="path" d="M287.5358064524257,421.8244768015466L268.4125863605012,433.8081577512889C249.28936626857674,445.79183870103105,211.04292608472784,469.7592006005155,191.9197059928034,496.920095219081C172.7964859008789,524.0809898376465,172.7964859008789,554.435417175293,172.7964859008789,584.7898445129395C172.7964859008789,615.1442718505859,172.7964859008789,645.4986991882324,170.0413045204035,670.0476851102065C167.28612313992804,694.5966710321808,161.7757603789772,713.3402155384825,159.02057899850178,722.7119877916335L156.26539761802636,732.0837600447844" marker-end="url(#arrowhead62490)" style="fill:none"></path>
+                    <defs>
+                        <marker id="arrowhead62490" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath LS-V LE-X" id="L-V-X" style="opacity: 1;">
+                    <path class="path" d="M479.7300867279802,213.13554017936835L495.97448684444316,224.12102332045345C512.2188869609062,235.10650646153854,544.7076871938319,257.0774727437087,560.9520873102948,274.22962255146047C577.1964874267578,291.3817723592122,577.1964874267578,303.7151056925456,577.1964874267578,323.68828264872235C577.1964874267578,343.6614596048991,577.1964874267578,371.27448018391925,577.1964874267578,400.88750076293945C577.1964874267578,430.50052134195965,577.1964874267578,462.1135419209798,577.1964874267578,493.09726587931317C577.1964874267578,524.0809898376465,577.1964874267578,554.435417175293,577.1964874267578,584.7898445129395C577.1964874267578,615.1442718505859,577.1964874267578,645.4986991882324,577.1964874267578,680.1796894073486C577.1964874267578,714.8606796264648,577.1964874267578,753.8682327270508,577.1964874267578,790.8757858276367C577.1964874267578,827.8833389282227,577.1964874267578,862.8908920288086,577.1964874267578,886.5613352457682C577.1964874267578,910.2317784627279,577.1964874267578,922.5651117960612,560.0763434011493,938.4625221360425C542.9561993755407,954.3599324760238,508.7159113243236,973.8214198226532,491.5957672987151,983.5521634959678L474.4756232731066,993.2829071692825" marker-end="url(#arrowhead62491)" style="fill:none"></path>
+                    <defs>
+                        <marker id="arrowhead62491" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+                <g class="edgePath LS-X LE-C" id="L-X-C" style="opacity: 1;">
+                    <path class="path" d="M437.7238311767578,1056.4453201293945L437.7238311767578,1060.6119867960613C437.7238311767578,1064.7786534627278,437.7238311767578,1073.1119867960613,419.2278966366234,1086.08943524731C400.73196209648904,1099.0668836985587,363.74009301622027,1116.6884472677227,345.2441584760859,1125.4992290523048L326.7482239359515,1134.310010836887" marker-end="url(#arrowhead62492)" style="fill:none"></path>
+                    <defs>
+                        <marker id="arrowhead62492" viewBox="0 0 10 10" refX="9" refY="5" markerUnits="strokeWidth" markerWidth="8" markerHeight="6" orient="auto">
+                            <path d="M 0 0 L 10 5 L 0 10 z" class="arrowheadPath" style="stroke-width: 1; stroke-dasharray: 1, 0;"></path>
+                        </marker>
+                    </defs>
+                </g>
+            </g>
+            <g class="edgeLabels">
+                <g class="edgeLabel" transform="" style="opacity: 1;">
+                    <g transform="translate(0,0)" class="label">
+                        <rect rx="0" ry="0" width="0" height="0"></rect>
+                        <foreignObject width="0" height="0">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">
+                                <span id="L-L-P-V" class="edgeLabel L-LS-P' L-LE-V"></span>
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(322.43789291381836,279.0484390258789)" style="opacity: 1;">
+                    <g transform="translate(-42.8984375,-12)" class="label">
+                        <rect rx="0" ry="0" width="85.796875" height="24"></rect>
+                        <foreignObject width="85.796875" height="24">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">
+                                <span id="L-L-V-R" class="edgeLabel L-LS-V' L-LE-R">Vote Passed</span>
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(322.43789291381836,493.7265625)" style="opacity: 1;">
+                    <g transform="translate(-52.0078125,-12)" class="label">
+                        <rect rx="0" ry="0" width="104.015625" height="24"></rect>
+                        <foreignObject width="104.015625" height="24">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">
+                                <span id="L-L-R-F" class="edgeLabel L-LS-R' L-LE-F">Needs Funding</span>
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(101.2730484008789,675.8531265258789)" style="opacity: 1;">
+                    <g transform="translate(-51.5234375,-12)" class="label">
+                        <rect rx="0" ry="0" width="103.046875" height="24"></rect>
+                        <foreignObject width="103.046875" height="24">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">
+                                <span id="L-L-F-I" class="edgeLabel L-LS-F' L-LE-I">Funds Secured</span>
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(245.77773666381836,934.8984451293945)" style="opacity: 1;">
+                    <g transform="translate(-72.7421875,-12)" class="label">
+                        <rect rx="0" ry="0" width="145.484375" height="24"></rect>
+                        <foreignObject width="145.484375" height="24">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">
+                                <span id="L-L-I-X" class="edgeLabel L-LS-I' L-LE-X">Failed to Implement</span>
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(85.5113296508789,1014.1718826293945)" style="opacity: 1;">
+                    <g transform="translate(-47.4140625,-12)" class="label">
+                        <rect rx="0" ry="0" width="94.828125" height="24"></rect>
+                        <foreignObject width="94.828125" height="24">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">
+                                <span id="L-L-I-C" class="edgeLabel L-LS-I' L-LE-C">Implemented</span>
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(411.5011749267578,675.8531265258789)" style="opacity: 1;">
+                    <g transform="translate(-32.2734375,-12)" class="label">
+                        <rect rx="0" ry="0" width="64.546875" height="24"></rect>
+                        <foreignObject width="64.546875" height="24">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">
+                                <span id="L-L-R-X" class="edgeLabel L-LS-R' L-LE-X">Rejected</span>
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(463.9464874267578,792.8757858276367)" style="opacity: 1;">
+                    <g transform="translate(-32.4453125,-12)" class="label">
+                        <rect rx="0" ry="0" width="64.890625" height="24"></rect>
+                        <foreignObject width="64.890625" height="24">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">
+                                <span id="L-L-F-X" class="edgeLabel L-LS-F' L-LE-X">No Funds</span>
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(172.7964859008789,584.7898445129395)" style="opacity: 1;">
+                    <g transform="translate(-60.578125,-12)" class="label">
+                        <rect rx="0" ry="0" width="121.15625" height="24"></rect>
+                        <foreignObject width="121.15625" height="24">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">
+                                <span id="L-L-R-I" class="edgeLabel L-LS-R' L-LE-I">No Need Funding</span>
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="translate(577.1964874267578,584.7898445129395)" style="opacity: 1;">
+                    <g transform="translate(-40.8046875,-12)" class="label">
+                        <rect rx="0" ry="0" width="81.609375" height="24"></rect>
+                        <foreignObject width="81.609375" height="24">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">
+                                <span id="L-L-V-X" class="edgeLabel L-LS-V' L-LE-X">Vote Failed</span>
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+                <g class="edgeLabel" transform="" style="opacity: 1;">
+                    <g transform="translate(0,0)" class="label">
+                        <rect rx="0" ry="0" width="0" height="0"></rect>
+                        <foreignObject width="0" height="0">
+                            <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">
+                                <span id="L-L-X-C" class="edgeLabel L-LS-X' L-LE-C"></span>
+                            </div>
+                        </foreignObject>
+                    </g>
+                </g>
+            </g>
+            <g class="nodes">
+                <g class="node default" id="flowchart-F-61610" transform="translate(322.43789291381836,584.7898445129395)" style="opacity: 1;">
+                    <polygon points="54.06328125,0 108.1265625,-54.06328125 54.06328125,-108.1265625 0,-54.06328125" transform="translate(-54.06328125,54.06328125)" class="label-container"></polygon>
+                    <g class="label" transform="translate(0,0)">
+                        <g transform="translate(-28.0703125,-12)">
+                            <foreignObject width="56.140625" height="24">
+                                <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Funding</div>
+                            </foreignObject>
+                        </g>
+                    </g>
+                </g>
+                <g class="node default" id="flowchart-R-61609" transform="translate(322.43789291381836,398.88750076293945)" style="opacity: 1;">
+                    <polygon points="57.839062500000004,0 115.67812500000001,-57.839062500000004 57.839062500000004,-115.67812500000001 0,-57.839062500000004" transform="translate(-57.839062500000004,57.839062500000004)" class="label-container"></polygon>
+                    <g class="label" transform="translate(0,0)">
+                        <g transform="translate(-32.265625,-12)">
+                            <foreignObject width="64.53125" height="24">
+                                <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Research</div>
+                            </foreignObject>
+                        </g>
+                    </g>
+                </g>
+                <g class="node default" id="flowchart-I-61611" transform="translate(137.0347671508789,792.8757858276367)" style="opacity: 1;">
+                    <polygon points="80.02265625,0 160.0453125,-80.02265625 80.02265625,-160.0453125 0,-80.02265625" transform="translate(-80.02265625,80.02265625)" class="label-container"></polygon>
+                    <g class="label" transform="translate(0,0)">
+                        <g transform="translate(-56.9140625,-12)">
+                            <foreignObject width="113.828125" height="24">
+                                <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Implementation</div>
+                            </foreignObject>
+                        </g>
+                    </g>
+                </g>
+                <g class="node default" id="flowchart-P-61607" transform="translate(449.8171901702881,50.671875)" style="opacity: 1;">
+                    <circle x="-42.671875" y="-22" r="42.671875" class="label-container"></circle>
+                    <g class="label" transform="translate(0,0)">
+                        <g transform="translate(-32.671875,-12)">
+                            <foreignObject width="65.34375" height="24">
+                                <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Proposed</div>
+                            </foreignObject>
+                        </g>
+                    </g>
+                </g>
+                <g class="node default" id="flowchart-V-61608" transform="translate(449.8171901702881,192.69609451293945)" style="opacity: 1;">
+                    <polygon points="49.35234375,0 98.7046875,-49.35234375 49.35234375,-98.7046875 0,-49.35234375" transform="translate(-49.35234375,49.35234375)" class="label-container"></polygon>
+                    <g class="label" transform="translate(0,0)">
+                        <g transform="translate(-22.8359375,-12)">
+                            <foreignObject width="45.671875" height="24">
+                                <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Voting</div>
+                            </foreignObject>
+                        </g>
+                    </g>
+                </g>
+                <g class="node default" id="flowchart-C-61612" transform="translate(282.60976791381836,1155.3359451293945)" style="opacity: 1;">
+                    <circle x="-48.890625" y="-22" r="48.890625" class="label-container"></circle>
+                    <g class="label" transform="translate(0,0)">
+                        <g transform="translate(-38.890625,-12)">
+                            <foreignObject width="77.78125" height="24">
+                                <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Completed</div>
+                            </foreignObject>
+                        </g>
+                    </g>
+                </g>
+                <g class="node default" id="flowchart-X-61613" transform="translate(437.7238311767578,1014.1718826293945)" style="opacity: 1;">
+                    <circle x="-42.2734375" y="-22" r="42.2734375" class="label-container"></circle>
+                    <g class="label" transform="translate(0,0)">
+                        <g transform="translate(-32.2734375,-12)">
+                            <foreignObject width="64.546875" height="24">
+                                <div xmlns="http://www.w3.org/1999/xhtml" style="display: inline-block; white-space: nowrap;">Rejected</div>
+                            </foreignObject>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,27 @@
+<div class="nes-container is-rounded bg-white mb-3">
+    <div class="d-flex">
+        <h3 class="sans-serif">{{p.title}}</h3>
+        <div class="text-nowrap">
+            <span class="sans-serif">Status:</span>
+            <span class="badge badge-pill" [class]="p.state?.toLowerCase()">{{p.state | uppercase}}</span>
+        </div>
+    </div>
+
+    <countdown [config]="config"></countdown>
+    <div *ngIf="!p.require_budget">
+        💰 Funding required: <b>${{p.budget|number}}</b>
+    </div>
+    <div *ngIf="!p.has_expire">
+        📅 Expires on: {{p.expire_date|date}}
+    </div>
+
+    <div class="sans-serif">{{p.content}}</div>
+    <p class="text-center">
+        Votes
+    </p>
+    <div class="sans-serif">
+        <div>{{p.voters?.length || 0}} has voted</div>
+        <div>{{p.for}} For</div>
+        <div>{{p.against}} Against</div>
+    </div>
+</div>
