@@ -1,27 +1,99 @@
 <div class="nes-container is-rounded bg-white mb-3">
-    <div class="d-flex">
-        <h3 class="sans-serif">{{p.title}}</h3>
-        <div class="text-nowrap">
-            <span class="sans-serif">Status:</span>
-            <span class="badge badge-pill" [class]="p.state?.toLowerCase()">{{p.state | uppercase}}</span>
+    <div class="d-flex flex-column flex-md-row">
+        <div class="flex-grow-1">
+            <div class="d-flex">
+                <h3 class="sans-serif">{{p.title}}</h3>
+                <div class="text-nowrap">
+                    <!-- <span class="sans-serif">Status:</span> -->
+                    <span class="badge badge-pill" [class]="p.state?.toLowerCase()">{{p.state | uppercase}}</span>
+                </div>
+            </div>
+
+            <countdown [config]="config"></countdown>
+
+            <div *ngIf="p.has_expire">
+                Expires on: <span class="t">{{p.expire_date|date}}</span>
+            </div>
+
+            <div class="sans-serif">{{p.content}}</div>
         </div>
-    </div>
+        <div style="border-left:1px solid #eee" class="mx-3 d-none d-md-block"></div>
+        <div style="border-top:1px solid #eee" class="my-3 d-md-none "></div>
+        <div class="text-center text-nowrap" style="min-width:250px">
+            <h5>Votes</h5>
 
-    <countdown [config]="config"></countdown>
-    <div *ngIf="!p.require_budget">
-        💰 Funding required: <b>${{p.budget|number}}</b>
-    </div>
-    <div *ngIf="!p.has_expire">
-        📅 Expires on: {{p.expire_date|date}}
-    </div>
+            <progress class="nes-progress progress my-3" [value]="progress" max="100"></progress>
 
-    <div class="sans-serif">{{p.content}}</div>
-    <p class="text-center">
-        Votes
-    </p>
-    <div class="sans-serif">
-        <div>{{p.voters?.length || 0}} has voted</div>
-        <div>{{p.for}} For</div>
-        <div>{{p.against}} Against</div>
+            <div class="d-flex align-items-center my-3">
+                <div class="dot bg-for"></div>
+                <div class="flex-grow-1"><span class="t">{{(vfor.toNumber()/10e12).toFixed(3)}}T</span> For</div>
+                <div>{{progress}}%</div>
+            </div>
+            <div class="d-flex align-items-center my-3">
+                <div class="dot bg-against"></div>
+                <div class=flex-grow-1><span class="t">{{(vagainst.toNumber()/10e12).toFixed(3)}}T</span> Against</div>
+                <div>{{100 - progress}}%</div>
+            </div>
+
+            <ng-container *ngIf="p.state==States.VOTING">
+                <div class="my-3">
+                    <div *ngIf="voted">
+                        <div class="text-muted">You Voted</div>
+                    </div>
+
+                    <div *ngIf="!voted" class="row">
+                        <div class="col-6">
+                            <button (click)="onVote(true)" class="nes-btn w-100 bg-for text-white">For</button>
+                        </div>
+                        <div class="col-6">
+                            <button (click)="onVote(false)" class="nes-btn w-100 bg-against text-white">Against</button>
+                        </div>
+                    </div>
+                </div>
+            </ng-container>
+
+            <div class="mt-3" (click)="showvoters=!showvoters">
+                {{p.voters?.length || 0}} voter(s) <div class="toggle" [class]="showvoters?'x':'c'"></div>
+            </div>
+
+            <div class="voters sans-serif" [class]="showvoters?'x':'c'">
+                <div *ngFor="let v of p.voters">{{v | shortaddress}}</div>
+            </div>
+
+
+            <ng-container *ngIf="p.require_budget">
+                <hr class="mt-5">
+                <h5>Budget</h5>
+                <div class="d-flex justify-content-between">
+                    <span>Target:</span>
+                    <span class="t">${{p.budget|number}}</span>
+                </div>
+
+                <ng-container *ngIf="p.state!=States.VOTING">
+                    <div class="d-flex justify-content-between">
+                        <span>Funded:</span>
+                        <span class="t">${{p.funded_amount || 0|number}}</span>
+                    </div>
+
+                    <progress class="nes-progress progress my-3" [value]="fund_progress" max="100"></progress>
+
+                    <ng-container *ngIf="1 || p.state==States.FUNDING">
+                        <div class="my-3">
+                            <button (click)="onFund()" class="nes-btn w-100 bg-for text-white">Fund This</button>
+                        </div>
+                    </ng-container>
+
+                    <div class="mt-3" (click)="showfunders=!showfunders">
+                        {{p.funders?.length || 0}} funders(s) <div class="toggle" [class]="showfunders?'x':'c'"></div>
+                    </div>
+
+                    <div class="voters sans-serif" [class]="showfunders?'x':'c'">
+                        <div *ngFor="let v of p.funders">{{v | shortaddress}}</div>
+                    </div>
+                </ng-container>
+
+            </ng-container>
+
+        </div>
     </div>
 </div>

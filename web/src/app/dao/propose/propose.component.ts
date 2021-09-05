@@ -53,17 +53,21 @@ export class ProposeComponent implements OnInit, AfterViewInit {
       .subscribe((res) => {
         this.sending = false;
         this.created.emit(true);
-      }, (error) => {
+      }, (e) => {
         this.sending = false;
-        if (error.error?.errors) {
+        if (e.error?.message) {
+          alert(e.error.message);
+          return;
+        }
+        else if (e.error?.errors) {
           try {
-            alert(error.error.errors.map((a: any) => a.param + ": " + a.msg).join("\n"));
+            alert(e.error.errors.map((a: any) => a.param + ": " + a.msg).join("\n"));
             return;
-          } catch (e) {
+          } catch (e2) {
             //
           }
         }
-        alert(error.message);
+        alert(e.message);
       });
   }
 }

@@ -15,6 +15,11 @@ $grid-breakpoints: (xs: 0,
 
 @import "~bootstrap/scss/bootstrap.scss";
 
+:root {
+  --for: #e07891;
+  --against: rgb(30, 97, 164);
+}
+
 body {
   background-color: var(--secondary);
   padding-top: 67.5px;
@@ -84,6 +89,6 @@ body {
 }
 
 .t {
-  color: #f69;
+  color: $primary;
   margin: 0 0.2em;
 }

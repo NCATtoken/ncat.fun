@@ -1,3 +1,5 @@
+import { BigNumber } from "@ethersproject/bignumber";
+
 export interface Metadata {
     top_nav?: Links[];
     bottom_nav?: Links[];
@@ -99,6 +101,16 @@ ALTER TABLE "public"."proposals" ADD COLUMN "contact_type" varchar(255);
 ALTER TABLE "public"."proposals" ADD COLUMN "has_expire" bool DEFAULT 'false';
 ALTER TABLE "public"."proposals" ADD COLUMN "expire_date" timestamptz;
 */
+
+export enum States {
+    VOTING = "Voting",
+    RESEARCH = "Research",
+    FUNDING = "Funding",
+    IMPLEMENTATION = "Implementation",
+    COMPLETED = "Completed",
+    REJECTED = "Rejected",
+}
+
 export interface Proposal {
     id?: number;
     title?: string;
@@ -107,9 +119,11 @@ export interface Proposal {
     state?: string;
     expiration?: string;
     voters?: string[];
+    funders?: string[];
+    funded_amount?: number;
     for?: string;
     against?: string;
-    budget?: string;
+    budget?: number;
     require_budget: boolean;
     contact?: string;
     contact_type?: string;

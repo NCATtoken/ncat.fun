@@ -1,19 +1,11 @@
-import { AfterViewInit, Component, ElementRef, NgZone, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, NgZone, OnInit, Renderer2 } from '@angular/core';
 import { ethers } from 'ethers';
 import { environment } from 'src/environments/environment';
 import { ApiHttpService } from 'src/services/api-http.service';
 import { MetaMaskService } from 'src/services/metamask.service';
-import { Proposal } from 'src/services/models.definitioins';
+import { Proposal, States } from 'src/services/models.definitioins';
 import { WalletConnectService } from 'src/services/walletconnect.service';
 
-enum Screen {
-  VOTING = "Voting",
-  RESEARCH = "Research",
-  FUNDING = "Funding",
-  IMPLEMENTATION = "Implementation",
-  COMPLETED = "Completed",
-  REJECTED = "Rejected",
-}
 
 @Component({
   selector: 'app-dao',
@@ -22,9 +14,6 @@ enum Screen {
 })
 
 export class DAOComponent implements OnInit {
-
-  // enums
-  Screen = Screen;
 
   // Constants
   bigZero = ethers.BigNumber.from(0).toBigInt()
@@ -36,8 +25,8 @@ export class DAOComponent implements OnInit {
 
   // Page toggle
   showhelp = false;
-  allviews = [Screen.VOTING, Screen.RESEARCH, Screen.FUNDING, Screen.IMPLEMENTATION, Screen.COMPLETED, Screen.REJECTED];
-  viewing: String[] = [Screen.VOTING, Screen.FUNDING, Screen.RESEARCH, Screen.IMPLEMENTATION, Screen.COMPLETED];
+  allviews = [States.VOTING, States.RESEARCH, States.FUNDING, States.IMPLEMENTATION, States.COMPLETED, States.REJECTED];
+  viewing: String[] = [States.VOTING, States.FUNDING, States.RESEARCH, States.IMPLEMENTATION, States.COMPLETED];
 
   // Account and chain checks
   currentAccount = "";
@@ -72,7 +61,10 @@ export class DAOComponent implements OnInit {
       this.accesstoken = res.token;
       onSuccess()
     }, (e) => {
-      //
+      if (e.error?.message)
+        alert(e.error.message);
+      else
+        alert(e.message);
     }, () => {
     });
   }
@@ -160,7 +152,7 @@ export class DAOComponent implements OnInit {
   }
 
   //
-  toggleViews(view: Screen) {
+  toggleViews(view: States) {
     if (this.viewing.includes(view)) {
       this.viewing.splice(this.viewing.indexOf(view), 1)
     } else {
@@ -185,7 +177,10 @@ export class DAOComponent implements OnInit {
       this.end = (res.proposals.length < this.limit);
       this.proposals = this._proposals.filter((e) => this.viewing.includes(e.state!));
     }, (e) => {
-      //
+      if (e.error?.message)
+        alert(e.error.message);
+      else
+        alert(e.message);
     }, () => {
       this.loading = false;
     });
@@ -202,6 +197,25 @@ export class DAOComponent implements OnInit {
       this.loading = false;
       this.onIntersection();
     }
+  }
+
+  // onvote
+  onVote(p: Proposal, vote: boolean) {
+    console.log('vote', p, vote);
+
+    // load more
+    this.http.get(`${environment.daoBaseurl}/proposals/vote?proposalId=${p.id}&support=${vote}`, this.options).subscribe((res: any) => {
+      if (res.message == 'success') {
+        this.proposals[this.proposals.indexOf(p)] = res.proposal;
+      }
+    }, (e) => {
+      if (e.error?.message)
+        alert(e.error.message);
+      else
+        alert(e.message);
+    }, () => {
+      // this.loading = false;
+    });
   }
 
 }

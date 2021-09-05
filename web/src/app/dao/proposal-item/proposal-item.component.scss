@@ -24,3 +24,98 @@
         background-color: red;
     }
 }
+
+.dot {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 10px;
+    padding: 6px;
+    // background-color: grey;
+}
+
+.progress::-moz-progress-bar {
+    background: var(--for);
+}
+
+.progress::-webkit-progress-value {
+    background: var(--for);
+    // background: linear-gradient(90deg, var(--primary) 0%, var(--for) 100%);
+}
+
+.progress::-webkit-progress-bar {
+    background: var(--against);
+}
+
+.progress {
+    // color: var(--for);
+    height: 20px;
+}
+
+
+
+
+
+.bg-against {
+    background-color: var(--against);
+
+    &.nes-btn::after {
+        box-shadow: inset -4px -4px rgba(0, 0, 0, 0.25);
+    }
+
+    &.nes-btn:hover::after {
+        box-shadow: inset -6px -6px rgba(0, 0, 0, 0.25);
+    }
+
+    &.nes-btn:active::after {
+        box-shadow: inset 4px 4px rgba(0, 0, 0, 0.25);
+    }
+}
+
+.bg-for {
+    background-color: var(--for);
+
+    &.nes-btn::after {
+        box-shadow: inset -4px -4px rgba(0, 0, 0, 0.25);
+    }
+
+    &.nes-btn:hover::after {
+        box-shadow: inset -6px -6px rgba(0, 0, 0, 0.25);
+    }
+
+    &.nes-btn:active::after {
+        box-shadow: inset 4px 4px rgba(0, 0, 0, 0.25);
+    }
+}
+
+.toggle {
+    display: inline-block;
+    // margin-left: 0.455em;
+    vertical-align: 0.25em;
+    content: "";
+    border-top: 0.5em solid;
+    border-right: 0.5em solid transparent;
+    border-bottom: 0;
+    border-left: 0.5em solid transparent;
+    // transform-origin: top left;
+    transition: transform 0.2s ease-out;
+
+    &.x {
+        transform: rotate(180deg);
+    }
+
+    // &.c {
+    //     transform: rotate(0deg);
+    // }
+}
+
+.voters {
+    overflow: hidden;
+    height: 0;
+    transition: height 0.2s ease-out;
+
+    &.x {
+        height: 150px;
+        overflow-y: auto;
+    }
+}
