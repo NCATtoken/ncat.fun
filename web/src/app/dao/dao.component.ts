@@ -206,7 +206,8 @@ export class DAOComponent implements OnInit {
     // load more
     this.http.get(`${environment.daoBaseurl}/proposals/vote?proposalId=${p.id}&support=${vote}`, this.options).subscribe((res: any) => {
       if (res.message == 'success') {
-        this.proposals[this.proposals.indexOf(p)] = res.proposal;
+        // this.proposals.splice(this.proposals.indexOf(p), 1, [res.proposal] as any);
+        this.proposals[this.proposals.indexOf(p)] = Object.assign(p, res.proposal);
       }
     }, (e) => {
       if (e.error?.message)

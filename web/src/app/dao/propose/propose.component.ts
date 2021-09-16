@@ -17,7 +17,7 @@ export class ProposeComponent implements OnInit, AfterViewInit {
   agree = false;
   sending = false;
   environment = environment;
-  proposal: Proposal = { require_budget: false, has_expire: false };
+  proposal: Proposal = { require_fund: false, has_expire: false };
 
   constructor(public session: SessionService, private router: Router, private http: ApiHttpService) { }
 

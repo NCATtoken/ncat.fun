@@ -1,6 +1,6 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { BigNumber } from '@ethersproject/bignumber';
-import { CountdownConfig } from 'ngx-countdown';
+import { CountdownConfig, CountdownEvent } from 'ngx-countdown';
 import { Proposal, States } from 'src/services/models.definitioins';
 
 @Component({
@@ -8,7 +8,7 @@ import { Proposal, States } from 'src/services/models.definitioins';
   templateUrl: './proposal-item.component.html',
   styleUrls: ['./proposal-item.component.scss']
 })
-export class ProposalItemComponent implements OnInit, OnChanges {
+export class ProposalItemComponent implements OnInit, DoCheck {
 
   @Input("data") p!: Proposal;
   @Output() vote = new EventEmitter<boolean>();
@@ -23,14 +23,14 @@ export class ProposalItemComponent implements OnInit, OnChanges {
   vfor!: BigNumber;
   vagainst!: BigNumber;
   vtotal!: BigNumber;
-  ended = true;
+  ended = false;
   voted = false;
   showvoters = false;
   showfunders = false;
 
   constructor() { }
 
-  ngOnChanges(changes: SimpleChanges) {
+  ngDoCheck() {
     this.updatepct();
   }
 
@@ -48,6 +48,12 @@ export class ProposalItemComponent implements OnInit, OnChanges {
     }
 
     this.updatepct();
+  }
+
+  countdownEvent(e: CountdownEvent) {
+    if (e.action == 'done') {
+      this.ended = true;
+    }
   }
 
   onVote(val: boolean) {
@@ -72,8 +78,8 @@ export class ProposalItemComponent implements OnInit, OnChanges {
       this.progress = this.vfor.div(this.vtotal).toNumber() * 100;
     }
 
-    if (this.p.require_budget) {
-      this.fund_progress = (this.p.funded_amount || 0) / (this.p.budget || 1);
+    if (this.p.require_fund) {
+      this.fund_progress = (this.p.raised_fund || 0) / (this.p.target_fund || 1);
     }
     else {
       this.fund_progress = 0;

@@ -2,14 +2,16 @@
     <div class="d-flex flex-column flex-md-row">
         <div class="flex-grow-1">
             <div class="d-flex">
-                <h3 class="sans-serif">{{p.title}}</h3>
+                <h3 class="sans-serif flex-grow-1">
+                    <span *ngIf="p.require_fund">💰</span>
+                    <span *ngIf="p.has_expire">📅</span>
+                    {{p.title}}
+                </h3>
                 <div class="text-nowrap">
                     <!-- <span class="sans-serif">Status:</span> -->
                     <span class="badge badge-pill" [class]="p.state?.toLowerCase()">{{p.state | uppercase}}</span>
                 </div>
             </div>
-
-            <countdown [config]="config"></countdown>
 
             <div *ngIf="p.has_expire">
                 Expires on: <span class="t">{{p.expire_date|date}}</span>
@@ -20,6 +22,11 @@
         <div style="border-left:1px solid #eee" class="mx-3 d-none d-md-block"></div>
         <div style="border-top:1px solid #eee" class="my-3 d-md-none "></div>
         <div class="text-center text-nowrap" style="min-width:250px">
+            <ng-container *ngIf="!ended">
+                <countdown [config]="config" (event)="countdownEvent($event)"></countdown>
+                <hr>
+            </ng-container>
+
             <h5>Votes</h5>
 
             <progress class="nes-progress progress my-3" [value]="progress" max="100"></progress>
@@ -35,7 +42,7 @@
                 <div>{{100 - progress}}%</div>
             </div>
 
-            <ng-container *ngIf="p.state==States.VOTING">
+            <ng-container *ngIf="p.state==States.VOTING && !ended">
                 <div class="my-3">
                     <div *ngIf="voted">
                         <div class="text-muted">You Voted</div>
@@ -61,18 +68,18 @@
             </div>
 
 
-            <ng-container *ngIf="p.require_budget">
+            <ng-container *ngIf="p.require_fund">
                 <hr class="mt-5">
-                <h5>Budget</h5>
+                <h5>Funding</h5>
                 <div class="d-flex justify-content-between">
                     <span>Target:</span>
-                    <span class="t">${{p.budget|number}}</span>
+                    <span class="t">${{p.target_fund|number}}</span>
                 </div>
 
                 <ng-container *ngIf="p.state!=States.VOTING">
                     <div class="d-flex justify-content-between">
                         <span>Funded:</span>
-                        <span class="t">${{p.funded_amount || 0|number}}</span>
+                        <span class="t">${{p.raised_fund || 0|number}}</span>
                     </div>
 
                     <progress class="nes-progress progress my-3" [value]="fund_progress" max="100"></progress>

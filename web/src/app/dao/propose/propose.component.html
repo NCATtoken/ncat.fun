@@ -13,9 +13,9 @@
                 <div class="nes-field mt-4">
                     <label>Description</label>
                     <p class="text-muted">
-                        Min 500 characters. Please be as thorough as possible in the description and include resources needed to execute.
+                        Min 250 characters. Please be as thorough as possible in the description and include resources needed to execute.
                     </p>
-                    <textarea class="nes-input" placeholder="" minlength="500" required [(ngModel)]="proposal.content" name="content" #content="ngModel" [ngClass]="{'is-error':!content.valid}" (keyup)="autogrow($event)">
+                    <textarea class="nes-input" placeholder="" minlength="250" required [(ngModel)]="proposal.content" name="content" #content="ngModel" [ngClass]="{'is-error':!content.valid}" (keyup)="autogrow($event)">
                     </textarea>
                 </div>
 
@@ -23,11 +23,11 @@
                 <div class="nes-field mt-4">
                     <label><span class="nes-icon coin is-small"></span> Funding</label>
                     <label>
-                        <input type="checkbox" class="nes-checkbox" [(ngModel)]="proposal.require_budget" [value]="true" name="require_budget" />
+                        <input type="checkbox" class="nes-checkbox" [(ngModel)]="proposal.require_fund" [value]="true" name="require_fund" />
                         <span>This proposal require funding</span>
                     </label>
-                    <div *ngIf="proposal.require_budget">
-                        <input type="number" class="nes-input" required placeholder="Amount in USD" [(ngModel)]="proposal.budget" name="budget" #budget="ngModel" [ngClass]="{'is-error':!budget.valid}">
+                    <div *ngIf="proposal.require_fund">
+                        <input type="number" class="nes-input" required placeholder="Amount in USD" [(ngModel)]="proposal.target_fund" name="target_fund" #target_fund="ngModel" [ngClass]="{'is-error':!target_fund.valid}">
                     </div>
                 </div>
 

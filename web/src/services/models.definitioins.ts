@@ -94,8 +94,8 @@ export class Order {
 
 /**
 -- 2021-09-05 17:06:51.0330
-ALTER TABLE "public"."proposals" ADD COLUMN "budget" int8 DEFAULT 0;
-ALTER TABLE "public"."proposals" ADD COLUMN "require_budget" bool DEFAULT 'false';
+ALTER TABLE "public"."proposals" ADD COLUMN "target_fund" int8 DEFAULT 0;
+ALTER TABLE "public"."proposals" ADD COLUMN "require_fund" bool DEFAULT 'false';
 ALTER TABLE "public"."proposals" ADD COLUMN "contact" varchar(255);
 ALTER TABLE "public"."proposals" ADD COLUMN "contact_type" varchar(255);
 ALTER TABLE "public"."proposals" ADD COLUMN "has_expire" bool DEFAULT 'false';
@@ -120,11 +120,11 @@ export interface Proposal {
     expiration?: string;
     voters?: string[];
     funders?: string[];
-    funded_amount?: number;
+    raised_fund?: number;
     for?: string;
     against?: string;
-    budget?: number;
-    require_budget: boolean;
+    target_fund?: number;
+    require_fund: boolean;
     contact?: string;
     contact_type?: string;
     has_expire: boolean;
