@@ -1,6 +1,7 @@
 import { Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { BigNumber } from '@ethersproject/bignumber';
-import { CountdownConfig, CountdownEvent } from 'ngx-countdown';
+import { isNumber } from 'lodash';
+// import { CountdownConfig, CountdownEvent } from 'ngx-countdown';
 import { Proposal, States } from 'src/services/models.definitioins';
 
 @Component({
@@ -12,21 +13,22 @@ export class ProposalItemComponent implements OnInit, DoCheck {
 
   @Input("data") p!: Proposal;
   @Output() vote = new EventEmitter<boolean>();
-  @Output() fund = new EventEmitter<void>();
+  @Output() fund = new EventEmitter<Number>();
   @Input() address!: string;
   // @ViewChild('cd', { static: false }) private countdown!: CountdownComponent;
 
   States = States;
-  config: CountdownConfig = {};
+  config = {};
+  passed = true;
   progress: number = 0;
   fund_progress: number = 0;
   vfor!: BigNumber;
   vagainst!: BigNumber;
   vtotal!: BigNumber;
-  ended = false;
   voted = false;
   showvoters = false;
   showfunders = false;
+  funded = false;
 
   constructor() { }
 
@@ -36,23 +38,23 @@ export class ProposalItemComponent implements OnInit, DoCheck {
 
   ngOnInit(): void {
     this.config = {
-      format: 'dd HH mm ss',
-      prettyText: (s) => {
-        const dd = s.split(' ');
-        return '⏰ <b class="t">' + dd[0] + '</b>D:' +
-          '<b class="t">' + dd[1] + '</b>H:' +
-          '<b class="t">' + dd[2] + '</b>M:' +
-          '<b class="t">' + dd[3] + '</b>S';
-      },
+      // format: 'dd HH mm ss',
+      // prettyText: (s) => {
+      //   const dd = s.split(' ');
+      //   return '⏰ <b class="t">' + dd[0] + '</b>D:' +
+      //     '<b class="t">' + dd[1] + '</b>H:' +
+      //     '<b class="t">' + dd[2] + '</b>M:' +
+      //     '<b class="t">' + dd[3] + '</b>S';
+      // },
       stopTime: Date.parse(this.p.expiration!),
     }
 
     this.updatepct();
   }
 
-  countdownEvent(e: CountdownEvent) {
-    if (e.action == 'done') {
-      this.ended = true;
+  countdownEvent(e: any) {
+    if (e == 'ended') {
+      // todo: refresh item
     }
   }
 
@@ -62,7 +64,11 @@ export class ProposalItemComponent implements OnInit, DoCheck {
   }
 
   onFund() {
-    this.fund.emit();
+    let t = prompt('Enter amount to fund in USD.');
+    if (t != null && !isNaN(parseFloat(t)))
+      this.fund.emit(parseFloat(t));
+    else
+      alert('Please enter a valid amount')
   }
 
   updatepct() {
@@ -78,11 +84,16 @@ export class ProposalItemComponent implements OnInit, DoCheck {
       this.progress = this.vfor.div(this.vtotal).toNumber() * 100;
     }
 
+    // 75% and 200B voted
+    this.passed = (this.progress > 75 && this.vfor.gte(BigNumber.from(200 * 10 ** 9)));
+
     if (this.p.require_fund) {
-      this.fund_progress = (this.p.raised_fund || 0) / (this.p.target_fund || 1);
+      this.fund_progress = (this.p.raised_fund || 0) / (this.p.target_fund || 1) * 100;
     }
     else {
       this.fund_progress = 0;
     }
+
+    this.funded = ((this.p.raised_fund || 0) >= (this.p.target_fund || 1));
   }
 }

@@ -88,7 +88,49 @@ body {
   // line-height: 1.25em;
 }
 
-.t {
-  color: $primary;
-  margin: 0 0.2em;
+
+.failed {
+  transform: rotate(180deg);
+}
+
+
+.for {
+
+  color: var(--for);
+}
+
+.against {
+  color: var(--against);
+}
+
+.bg-against {
+  background-color: var(--against);
+
+  &.nes-btn::after {
+    box-shadow: inset -4px -4px rgba(0, 0, 0, 0.25);
+  }
+
+  &.nes-btn:hover::after {
+    box-shadow: inset -6px -6px rgba(0, 0, 0, 0.25);
+  }
+
+  &.nes-btn:active::after {
+    box-shadow: inset 4px 4px rgba(0, 0, 0, 0.25);
+  }
+}
+
+.bg-for {
+  background-color: var(--for);
+
+  &.nes-btn::after {
+    box-shadow: inset -4px -4px rgba(0, 0, 0, 0.25);
+  }
+
+  &.nes-btn:hover::after {
+    box-shadow: inset -6px -6px rgba(0, 0, 0, 0.25);
+  }
+
+  &.nes-btn:active::after {
+    box-shadow: inset 4px 4px rgba(0, 0, 0, 0.25);
+  }
 }

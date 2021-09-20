@@ -6,31 +6,36 @@
 
     &.research {
         background-color: orange;
+        color: white;
     }
 
     &.funding {
         background-color: orange;
+        color: white;
     }
 
     &.implementation {
-        background-color: orange;
+        background-color: green;
+        color: white;
     }
 
     &.completed {
         background-color: green;
+        color: white;
     }
 
     &.rejected {
         background-color: red;
+        color: white;
     }
 }
 
 .dot {
     display: inline-block;
-    width: 10px;
-    height: 10px;
-    border-radius: 10px;
-    padding: 6px;
+    width: 1em;
+    height: 1em;
+    border-radius: 1em;
+    margin: 0 0.25em;
     // background-color: grey;
 }
 
@@ -53,40 +58,6 @@
 }
 
 
-
-
-
-.bg-against {
-    background-color: var(--against);
-
-    &.nes-btn::after {
-        box-shadow: inset -4px -4px rgba(0, 0, 0, 0.25);
-    }
-
-    &.nes-btn:hover::after {
-        box-shadow: inset -6px -6px rgba(0, 0, 0, 0.25);
-    }
-
-    &.nes-btn:active::after {
-        box-shadow: inset 4px 4px rgba(0, 0, 0, 0.25);
-    }
-}
-
-.bg-for {
-    background-color: var(--for);
-
-    &.nes-btn::after {
-        box-shadow: inset -4px -4px rgba(0, 0, 0, 0.25);
-    }
-
-    &.nes-btn:hover::after {
-        box-shadow: inset -6px -6px rgba(0, 0, 0, 0.25);
-    }
-
-    &.nes-btn:active::after {
-        box-shadow: inset 4px 4px rgba(0, 0, 0, 0.25);
-    }
-}
 
 .toggle {
     display: inline-block;

@@ -89,6 +89,7 @@ export class NFTComponent implements OnInit {
         console.log('No metamask');
         return;
       }
+
       console.log('metamask event', event);
       this.ngZone.run(() => {
 
@@ -96,6 +97,8 @@ export class NFTComponent implements OnInit {
           this.provider = this.metamask.provider;
           this.ethersInjectedProvider = this.metamask.ethersInjectedProvider;
         }
+
+        if (!this.metamask.currentAccount) return;
 
         this.isCorrectChain = this.metamask.isCorrectChain;
         this.currentAccount = this.metamask.currentAccount;
@@ -111,10 +114,12 @@ export class NFTComponent implements OnInit {
     });
 
     this.walletconnect.chainEvents.subscribe((event) => {
+
       if (!this.walletconnect.provider) {
         console.log('No walletconect');
         return;
       }
+
       console.log('walletconnect event', event);
       this.ngZone.run(() => {
 
@@ -122,6 +127,8 @@ export class NFTComponent implements OnInit {
           this.provider = this.walletconnect.provider;
           this.ethersInjectedProvider = this.walletconnect.ethersInjectedProvider;
         }
+
+        if (!this.walletconnect.currentAccount) return;
 
         this.isCorrectChain = this.walletconnect.isCorrectChain;
         this.currentAccount = this.walletconnect.currentAccount;

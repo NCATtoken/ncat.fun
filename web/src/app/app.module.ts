@@ -5,7 +5,6 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularWebStorageModule } from 'angular-web-storage';
 import { InViewportModule } from 'ng-in-viewport';
-import { CountdownModule } from 'ngx-countdown';
 import { NgxPayPalModule } from 'ngx-paypal';
 import { ApiHttpService } from 'src/services/api-http.service';
 import { MetaMaskService } from 'src/services/metamask.service';
@@ -19,6 +18,8 @@ import { FoldComponent } from './components/body/fold/fold.component';
 import { ProjectsComponent } from './components/body/projects/projects.component';
 import { RoadmapComponent } from './components/body/roadmap/roadmap.component';
 import { TokenomicsComponent } from './components/body/tokenomics/tokenomics.component';
+import { CircularProgressComponent } from './components/circular-progress/circular-progress.component';
+import { CountdownComponent } from './components/countdown/countdown.component';
 import { BottomComponent } from './components/nav/bottom/bottom.component';
 import { TopComponent } from './components/nav/top/top.component';
 import { StrapiMediaComponent } from './components/strapi-media/strapi-media.component';
@@ -60,6 +61,8 @@ import { WebpagesComponent } from './webpages/webpages.component';
     ProposalComponent,
     ProposeComponent,
     ProposalItemComponent,
+    CountdownComponent,
+    CircularProgressComponent,
   ],
   imports: [
     BrowserModule,
@@ -70,7 +73,6 @@ import { WebpagesComponent } from './webpages/webpages.component';
     FormsModule,
     AngularWebStorageModule,
     NgxPayPalModule,
-    CountdownModule,
   ],
   providers: [
     ApiHttpService,

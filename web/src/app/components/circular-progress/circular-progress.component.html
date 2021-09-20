@@ -1,0 +1,7 @@
+<div class="d-inline-block" [ngStyle]="{'height':size+'px','width':size+'px'}">
+    <canvas #Canvas [width]="size" [height]="size">
+    </canvas>
+    <div class="d-flex flex-column justify-content-center align-items-center" style="position:relative;" [ngStyle]="{'height':size+'px','marginTop':(-size)+'px'}">
+        <ng-content></ng-content>
+    </div>
+</div>

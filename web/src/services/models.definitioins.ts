@@ -129,4 +129,5 @@ export interface Proposal {
     contact_type?: string;
     has_expire: boolean;
     expire_date?: string;
+    fund_wallet_address?: string;
 }

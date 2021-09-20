@@ -1,5 +1,5 @@
 import { Component, NgZone, OnInit, Renderer2 } from '@angular/core';
-import { ethers } from 'ethers';
+import { BigNumber, ethers } from 'ethers';
 import { environment } from 'src/environments/environment';
 import { ApiHttpService } from 'src/services/api-http.service';
 import { MetaMaskService } from 'src/services/metamask.service';
@@ -52,7 +52,7 @@ export class DAOComponent implements OnInit {
   }
 
 
-  constructor(private ngZone: NgZone, private http: ApiHttpService, public metamask: MetaMaskService, public walletconnect: WalletConnectService, private renderer: Renderer2) {
+  constructor(private ngZone: NgZone, private http: ApiHttpService, public metamask: MetaMaskService, public walletconnect: WalletConnectService) {
   }
 
 
@@ -75,14 +75,16 @@ export class DAOComponent implements OnInit {
         console.log('No metamask');
         return;
       }
+
       console.log('metamask event', event);
       this.ngZone.run(() => {
-        if (this.currentAccount || !this.metamask.currentAccount) return;
 
         if (event == 'start') {
           this.provider = this.metamask.provider;
           this.ethersInjectedProvider = this.metamask.ethersInjectedProvider;
         }
+
+        if (!this.metamask.currentAccount) return;
 
         this.isCorrectChain = this.metamask.isCorrectChain;
         this.currentAccount = this.metamask.currentAccount;
@@ -106,14 +108,16 @@ export class DAOComponent implements OnInit {
         console.log('No walletconect');
         return;
       }
+
       console.log('walletconnect event', event);
       this.ngZone.run(() => {
-        if (this.currentAccount || !this.walletconnect.currentAccount) return;
 
         if (event == 'start') {
           this.provider = this.walletconnect.provider;
           this.ethersInjectedProvider = this.walletconnect.ethersInjectedProvider;
         }
+
+        if (!this.walletconnect.currentAccount) return;
 
         this.isCorrectChain = this.walletconnect.isCorrectChain;
         this.currentAccount = this.walletconnect.currentAccount;
@@ -167,7 +171,6 @@ export class DAOComponent implements OnInit {
     if (this.end || this.loading || !this.accesstoken) {
       return;
     }
-    console.log('load more', this.currentAccount, this.accesstoken);
 
     // load more
     this.loading = true;
@@ -217,6 +220,28 @@ export class DAOComponent implements OnInit {
     }, () => {
       // this.loading = false;
     });
+  }
+
+  onFund(p: Proposal, amount: Number) {
+
+    // let gas_price = window.ethersProvider.getGasPrice();
+    const tx = {
+      // from: send_account,
+      to: p.fund_wallet_address,
+      value: BigNumber.from(amount),
+      // nonce: window.ethersProvider.getTransactionCount(send_account, "latest"),
+      // gasLimit: ethers.utils.hexlify(gas_limit), // 100000
+      // gasPrice: gas_price,
+    };
+    this.ethersInjectedProvider.getSigner().sendTransaction(tx).then((transaction) => {
+      console.log(transaction)
+      alert("Send finished!");
+    });
+
+
+    // alert(amount);
+    // call contract send money
+    // call api save funder
   }
 
 }
