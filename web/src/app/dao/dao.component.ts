@@ -1,3 +1,4 @@
+import { ThrowStmt } from '@angular/compiler';
 import { Component, NgZone, OnInit, Renderer2 } from '@angular/core';
 import { BigNumber, ethers } from 'ethers';
 import { environment } from 'src/environments/environment';
@@ -27,6 +28,8 @@ export class DAOComponent implements OnInit {
   showhelp = false;
   allviews = [States.VOTING, States.RESEARCH, States.FUNDING, States.IMPLEMENTATION, States.COMPLETED, States.REJECTED];
   viewing: String[] = [States.VOTING, States.FUNDING, States.RESEARCH, States.IMPLEMENTATION, States.COMPLETED];
+  vieworders = ['Latest', 'Popularity'];
+  vieworder = this.vieworders[0];
 
   // Account and chain checks
   currentAccount = "";
@@ -156,6 +159,20 @@ export class DAOComponent implements OnInit {
       this.viewing.push(view);
     }
     this.proposals = this._proposals.filter((e) => this.viewing.includes(e.state!));
+    this.sortViews();
+  }
+
+  //
+  sortViews() {
+    switch (this.vieworder) {
+
+      case 'Popularity':
+        this.proposals.sort((a, b) => (BigNumber.from(b.for).lt(BigNumber.from(a.for))) ? -1 : 1);
+        break;
+      default:
+        this.proposals.sort((a, b) => b.id! - a.id!);
+        break;
+    }
   }
 
   // lazy load
