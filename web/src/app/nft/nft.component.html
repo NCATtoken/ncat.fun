@@ -5,7 +5,7 @@
         <span class="d-none d-sm-inline-block">NFT</span>
     </h1> -->
     <section id="heading" class="container mb-3 d-flex justify-content-center">
-        <div *ngIf="isMetamask && !isCorrectChain" class="nes-container is-rounded bg-danger text-white mx-auto">
+        <div *ngIf="!isCorrectChain" class="nes-container is-rounded bg-danger text-white mx-auto">
             <b>Wrong Network</b>! Please select BSC from MetaMask.
         </div>
 

@@ -49,14 +49,13 @@ export class NFTComponent implements OnInit {
   // Providers
   provider = <unknown>{};
   ethersInjectedProvider = <ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider>{};
-  isMetamask = false;
+  isMetamask?: boolean;
 
   // Page toggle
   viewing = "";
 
   // Account and chain checks
   currentAccount = "";
-  // correctChainId = 0;
   isCorrectChain = true;
 
   // Pending transaction
@@ -109,7 +108,6 @@ export class NFTComponent implements OnInit {
           this.getSwapCost();
           this.getOwnedNFTs();
         }
-
       });
     });
 
@@ -251,7 +249,7 @@ export class NFTComponent implements OnInit {
       const txHash = await approveNCAT(ncat, nftPoundAddress);
       this.getPoundAllowance();
       alert(`Approved!\nTransaction hash: ${txHash}`);
-    } catch (e) {
+    } catch (e: any) {
       alert(e.data ? e.data.message : e.message);
       console.log(e);
     } finally {

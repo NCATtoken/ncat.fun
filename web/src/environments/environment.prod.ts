@@ -24,4 +24,5 @@ export const environment = {
   poocoin: 'https://poocoin.app/tokens/0x0cf011a946f23a03ceff92a4632d5f9288c6c70d',
   howtobuy: 'https://ncattoken.medium.com/so-you-wanna-buy-some-ncat-a-step-by-step-guide-c06475980f7c',
   paypalClientId: 'AUaVX9bjjCxlA3pmxLOM5M-2PjKEE_IBK_XRffXYKD-1dsC3iswR7z7QcK5yEnqLBbU23lJULiRksZPU',
+  chainId: 56,
 };

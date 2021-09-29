@@ -21,7 +21,7 @@ export class DAOComponent implements OnInit {
   // Providers
   provider = <unknown>{};
   ethersInjectedProvider = <ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider>{};
-  isMetamask = false;
+  isMetamask?: boolean;
 
   // Page toggle
   showhelp = false;
@@ -30,7 +30,6 @@ export class DAOComponent implements OnInit {
 
   // Account and chain checks
   currentAccount = "";
-  // correctChainId = 0;
   isCorrectChain = true;
   isSendingFund = false;
 
@@ -89,18 +88,13 @@ export class DAOComponent implements OnInit {
 
         this.isCorrectChain = this.metamask.isCorrectChain;
         this.currentAccount = this.metamask.currentAccount;
-        console.log('mm', this.currentAccount);
-        this.login(() => {
-          this.onIntersection();
-        });
 
         if (this.isCorrectChain && this.currentAccount) {
           this.isMetamask = true;
-          // this.getPoundAllowance();
-          // this.getSwapCost();
-          // this.getOwnedNFTs();
+          this.login(() => {
+            this.onIntersection();
+          });
         }
-
       });
     });
 
@@ -122,16 +116,12 @@ export class DAOComponent implements OnInit {
 
         this.isCorrectChain = this.walletconnect.isCorrectChain;
         this.currentAccount = this.walletconnect.currentAccount;
-        console.log('wc', this.currentAccount);
-        this.login(() => {
-          this.onIntersection();
-        });
 
         if (this.isCorrectChain && this.currentAccount) {
           this.isMetamask = false;
-          // this.getPoundAllowance();
-          // this.getSwapCost();
-          // this.getOwnedNFTs();
+          this.login(() => {
+            this.onIntersection();
+          });
         }
       });
     });
@@ -231,27 +221,18 @@ export class DAOComponent implements OnInit {
       return;
     }
 
-
     const tx = {
       to: p.fund_wallet_address,
       value: ethers.utils.parseEther(amount),
     };
-    console.log(tx, tx.value.toString());
-    console.log(this.ethersInjectedProvider.getSigner());
 
     this.ethersInjectedProvider.getSigner().sendTransaction(tx)
       .then(async (transaction) => {
         this.isSendingFund = true;
-
-        console.log(transaction);
         let receipt = await transaction.wait(1);
-        console.log(receipt);
-        // alert("Send finished!");
 
-        // load more
         await this.http.post(`${environment.daoBaseurl}/proposals/fund?proposalId=${p.id}`, { transaction, receipt }, this.options).subscribe((res: any) => {
           if (res.message == 'success') {
-            // this.proposals.splice(this.proposals.indexOf(p), 1, [res.proposal] as any);
             this.proposals[this.proposals.indexOf(p)] = Object.assign(p, res.proposal);
           }
         }, (e) => {

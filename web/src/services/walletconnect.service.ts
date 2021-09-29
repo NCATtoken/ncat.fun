@@ -1,6 +1,7 @@
 import { EventEmitter, Injectable } from '@angular/core';
 import WalletConnectProvider from "@walletconnect/web3-provider";
 import { ethers } from 'ethers';
+import { environment } from 'src/environments/environment';
 import * as blockchain from "./blockchain";
 
 
@@ -15,7 +16,6 @@ export class WalletConnectService {
   provider: WalletConnectProvider | null = null;
   // browserProvider = <WalletConnect>{};
   ethersInjectedProvider = <ethers.providers.JsonRpcProvider>{};
-  correctChainId = 0;
   currentAccount = '';
   isCorrectChain = false;
   currentBalance = 0;
@@ -34,7 +34,7 @@ export class WalletConnectService {
 
   // do the wallet magic such as event hook up and update status
   async walletMagic() {
-    this.correctChainId = (await blockchain.defaultProvider.getNetwork()).chainId;
+    await blockchain.defaultProvider.getNetwork();
     this.currentAccount = '';
     //  Create WalletConnect Provider
     this.provider = new WalletConnectProvider({
@@ -45,7 +45,7 @@ export class WalletConnectService {
     });
 
     if (this.provider) {
-      this.isCorrectChain = ((this.provider as WalletConnectProvider).chainId === this.correctChainId);
+      this.isCorrectChain = ((this.provider as WalletConnectProvider).chainId === environment.chainId);
       this.ethersInjectedProvider = new ethers.providers.Web3Provider(this.provider);
 
       // const accounts = await this.web3Provider.enable();

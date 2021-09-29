@@ -18,7 +18,6 @@ export class MetaMaskService {
   //  wallet action
   provider: any = null;
   ethersInjectedProvider = <ethers.providers.Web3Provider>{};
-  correctChainId = 0;
   currentAccount = '';
   isCorrectChain = false;
   currentBalance = 0;
@@ -37,13 +36,13 @@ export class MetaMaskService {
 
   // do the wallet magic such as event hook up and update status
   async walletMagic() {
-    this.correctChainId = (await blockchain.defaultProvider.getNetwork()).chainId;
+    await blockchain.defaultProvider.getNetwork();
     this.provider = await detectEthereumProvider({ mustBeMetaMask: true });
     this.currentAccount = '';
 
     // Attempt to grab accounts if already unlocked
     if (this.provider) {
-      this.isCorrectChain = parseInt((this.provider as any).chainId) === this.correctChainId;
+      this.isCorrectChain = parseInt((this.provider as any).chainId) === environment.chainId;
       this.ethersInjectedProvider = new ethers.providers.Web3Provider((this.provider as any));
 
       (this.provider as any)
