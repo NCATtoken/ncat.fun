@@ -12,10 +12,12 @@ import { Proposal, States } from 'src/services/models.definitioins';
 export class ProposalItemComponent implements OnInit, DoCheck {
 
   @Input("data") p!: Proposal;
-  @Output() vote = new EventEmitter<boolean>();
-  @Output() fund = new EventEmitter<void>();
   @Input() address!: string;
   @Input() sendingFund!: boolean;
+  @Input() isadmin!: boolean;
+  @Output() vote = new EventEmitter<boolean>();
+  @Output() fund = new EventEmitter<void>();
+  @Output() state = new EventEmitter<boolean>();
 
   // @ViewChild('cd', { static: false }) private countdown!: CountdownComponent;
 
@@ -64,6 +66,16 @@ export class ProposalItemComponent implements OnInit, DoCheck {
 
   onFund() {
     this.fund.emit();
+  }
+
+  onApprove() {
+    if (!confirm('Approve the ' + this.p.state + ' ?')) return;
+    this.state.emit(true);
+  }
+
+  onReject() {
+    if (!confirm('Reject the proposal?')) return;
+    this.state.emit(false);
   }
 
   updatepct() {

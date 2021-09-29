@@ -22,6 +22,16 @@
             </div>
 
             <div class="sans-serif">{{p.content}}</div>
+
+            <section *ngIf="isadmin && (p.state==States.RESEARCH || p.state==States.IMPLEMENTATION)" class="admin">
+                <hr />
+                <div class="text-danger">Admin Decision</div>
+                <p>
+                    <button class="nes-btn is-primary mr-2" (click)="onApprove()">APPROVE</button>
+                    <button class="nes-btn is-warning" (click)="onReject()">REJECT</button>
+                </p>
+            </section>
+
         </div>
         <div style="border-left:1px solid #eee" class="mx-3 d-none d-md-block"></div>
         <div style="border-top:1px solid #eee" class="my-3 d-md-none "></div>
@@ -133,7 +143,6 @@
                 </div>
 
             </section>
-
 
         </div>
     </div>

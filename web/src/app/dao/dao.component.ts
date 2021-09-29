@@ -32,6 +32,7 @@ export class DAOComponent implements OnInit {
   currentAccount = "";
   isCorrectChain = true;
   isSendingFund = false;
+  isadmin = false;
 
   // proposals
   proposals: Proposal[] = [];
@@ -59,6 +60,7 @@ export class DAOComponent implements OnInit {
   login(onSuccess: Function) {
     this.http.get(`${environment.daoBaseurl}/login?address=${this.currentAccount}`).subscribe((res: any) => {
       this.accesstoken = res.token;
+      this.isadmin = res.a;
       onSuccess()
     }, (e) => {
       if (e.error?.message)
@@ -213,6 +215,7 @@ export class DAOComponent implements OnInit {
     });
   }
 
+  // send BNB to wallet
   onFund(p: Proposal) {
     let amount = prompt('Enter amount to fund in BNB.');
 
@@ -248,6 +251,24 @@ export class DAOComponent implements OnInit {
       .finally(() => {
         this.isSendingFund = false;
       });
+  }
+
+  // advance to next state
+  onState(p: Proposal, accepted: boolean) {
+    if ((p.state != States.RESEARCH && p.state != States.IMPLEMENTATION) || !this.isadmin) return;
+
+    this.http.post(`${environment.daoBaseurl}/proposals/state?proposalId=${p.id}`, { accepted }, this.options).subscribe((res: any) => {
+      if (res.message == 'success') {
+        this.proposals[this.proposals.indexOf(p)] = Object.assign(p, res.proposal);
+      }
+    }, (e) => {
+      if (e.error?.message)
+        alert(e.error.message);
+      else
+        alert(e.message);
+    }, () => {
+      // this.loading = false;
+    });
   }
 
 }

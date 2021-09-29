@@ -62,7 +62,7 @@
                 <!-- content -->
                 <div class="flex-grow-1">
                     <!-- proposals -->
-                    <app-proposal-item *ngFor="let item of proposals" [address]="currentAccount" [data]="item" (vote)="onVote(item,$event)" (fund)="onFund(item)" [sendingFund]="isSendingFund"></app-proposal-item>
+                    <app-proposal-item *ngFor="let item of proposals" [address]="currentAccount" [data]="item" (vote)="onVote(item,$event)" (fund)="onFund(item)" (state)="onState(item,$event)" [sendingFund]="isSendingFund" [isadmin]="isadmin"></app-proposal-item>
 
                     <div *ngIf="!loading && proposals.length == 0" class="text-center py-5">
                         <p><img src="assets/balloon.gif" height="150"></p>
