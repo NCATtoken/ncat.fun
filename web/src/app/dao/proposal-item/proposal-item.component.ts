@@ -13,8 +13,10 @@ export class ProposalItemComponent implements OnInit, DoCheck {
 
   @Input("data") p!: Proposal;
   @Output() vote = new EventEmitter<boolean>();
-  @Output() fund = new EventEmitter<Number>();
+  @Output() fund = new EventEmitter<void>();
   @Input() address!: string;
+  @Input() sendingFund!: boolean;
+
   // @ViewChild('cd', { static: false }) private countdown!: CountdownComponent;
 
   States = States;
@@ -64,11 +66,7 @@ export class ProposalItemComponent implements OnInit, DoCheck {
   }
 
   onFund() {
-    let t = prompt('Enter amount to fund in USD.');
-    if (t != null && !isNaN(parseFloat(t)))
-      this.fund.emit(parseFloat(t));
-    else
-      alert('Please enter a valid amount')
+    this.fund.emit();
   }
 
   updatepct() {

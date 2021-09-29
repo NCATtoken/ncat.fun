@@ -15,7 +15,7 @@
             <span *ngIf="p.has_expire">📅</span>
              -->
             <div *ngIf="p.require_fund">
-                💰 Funds Needed: <span class="for">USD {{p.target_fund|number}}</span>
+                💰 Fund Needed: <span class="for">BNB {{p.target_fund|number}}</span>
             </div>
             <div *ngIf="p.has_expire">
                 📅 Expires on: <span class="for">{{p.expire_date|date}}</span>
@@ -50,16 +50,17 @@
 
                 <div class="d-flex justify-content-between">
                     <span>Target:</span>
-                    <span>USD {{p.target_fund|number}}</span>
+                    <span>BNB {{p.target_fund|number}}</span>
                 </div>
 
                 <div class=" d-flex justify-content-between">
                     <span>Funded:</span>
-                    <span class="for">USD {{p.raised_fund || 0|number}}</span>
+                    <span class="for">BNB {{p.raised_fund || 0|number}}</span>
                 </div>
 
                 <div class="my-3" *ngIf="p.state==States.FUNDING">
-                    <button (click)="onFund()" class="nes-btn is-success text-white">Fund This</button>
+                    <button *ngIf="!sendingFund" (click)="onFund()" class="nes-btn is-success">Fund This</button>
+                    <button *ngIf="sendingFund" class="nes-btn is-disabled">Sending Fund...</button>
                 </div>
 
                 <div class="mt-3" (click)="showfunders=!showfunders">

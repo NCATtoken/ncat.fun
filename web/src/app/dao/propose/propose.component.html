@@ -27,7 +27,7 @@
                         <span>This proposal require funding</span>
                     </label>
                     <div *ngIf="proposal.require_fund">
-                        <input type="number" class="nes-input" required placeholder="Amount in USD" [(ngModel)]="proposal.target_fund" name="target_fund" #target_fund="ngModel" [ngClass]="{'is-error':!target_fund.valid}">
+                        <input type="number" class="nes-input" required placeholder="Amount in BNB" [(ngModel)]="proposal.target_fund" name="target_fund" #target_fund="ngModel" [ngClass]="{'is-error':!target_fund.valid}">
                     </div>
                 </div>
 

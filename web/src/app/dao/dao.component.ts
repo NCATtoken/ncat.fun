@@ -32,6 +32,7 @@ export class DAOComponent implements OnInit {
   currentAccount = "";
   // correctChainId = 0;
   isCorrectChain = true;
+  isSendingFund = false;
 
   // proposals
   proposals: Proposal[] = [];
@@ -222,26 +223,50 @@ export class DAOComponent implements OnInit {
     });
   }
 
-  onFund(p: Proposal, amount: Number) {
+  onFund(p: Proposal) {
+    let amount = prompt('Enter amount to fund in BNB.');
 
-    // let gas_price = window.ethersProvider.getGasPrice();
+    if (amount == null || isNaN(parseFloat(amount))) {
+      alert('Please enter a valid amount')
+      return;
+    }
+
+
     const tx = {
-      // from: send_account,
       to: p.fund_wallet_address,
-      value: BigNumber.from(amount),
-      // nonce: window.ethersProvider.getTransactionCount(send_account, "latest"),
-      // gasLimit: ethers.utils.hexlify(gas_limit), // 100000
-      // gasPrice: gas_price,
+      value: ethers.utils.parseEther(amount),
     };
-    this.ethersInjectedProvider.getSigner().sendTransaction(tx).then((transaction) => {
-      console.log(transaction)
-      alert("Send finished!");
-    });
+    console.log(tx, tx.value.toString());
+    console.log(this.ethersInjectedProvider.getSigner());
 
+    this.ethersInjectedProvider.getSigner().sendTransaction(tx)
+      .then(async (transaction) => {
+        this.isSendingFund = true;
 
-    // alert(amount);
-    // call contract send money
-    // call api save funder
+        console.log(transaction);
+        let receipt = await transaction.wait(1);
+        console.log(receipt);
+        // alert("Send finished!");
+
+        // load more
+        await this.http.post(`${environment.daoBaseurl}/proposals/fund?proposalId=${p.id}`, { transaction, receipt }, this.options).subscribe((res: any) => {
+          if (res.message == 'success') {
+            // this.proposals.splice(this.proposals.indexOf(p), 1, [res.proposal] as any);
+            this.proposals[this.proposals.indexOf(p)] = Object.assign(p, res.proposal);
+          }
+        }, (e) => {
+          if (e.error?.message)
+            alert(e.error.message);
+          else
+            alert(e.message);
+        }, () => {
+          // this.loading = false;
+        });
+      })
+      .catch((E) => console.log(E.data.message))
+      .finally(() => {
+        this.isSendingFund = false;
+      });
   }
 
 }
