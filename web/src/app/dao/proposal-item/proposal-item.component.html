@@ -31,7 +31,9 @@
             <section class="funding" *ngIf="p.require_fund && p.state!==States.RESEARCH && p.state!==States.VOTING">
                 <ng-container *ngIf="p.state==States.FUNDING">
                     <h6>Funding</h6>
-                    <app-countdown [config]="config" (event)="countdownEvent($event)"></app-countdown>
+                    <ng-container *ngIf="p.has_expire">
+                        <app-countdown [config]="config2" (event)="countdownEvent($event)"></app-countdown>
+                    </ng-container>
                 </ng-container>
 
                 <app-circular-progress [size]="120" [progress]="fund_progress">
@@ -58,7 +60,7 @@
                     <span class="for">BNB {{p.raised_fund || 0|number}}</span>
                 </div>
 
-                <div class="my-3" *ngIf="p.state==States.FUNDING">
+                <div class="my-3" *ngIf="p.state==States.FUNDING && p.raised_fund! < p.target_fund!">
                     <button *ngIf="!sendingFund" (click)="onFund()" class="nes-btn is-success">Fund This</button>
                     <button *ngIf="sendingFund" class="nes-btn is-disabled">Sending Fund...</button>
                 </div>

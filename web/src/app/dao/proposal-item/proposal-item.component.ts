@@ -21,6 +21,7 @@ export class ProposalItemComponent implements OnInit, DoCheck {
 
   States = States;
   config = {};
+  config2 = {};
   passed = true;
   progress: number = 0;
   fund_progress: number = 0;
@@ -40,17 +41,13 @@ export class ProposalItemComponent implements OnInit, DoCheck {
 
   ngOnInit(): void {
     this.config = {
-      // format: 'dd HH mm ss',
-      // prettyText: (s) => {
-      //   const dd = s.split(' ');
-      //   return '⏰ <b class="t">' + dd[0] + '</b>D:' +
-      //     '<b class="t">' + dd[1] + '</b>H:' +
-      //     '<b class="t">' + dd[2] + '</b>M:' +
-      //     '<b class="t">' + dd[3] + '</b>S';
-      // },
       stopTime: Date.parse(this.p.expiration!),
     }
-
+    if (this.p.has_expire == true) {
+      this.config2 = {
+        stopTime: Date.parse(this.p.expire_date!),
+      }
+    }
     this.updatepct();
   }
 
