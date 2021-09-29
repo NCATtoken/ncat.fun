@@ -21,7 +21,7 @@
                 📅 Expires on: <span class="for">{{p.expire_date|date}}</span>
             </div>
 
-            <div class="sans-serif">{{p.content}}</div>
+            <div class="sans-serif text-prewrap">{{p.content}}</div>
 
             <section *ngIf="isadmin && (p.state==States.RESEARCH || p.state==States.IMPLEMENTATION)" class="admin">
                 <hr />

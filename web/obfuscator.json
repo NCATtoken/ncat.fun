@@ -1,0 +1,23 @@
+{
+    "compact": true,
+    "controlFlowFlattening": true,
+    "deadCodeInjection": true,
+    "debugProtection": true,
+    "debugProtectionInterval": true,
+    "disableConsoleOutput": false,
+    "identifierNamesGenerator": "hexadecimal",
+    "log": false,
+    "numbersToExpressions": false,
+    "renameGlobals": true,
+    "rotateStringArray": true,
+    "selfDefending": true,
+    "simplify": true,
+    "shuffleStringArray": true,
+    "splitStrings": false,
+    "stringArray": true,
+    "stringArrayEncoding": [],
+    "stringArrayWrappersCount": 1,
+    "stringArrayWrappersChainedCalls": true,
+    "stringArrayThreshold": 0.75,
+    "unicodeEscapeSequence": false
+}
