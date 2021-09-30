@@ -14,13 +14,13 @@
             <ul ngbNav class="navbar-nav">
                 <ng-container *ngFor="let link of (session.metadata.top_nav || links)">
                     <li [ngbNavItem]="link.fragment" class="nav-item" *ngIf="!link.items">
-                        <a class="nav-link" (click)="isMenuCollapsed=true" [href]="link.url || link.fragment" [target]="link.url ? '_blank' : ''">{{ link.title }}</a>
+                        <a class="nav-link" (click)="isMenuCollapsed=true" [href]="link.url || link.fragment" [target]="link.url?.startsWith('/') ? '' : '_blank'">{{ link.title }}</a>
                     </li>
 
                     <li ngbDropdown [ngbNavItem]="link.fragment" class="nav-item" *ngIf="link.items">
                         <a ngbNavLink ngbDropdownToggle>{{ link.title }}</a>
                         <div ngbDropdownMenu>
-                            <a class="dropdown-item" (click)="isMenuCollapsed=true" *ngFor="let item of link.items" [href]="item.url || item.fragment" [target]="item.url ? '_blank' : ''">{{ item.title }}</a>
+                            <a class="dropdown-item" (click)="isMenuCollapsed=true" *ngFor="let item of link.items" [href]="item.url || item.fragment" [target]="item.url?.startsWith('/') ? '' : '_blank'">{{ item.title }}</a>
                         </div>
                     </li>
                 </ng-container>
