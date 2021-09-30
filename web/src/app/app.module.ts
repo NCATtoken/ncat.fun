@@ -36,6 +36,7 @@ import { NFTComponent } from './nft/nft.component';
 import { TrackOrderComponent } from './track-order/track-order.component';
 import { WebpageComponent } from './webpage/webpage.component';
 import { WebpagesComponent } from './webpages/webpages.component';
+import { ConnectWalletComponent } from './components/connect-wallet/connect-wallet.component';
 
 @NgModule({
   declarations: [
@@ -65,6 +66,7 @@ import { WebpagesComponent } from './webpages/webpages.component';
     ProposalItemComponent,
     CountdownComponent,
     CircularProgressComponent,
+    ConnectWalletComponent,
   ],
   imports: [
     BrowserModule,

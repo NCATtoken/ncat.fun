@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment.prod';
 import { ApiHttpService } from 'src/services/api-http.service';
 import { approveNCAT, balanceOf, commitSwapNCAT, createNCATContractInstance, createNFTContractInstance, createPoundContractInstance, getAllowance, getDecimals, getSwapCost, nftPoundAddress, revealNCATs, tokenOfOwnerByIndex } from 'src/services/blockchain';
 import { MetaMaskService } from 'src/services/metamask.service';
+import { SessionService } from 'src/services/session.service';
 import { WalletConnectService } from 'src/services/walletconnect.service';
 
 enum Screen {
@@ -46,17 +47,9 @@ export class NFTComponent implements OnInit {
   // Constants
   bigZero = ethers.BigNumber.from(0).toBigInt()
 
-  // Providers
-  provider = <unknown>{};
-  ethersInjectedProvider = <ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider>{};
-  isMetamask?: boolean;
 
   // Page toggle
   viewing = "";
-
-  // Account and chain checks
-  currentAccount = "";
-  isCorrectChain = true;
 
   // Pending transaction
   approving = false
@@ -79,73 +72,28 @@ export class NFTComponent implements OnInit {
   ownedTokenIds: number[] = [];
   nftMetadata: Metadata[] = [];
 
-  constructor(private ngZone: NgZone, private http: ApiHttpService, public metamask: MetaMaskService, public walletconnect: WalletConnectService) {
+  constructor(private ngZone: NgZone, private http: ApiHttpService, public session: SessionService) {
   }
 
   async ngOnInit(): Promise<void> {
-    this.metamask.chainEvents.subscribe((event) => {
-      if (!this.metamask.provider) {
-        console.log('No metamask');
-        return;
-      }
+    if (this.session.accesstoken) {
+      this.getPoundAllowance();
+      this.getSwapCost();
+      this.getOwnedNFTs();
 
-      console.log('metamask event', event);
-      this.ngZone.run(() => {
-
-        if (event == 'start') {
-          this.provider = this.metamask.provider;
-          this.ethersInjectedProvider = this.metamask.ethersInjectedProvider;
-        }
-
-        if (!this.metamask.currentAccount) return;
-
-        this.isCorrectChain = this.metamask.isCorrectChain;
-        this.currentAccount = this.metamask.currentAccount;
-
-        if (this.isCorrectChain && this.currentAccount) {
-          this.isMetamask = true;
-          this.getPoundAllowance();
-          this.getSwapCost();
-          this.getOwnedNFTs();
-        }
-      });
-    });
-
-    this.walletconnect.chainEvents.subscribe((event) => {
-
-      if (!this.walletconnect.provider) {
-        console.log('No walletconect');
-        return;
-      }
-
-      console.log('walletconnect event', event);
-      this.ngZone.run(() => {
-
-        if (event == 'start') {
-          this.provider = this.walletconnect.provider;
-          this.ethersInjectedProvider = this.walletconnect.ethersInjectedProvider;
-        }
-
-        if (!this.walletconnect.currentAccount) return;
-
-        this.isCorrectChain = this.walletconnect.isCorrectChain;
-        this.currentAccount = this.walletconnect.currentAccount;
-
-        if (this.isCorrectChain && this.currentAccount) {
-          this.isMetamask = false;
-          this.getPoundAllowance();
-          this.getSwapCost();
-          this.getOwnedNFTs();
-        }
-      });
+    }
+    this.session.readyEvent.subscribe(() => {
+      this.getPoundAllowance();
+      this.getSwapCost();
+      this.getOwnedNFTs();
     });
   }
 
   async getPoundAllowance(): Promise<any> {
-    if (this.currentAccount) {
-      if (this.provider) {
-        const ncat = createNCATContractInstance(this.ethersInjectedProvider.getSigner());
-        const allowance = await getAllowance(ncat, this.currentAccount, nftPoundAddress);
+    if (this.session.currentAccount) {
+      if (this.session.provider) {
+        const ncat = createNCATContractInstance(this.session.ethersInjectedProvider.getSigner());
+        const allowance = await getAllowance(ncat, this.session.currentAccount, nftPoundAddress);
         this.ngZone.run(() => {
           this.poundNCATAllowance = allowance.toBigInt();
         });
@@ -156,11 +104,11 @@ export class NFTComponent implements OnInit {
   }
 
   async getSwapCost(): Promise<any> {
-    if (this.currentAccount) {
-      if (this.provider) {
-        const pound = createPoundContractInstance(this.ethersInjectedProvider.getSigner());
+    if (this.session.currentAccount) {
+      if (this.session.provider) {
+        const pound = createPoundContractInstance(this.session.ethersInjectedProvider.getSigner());
         const cost = await getSwapCost(pound);
-        const ncat = createNCATContractInstance(this.ethersInjectedProvider.getSigner());
+        const ncat = createNCATContractInstance(this.session.ethersInjectedProvider.getSigner());
         const decimals = await getDecimals(ncat);
         this.ngZone.run(() => {
           this.NCATCostPerNFT = cost / (10 ** decimals);
@@ -172,14 +120,14 @@ export class NFTComponent implements OnInit {
   }
 
   async getOwnedNFTs(): Promise<any> {
-    if (this.currentAccount) {
-      if (this.provider) {
-        const nft = createNFTContractInstance(this.ethersInjectedProvider.getSigner());
-        const balance = await balanceOf(nft, this.currentAccount);
+    if (this.session.currentAccount) {
+      if (this.session.provider) {
+        const nft = createNFTContractInstance(this.session.ethersInjectedProvider.getSigner());
+        const balance = await balanceOf(nft, this.session.currentAccount);
 
         let tokenIds: Array<number> = [];
         _.range(balance).map(async (index) => {
-          const tokenId = await tokenOfOwnerByIndex(nft, this.currentAccount, index)
+          const tokenId = await tokenOfOwnerByIndex(nft, this.session.currentAccount, index)
           tokenIds.push(tokenId);
         })
 
@@ -193,7 +141,7 @@ export class NFTComponent implements OnInit {
   }
 
   async getNFTMetadata(): Promise<any> {
-    if (this.currentAccount && this.ownedTokenIds.length > 0) {
+    if (this.session.currentAccount && this.ownedTokenIds.length > 0) {
       this.nftMetadata = [];
       this.ownedTokenIds.forEach(async (tokenId) => {
         this.http.get(`https://ncat.fun/assets/metadata/${tokenId}.json`).subscribe((res: any) => {
@@ -202,25 +150,6 @@ export class NFTComponent implements OnInit {
       })
     } else {
       setTimeout(async () => { await this.getNFTMetadata() }, 1000);
-    }
-  }
-
-  async connectMetamask() {
-    await this.metamask.connectWallet();
-  }
-
-  async connectWalletConnect() {
-    await this.walletconnect.connectWallet();
-  }
-
-  async disconnectWallet() {
-    if (this.isMetamask) {
-      alert('You need to manually disconnect site from Metamask plugin');
-      this.metamask.disconnect();
-    }
-    else {
-      if (!confirm('Disconnect your wallet?')) return;
-      this.walletconnect.disconnect();
     }
   }
 
@@ -245,7 +174,7 @@ export class NFTComponent implements OnInit {
       this.ngZone.run(() => {
         this.approving = true;
       });
-      const ncat = createNCATContractInstance(this.ethersInjectedProvider.getSigner());
+      const ncat = createNCATContractInstance(this.session.ethersInjectedProvider.getSigner());
       const txHash = await approveNCAT(ncat, nftPoundAddress);
       this.getPoundAllowance();
       alert(`Approved!\nTransaction hash: ${txHash}`);
@@ -264,11 +193,11 @@ export class NFTComponent implements OnInit {
       this.ngZone.run(() => {
         this.burning = true;
       });
-      const pound = createPoundContractInstance(this.ethersInjectedProvider.getSigner());
+      const pound = createPoundContractInstance(this.session.ethersInjectedProvider.getSigner());
       const txHash = await commitSwapNCAT(pound, this.NFTtoMint);
       alert(`Burned!\nTransaction hash: ${txHash}`);
       this.getPoundAllowance();
-    } catch (e) {
+    } catch (e: any) {
       alert(e.data ? e.data.message : e.message);
       console.log(e);
     } finally {
@@ -283,14 +212,14 @@ export class NFTComponent implements OnInit {
       this.ngZone.run(() => {
         this.revealing = true;
       });
-      const pound = createPoundContractInstance(this.ethersInjectedProvider.getSigner());
+      const pound = createPoundContractInstance(this.session.ethersInjectedProvider.getSigner());
       const txHash = await revealNCATs(pound);
       alert(`Revealed!\nTransaction hash: ${txHash}\nView your NFT in the gallery!`);
 
       this.ngZone.run(() => {
         this.viewGallery();
       });
-    } catch (e) {
+    } catch (e: any) {
       alert(e.data ? e.data.message : e.message);
       console.log(e);
     } finally {

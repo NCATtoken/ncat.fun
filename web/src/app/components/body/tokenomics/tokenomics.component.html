@@ -3,7 +3,7 @@
         <h1 class="text-center my-3">
             Tokenomics
             <br>
-            <i class="nes-icon coin is-large" (click)="showbalance=true"></i>
+            <i class="nes-icon coin is-large"></i>
         </h1>
         <div class="row text-center">
             <div class="col p-2">
@@ -38,35 +38,18 @@
             <div class="text-right">{{session.price.percentage}}% (<a target="_blank" [href]="environment.burnAddress">View Burn Tx</a>) </div>
         </div>
 
-        <div *ngIf="showbalance && !isCorrectChain">
-            <div class="nes-container is-rounded bg-danger text-white mx-auto my-3">
-                <b>Wrong Network</b>! Please select BSC from MetaMask.
-            </div>
+        <div *ngIf="!session.isCorrectChain || !session.currentAccount" class="mt-5 d-flex justify-content-center">
+            <app-connect-wallet></app-connect-wallet>
         </div>
 
-
-        <div *ngIf="showbalance && isCorrectChain" class="mt-5">
-            <ng-container *ngIf="isConnectedToWallet; else ConnectWallet">
-                <div class="nes-container is-centered is-dark with-title is-rounded">
-                    <h3 class="title">{{metamask.currentAccount | shortaddress}}</h3>
-                    <div><img src="assets/balloon.gif" alt="" style="height:100px"></div>
-                    <i class="nes-icon coin is-small"></i>
-                    {{currentBalance / 10e17 | number:'.3'}}B $NCAT /
-                    ~USD {{currentBalance / 1000000000 * session.price.price | number:'.2-2'}}<br>
-                </div>
-            </ng-container>
-            <ng-template #ConnectWallet>
-                <div class="nes-container is-centered is-dark with-title is-rounded">
-                    <h3 class="title">Connect Wallet</h3>
-                    <div><img src="assets/balloon.gif" alt="" style="height:100px"></div>
-                    <p>Connect Wallet to view your $NCAT balance?</p>
-                    <p class="text-muted">Read only permission. Does not provide permission to transfer Token.</p>
-                    <p class="text-center">
-                        <button class="nes-btn mr-3" (click)="showbalance=false">Cancel</button>
-                        <button class="nes-btn is-success" (click)="connectwallet()">Connect</button>
-                    </p>
-                </div>
-            </ng-template>
+        <div *ngIf="session.isCorrectChain && session.currentAccount" class="mt-5 d-flex justify-content-center">
+            <div class="nes-container is-centered is-dark with-title is-rounded">
+                <h3 class="title">{{session.currentAccount | shortaddress}}</h3>
+                <p><img src="assets/balloon.gif" alt="" style="height:100px"></p>
+                <i class="nes-icon coin is-small"></i>
+                {{session.currentBalance / 10e17 | number:'.3'}}B $NCAT /
+                ~USD {{session.currentBalance / 1000000000 * session.price.price | number:'.2-2'}}<br>
+            </div>
         </div>
     </div>
 </div>

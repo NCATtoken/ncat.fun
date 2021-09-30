@@ -1,6 +1,9 @@
-import { Component } from '@angular/core';
-import { timeStamp } from 'console';
+import { Component, NgZone } from '@angular/core';
+import { environment } from 'src/environments/environment';
+import { ApiHttpService } from 'src/services/api-http.service';
+import { MetaMaskService } from 'src/services/metamask.service';
 import { SocketioService } from 'src/services/socketio.service';
+import { WalletConnectService } from 'src/services/walletconnect.service';
 
 @Component({
   selector: 'app-root',
@@ -33,4 +36,7 @@ export class AppComponent {
       }
     });
   }
+
+
+
 }

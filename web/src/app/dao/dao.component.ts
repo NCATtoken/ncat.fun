@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { ApiHttpService } from 'src/services/api-http.service';
 import { MetaMaskService } from 'src/services/metamask.service';
 import { Proposal, States } from 'src/services/models.definitioins';
+import { SessionService } from 'src/services/session.service';
 import { SocketioService } from 'src/services/socketio.service';
 import { WalletConnectService } from 'src/services/walletconnect.service';
 
@@ -17,13 +18,6 @@ import { WalletConnectService } from 'src/services/walletconnect.service';
 
 export class DAOComponent implements OnInit {
 
-  // Constants
-  bigZero = ethers.BigNumber.from(0).toBigInt()
-
-  // Providers
-  provider = <unknown>{};
-  ethersInjectedProvider = <ethers.providers.Web3Provider | ethers.providers.JsonRpcProvider>{};
-  isMetamask?: boolean;
 
   // Page toggle
   showhelp = false;
@@ -31,12 +25,7 @@ export class DAOComponent implements OnInit {
   viewing: String[] = [States.VOTING, States.FUNDING, States.RESEARCH, States.IMPLEMENTATION, States.COMPLETED];
   vieworders = ['Latest', 'Popularity'];
   vieworder = this.vieworders[0];
-
-  // Account and chain checks
-  currentAccount = "";
-  isCorrectChain = true;
   isSendingFund = false;
-  isadmin = false;
 
   // proposals
   proposals: Proposal[] = [];
@@ -46,18 +35,18 @@ export class DAOComponent implements OnInit {
   loading = false;
   end = false;
   showpropose = false;
-  accesstoken?: String;
 
   public get options() {
     return {
       headers: {
-        Authorization: `Bearer ${this.accesstoken}`,
+        Authorization: `Bearer ${this.session.accesstoken}`,
       }
     };
   }
 
 
-  constructor(private ngZone: NgZone, private http: ApiHttpService, public metamask: MetaMaskService, public walletconnect: WalletConnectService, private socket: SocketioService) {
+  constructor(private ngZone: NgZone, private http: ApiHttpService, private socket: SocketioService, public session: SessionService) {
+
     this.socket.onMessage.subscribe((r) => {
       // watch proposal update message
       if (r.type == 'proposal' && r.data) {
@@ -69,98 +58,16 @@ export class DAOComponent implements OnInit {
         }
       }
     });
+
   }
 
-
-  login(onSuccess: Function) {
-    this.http.get(`${environment.daoBaseurl}/login?address=${this.currentAccount}`).subscribe((res: any) => {
-      this.accesstoken = res.token;
-      this.isadmin = res.a;
-      onSuccess()
-    }, (e) => {
-      if (e.error?.message)
-        alert(e.error.message);
-      else
-        alert(e.message);
-    }, () => {
-    });
-  }
-
-  async ngOnInit(): Promise<void> {
-    this.metamask.chainEvents.subscribe((event) => {
-      if (!this.metamask.provider) {
-        console.log('No metamask');
-        return;
-      }
-
-      console.log('metamask event', event);
-      this.ngZone.run(() => {
-
-        if (event == 'start') {
-          this.provider = this.metamask.provider;
-          this.ethersInjectedProvider = this.metamask.ethersInjectedProvider;
-        }
-
-        if (!this.metamask.currentAccount) return;
-
-        this.isCorrectChain = this.metamask.isCorrectChain;
-        this.currentAccount = this.metamask.currentAccount;
-
-        if (this.isCorrectChain && this.currentAccount) {
-          this.isMetamask = true;
-          this.login(() => {
-            this.onIntersection();
-          });
-        }
-      });
-    });
-
-    this.walletconnect.chainEvents.subscribe((event) => {
-      if (!this.walletconnect.provider) {
-        console.log('No walletconect');
-        return;
-      }
-
-      console.log('walletconnect event', event);
-      this.ngZone.run(() => {
-
-        if (event == 'start') {
-          this.provider = this.walletconnect.provider;
-          this.ethersInjectedProvider = this.walletconnect.ethersInjectedProvider;
-        }
-
-        if (!this.walletconnect.currentAccount) return;
-
-        this.isCorrectChain = this.walletconnect.isCorrectChain;
-        this.currentAccount = this.walletconnect.currentAccount;
-
-        if (this.isCorrectChain && this.currentAccount) {
-          this.isMetamask = false;
-          this.login(() => {
-            this.onIntersection();
-          });
-        }
-      });
-    });
-  }
-
-  async connectMetamask() {
-    await this.metamask.connectWallet();
-  }
-
-  async connectWalletConnect() {
-    await this.walletconnect.connectWallet();
-  }
-
-  async disconnectWallet() {
-    if (this.isMetamask) {
-      alert('You need to manually disconnect site from Metamask plugin');
-      this.metamask.disconnect();
+  ngOnInit() {
+    if (this.session.accesstoken) {
+      this.loadProposals();
     }
-    else {
-      if (!confirm('Disconnect your wallet?')) return;
-      this.walletconnect.disconnect();
-    }
+    this.session.readyEvent.subscribe(() => {
+      this.loadProposals();
+    });
   }
 
   //
@@ -189,8 +96,8 @@ export class DAOComponent implements OnInit {
 
   // lazy load
 
-  onIntersection(/*{ target, visible }: { target: Element; visible: boolean }*/): void {
-    if (this.end || this.loading || !this.accesstoken) {
+  loadProposals(/*{ target, visible }: { target: Element; visible: boolean }*/): void {
+    if (this.end || this.loading || !this.session.accesstoken) {
       return;
     }
 
@@ -220,7 +127,7 @@ export class DAOComponent implements OnInit {
       this.start = 0;
       this.end = false;
       this.loading = false;
-      this.onIntersection();
+      this.loadProposals();
     }
   }
 
@@ -258,7 +165,7 @@ export class DAOComponent implements OnInit {
       value: ethers.utils.parseEther(amount),
     };
 
-    this.ethersInjectedProvider.getSigner().sendTransaction(tx)
+    this.session.ethersInjectedProvider.getSigner().sendTransaction(tx)
       .then(async (transaction) => {
         this.isSendingFund = true;
         let receipt = await transaction.wait(1);
@@ -284,7 +191,7 @@ export class DAOComponent implements OnInit {
 
   // advance to next state
   onState(p: Proposal, accepted: boolean) {
-    if ((p.state != States.RESEARCH && p.state != States.IMPLEMENTATION) || !this.isadmin) return;
+    if ((p.state != States.RESEARCH && p.state != States.IMPLEMENTATION) || !this.session.isadmin) return;
 
     this.http.post(`${environment.daoBaseurl}/proposals/state?proposalId=${p.id}`, { accepted }, this.options).subscribe((res: any) => {
       if (res.message == 'success') {

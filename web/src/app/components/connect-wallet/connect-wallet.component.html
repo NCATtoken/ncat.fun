@@ -1,0 +1,21 @@
+<div *ngIf="!session.isCorrectChain" class="nes-container is-rounded bg-danger text-white">
+    <p><img src="assets/balloon.gif" alt="" style="height:100px"></p>
+    <b>Wrong Network</b>! Please select BSC from MetaMask.
+</div>
+
+<ng-container *ngIf="!session.currentAccount && (session.metamask.provider || session.walletconnect.provider)">
+    <div class="nes-container bg-info text-center is-rounded" style="background: url(assets/sky.jpg) center center no-repeat;background-size:cover;">
+        <h5 class="mb-3">Connect Wallet</h5>
+        <p><img src="assets/balloon.gif" alt="" style="height:100px"></p>
+        <div class="d-flex justify-content-center">
+            <button class="nes-btn mr-2" (click)="session.connectMetamask()" *ngIf="session.metamask.provider">
+                <img class="nes-avatar" src="https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg" style="image-rendering: pixelated;">
+                Metamask
+            </button>
+            <button class="nes-btn mr-2" (click)="session.connectWalletConnect()" *ngIf="session.walletconnect.provider">
+                <img class="nes-avatar" src="https://raw.githubusercontent.com/WalletConnect/walletconnect-assets/master/svg/walletconnect-logo.svg" style="image-rendering: pixelated;">
+                WalletConnect
+            </button>
+        </div>
+    </div>
+</ng-container>

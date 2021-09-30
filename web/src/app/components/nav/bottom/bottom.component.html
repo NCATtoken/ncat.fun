@@ -10,7 +10,7 @@
                         <h6>{{group.title}}</h6>
                         <div *ngFor="let link of group.items">
                             <div *ngIf="link.content" [innerHtml]="link.content"></div>
-                            <a *ngIf="!link.content" [href]="link.url || link.fragment" [target]="link.url?.startsWith('/') ? '' : '_blank'">
+                            <a *ngIf="!link.content" (click)="open(link)" href="#">
                                 <i class="nes-icon is-small" [class]="link.icon" *ngIf="link.icon"></i>
                                 {{ link.title }}
                             </a>
@@ -22,7 +22,7 @@
 
                 <div *ngFor="let link of _link.items">
                     <div *ngIf="link.content" [innerHtml]="link.content"></div>
-                    <a *ngIf="!link.content" [href]="link.url || link.fragment" [target]="link.url?.startsWith('/') ? '' : '_blank'">
+                    <a *ngIf="!link.content" (click)="open(link)" href="#">
                         <i class="nes-icon is-small" [class]="link.icon" *ngIf="link.icon"></i>
                         {{ link.title }}
                     </a>

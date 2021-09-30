@@ -1,27 +1,12 @@
-<div class="bg-primary">
-
-    <section id="heading" class="container mb-3 d-flex justify-content-center">
-        <div *ngIf="!isCorrectChain" class="nes-container is-rounded bg-danger text-white mx-auto my-5">
-            <b>Wrong Network</b>! Please select BSC from MetaMask.
-        </div>
-
-        <div class="nes-container is-rounded bg-info text-white text-center my-5" *ngIf="currentAccount === ''">
-            <p>
-                Connect your wallet to interact with NCAT DAO.
-            </p>
-            <button class="nes-btn mr-2" (click)="connectMetamask()" *ngIf="metamask.provider">
-                <img class="nes-avatar" src="https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg" style="image-rendering: pixelated;">
-                Metamask
-            </button>
-            <button class="nes-btn mr-2" (click)="connectWalletConnect()" *ngIf="walletconnect.provider">
-                <img class="nes-avatar" src="https://raw.githubusercontent.com/WalletConnect/walletconnect-assets/master/svg/walletconnect-logo.svg" style="image-rendering: pixelated;">
-                WalletConnect
-            </button>
+<div class="bg-primary py-5">
+    <section id="heading" class="container">
+        <div *ngIf="!session.isCorrectChain || !session.currentAccount" class="d-flex justify-content-center">
+            <app-connect-wallet></app-connect-wallet>
         </div>
     </section>
 
     <!-- connected -->
-    <ng-container *ngIf="currentAccount !== ''">
+    <section *ngIf="session.isCorrectChain && session.currentAccount">
 
         <ng-container *ngIf="showpropose; else showDAO">
             <app-propose [options]="options" (created)="onPropose($event)"></app-propose>
@@ -32,8 +17,8 @@
                 <div class="d-flex mb-3">
                     <h2 class="text-white flex-grow-1">NCAT DAO</h2>
                     <div class="small">
-                        <button class="nes-btn is-warning mr-2">{{currentAccount | shortaddress}}</button>
-                        <button class="nes-btn is-error" (click)="disconnectWallet()">X</button>
+                        <button class="nes-btn is-warning mr-2">{{session.currentAccount | shortaddress}}</button>
+                        <button class="nes-btn is-error" (click)="session.disconnectWallet()">X</button>
                     </div>
                 </div>
 
@@ -70,14 +55,14 @@
                 <!-- content -->
                 <div class="flex-grow-1">
                     <!-- proposals -->
-                    <app-proposal-item *ngFor="let item of proposals" [address]="currentAccount" [data]="item" (vote)="onVote(item,$event)" (fund)="onFund(item)" (state)="onState(item,$event)" [sendingFund]="isSendingFund" [isadmin]="isadmin"></app-proposal-item>
+                    <app-proposal-item *ngFor="let item of proposals" [address]="session.currentAccount" [data]="item" (vote)="onVote(item,$event)" (fund)="onFund(item)" (state)="onState(item,$event)" [sendingFund]="isSendingFund" [isadmin]="session.isadmin"></app-proposal-item>
 
                     <div *ngIf="!loading && proposals.length == 0" class="text-center py-5">
                         <p><img src="assets/balloon.gif" height="150"></p>
                         <p>No proposal at the moment</p>
                     </div>
 
-                    <div #Loadmore inViewport (inViewportAction)="onIntersection()">
+                    <div #Loadmore inViewport (inViewportAction)="loadProposals()">
                         <div *ngIf="loading" class="text-center py-5">
                             <p><img src="assets/balloon.gif" alt="" height="150"></p>
                             <p>Loading more proposal...</p>
@@ -86,7 +71,7 @@
                 </div>
             </div>
         </ng-template>
-    </ng-container>
+    </section>
 </div>
 
 <!-- modal -->

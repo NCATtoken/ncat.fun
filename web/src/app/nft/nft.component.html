@@ -1,58 +1,40 @@
 <div class="bg-primary py-5">
 
-    <!-- <h1 class="text-dark text-center">
-        <img src="assets/logo.png" alt="" height="150px">
-        <span class="d-none d-sm-inline-block">NFT</span>
-    </h1> -->
-    <section id="heading" class="container mb-3 d-flex justify-content-center">
-        <div *ngIf="!isCorrectChain" class="nes-container is-rounded bg-danger text-white mx-auto">
-            <b>Wrong Network</b>! Please select BSC from MetaMask.
-        </div>
-
-        <div class="nes-container is-rounded bg-info text-white text-center" *ngIf="currentAccount === ''">
-            <p>
-                Connect your wallet to start exploring NCAT NFT.
-            </p>
-            <button class="nes-btn mr-2" (click)="connectMetamask()" *ngIf="metamask.provider">
-                <img class="nes-avatar" src="https://raw.githubusercontent.com/MetaMask/brand-resources/master/SVG/metamask-fox.svg" style="image-rendering: pixelated;">
-                Metamask
-            </button>
-            <button class="nes-btn mr-2" (click)="connectWalletConnect()" *ngIf="walletconnect.provider">
-                <img class="nes-avatar" src="https://raw.githubusercontent.com/WalletConnect/walletconnect-assets/master/svg/walletconnect-logo.svg" style="image-rendering: pixelated;">
-                WalletConnect
-            </button>
+    <section id="heading" class="container">
+        <div *ngIf="!session.isCorrectChain || !session.currentAccount" class="d-flex justify-content-center">
+            <app-connect-wallet></app-connect-wallet>
         </div>
     </section>
 
-    <ng-container *ngIf="currentAccount !== ''">
+    <section *ngIf="session.isCorrectChain && session.currentAccount">
 
         <div class="flex-grow-1 text-right d-md-none small">
-            <button class="nes-btn is-warning mr-2">{{currentAccount | shortaddress}}</button>
-            <button class="nes-btn is-error" (click)="disconnectWallet()">X</button>
+            <button class="nes-btn is-warning mr-2">{{session.currentAccount | shortaddress}}</button>
+            <button class="nes-btn is-error" (click)="session.disconnectWallet()">X</button>
         </div>
 
         <section id="menu" class="container mb-3">
             <div class=" d-flex align-items-center">
-                <button class="nes-btn mr-2" [class]="viewing==='' ? 'is-primary':''" (click)="viewing=''">
+                <button class="nes-btn mr-2" [class]="!viewing ? 'is-primary':''" (click)="viewing=''">
                     ?
                 </button>
-                <button class="nes-btn mr-2" [class]="viewing===Screen.POUND ? 'is-primary':''" (click)="viewPound()">
+                <button class="nes-btn mr-2" [class]="viewing==Screen.POUND ? 'is-primary':''" (click)="viewPound()">
                     <span class="nes-icon is-small coin"></span>
                     Pound
                 </button>
-                <button class="nes-btn mr-2" [class]="viewing===Screen.GALLERY ? 'is-primary':''" (click)="viewGallery()">
+                <button class="nes-btn mr-2" [class]="viewing==Screen.GALLERY ? 'is-primary':''" (click)="viewGallery()">
                     <span class="nes-icon is-small trophy"></span>
                     Gallery ({{ownedTokenIds.length}})
                 </button>
                 <div class="flex-grow-1 text-right d-none d-md-block small">
 
-                    <button class="nes-btn is-warning mr-2">{{currentAccount | shortaddress}}</button>
-                    <button class="nes-btn is-error" (click)="disconnectWallet()">X</button>
+                    <button class="nes-btn is-warning mr-2">{{session.currentAccount | shortaddress}}</button>
+                    <button class="nes-btn is-error" (click)="session.disconnectWallet()">X</button>
                 </div>
             </div>
         </section>
 
-        <section class="container mb-3 flex-column-reverse flex-sm-row d-flex justify-content-left align-items-start align-items-sm-end" *ngIf="viewing === '' && currentAccount !== '' && isCorrectChain">
+        <section class="container mb-3 flex-column-reverse flex-sm-row d-flex justify-content-left align-items-start align-items-sm-end" *ngIf="!viewing">
             <img src="assets/BB.png" class="dialog-head">
             <div class="nes-balloon from-left">
                 <h5>How to use NFT</h5>
@@ -64,14 +46,14 @@
         </section>
 
         <!-- Pound -->
-        <section id="pound" *ngIf="viewing === Screen.POUND" class="container">
+        <section id="pound" *ngIf="viewing==Screen.POUND" class="container">
             <p>Easily mint your very own NCAT NFT by sending your NCAT tokens to the burner!</p>
             <div class="row">
                 <div class="col-12 col-md-4 mb-3 d-flex align-items-stretch">
                     <div class="nes-container bg-white is-rounded with-title is-centered">
                         <p class="title">1. Approve</p>
                         <p>Approve the Pound to spend your NCATs in order to mint!</p>
-                        <button *ngIf="poundNCATAllowance === bigZero && !approving" class="nes-btn is-warning" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="approvePound()" [disabled]="currentAccount === '' || !isCorrectChain">
+                        <button *ngIf="poundNCATAllowance === bigZero && !approving" class="nes-btn is-warning" style="width:100%;" (click)="approvePound()">
                             Approve Pound
                         </button>
                         <button *ngIf="approving" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
@@ -96,7 +78,7 @@
                             <button *ngIf="burning" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
                                 Burning
                             </button>
-                            <button *ngIf="poundNCATAllowance === bigZero" class="nes-btn is-warning" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="approvePound()" [disabled]="currentAccount === '' || !isCorrectChain">
+                            <button *ngIf="poundNCATAllowance === bigZero" class="nes-btn is-warning" style="width:100%;" (click)="approvePound()">
                                 Approve Pound
                             </button>
                             <div class="text-danger">
@@ -109,7 +91,7 @@
                     <div class="nes-container bg-white is-rounded with-title is-centered">
                         <p class="title">3. Claim</p>
                         <p>Draws from the random NCAT NFTs from the pound and issues ownership to you!</p>
-                        <button *ngIf="!revealing" class="nes-btn is-success" [ngClass]="currentAccount === '' || !isCorrectChain ? 'is-disabled' : ''" style="width:100%;" (click)="revealNCATs()" [disabled]="currentAccount === '' || !isCorrectChain">
+                        <button *ngIf="!revealing" class="nes-btn is-success" style="width:100%;" (click)="revealNCATs()">
                             Reveal
                         </button>
                         <button *ngIf="revealing" class="nes-btn is-disabled" style="width:100%;" [disabled]="true">
@@ -124,7 +106,7 @@
         </section>
 
         <!-- Gallery -->
-        <section id="gallery" *ngIf="viewing === Screen.GALLERY" class="container">
+        <section id="gallery" *ngIf="viewing==Screen.GALLERY" class="container">
             <div class="card-columns" *ngIf="nftMetadata.length > 0; else NoNFT">
                 <div class="card" *ngFor="let item of nftMetadata">
                     <div class="nes-container is-rounded bg-white p-1">
@@ -146,5 +128,6 @@
                 </div>
             </ng-template>
         </section>
-    </ng-container>
+    </section>
+
 </div>

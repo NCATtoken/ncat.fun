@@ -14,20 +14,20 @@
             <ul ngbNav class="navbar-nav">
                 <ng-container *ngFor="let link of (session.metadata.top_nav || links)">
                     <li [ngbNavItem]="link.fragment" class="nav-item" *ngIf="!link.items">
-                        <a class="nav-link" (click)="isMenuCollapsed=true" [href]="link.url || link.fragment" [target]="link.url?.startsWith('/') ? '' : '_blank'">{{ link.title }}</a>
+                        <a class="nav-link" (click)="open(link)">{{ link.title }}</a>
                     </li>
 
                     <li ngbDropdown [ngbNavItem]="link.fragment" class="nav-item" *ngIf="link.items">
                         <a ngbNavLink ngbDropdownToggle>{{ link.title }}</a>
                         <div ngbDropdownMenu>
-                            <a class="dropdown-item" (click)="isMenuCollapsed=true" *ngFor="let item of link.items" [href]="item.url || item.fragment" [target]="item.url?.startsWith('/') ? '' : '_blank'">{{ item.title }}</a>
+                            <a class="dropdown-item" (click)="open(item)" *ngFor="let item of link.items">{{ item.title }}</a>
                         </div>
                     </li>
                 </ng-container>
             </ul>
-            <a href="#tokenomics" class="nes-btn is-warning ml-auto d-none d-lg-block">
+            <button (click)="session.connectMetamask()" class="nes-btn is-warning ml-auto d-none d-lg-block">
                 1M NCAT = ${{session.price.price * 1000000 | number : '.4' }}
-            </a>
+            </button>
         </div>
 
     </div>
