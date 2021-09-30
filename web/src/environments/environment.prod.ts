@@ -25,4 +25,6 @@ export const environment = {
   howtobuy: 'https://ncattoken.medium.com/so-you-wanna-buy-some-ncat-a-step-by-step-guide-c06475980f7c',
   paypalClientId: 'AUaVX9bjjCxlA3pmxLOM5M-2PjKEE_IBK_XRffXYKD-1dsC3iswR7z7QcK5yEnqLBbU23lJULiRksZPU',
   chainId: 56,
+  require_percentage: 66, // 66%
+  require_weight: 100, //100B
 };

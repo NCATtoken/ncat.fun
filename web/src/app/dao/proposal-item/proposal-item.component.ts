@@ -1,6 +1,7 @@
 import { Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { BigNumber } from '@ethersproject/bignumber';
 import { isNumber } from 'lodash';
+import { environment } from 'src/environments/environment';
 // import { CountdownConfig, CountdownEvent } from 'ngx-countdown';
 import { Proposal, States } from 'src/services/models.definitioins';
 
@@ -92,7 +93,7 @@ export class ProposalItemComponent implements OnInit, DoCheck {
     }
 
     // 75% and 200B voted
-    this.passed = (this.progress > 75 && this.vfor.gte(BigNumber.from(200 * 10 ** 9)));
+    this.passed = (this.progress > environment.require_percentage && this.vfor.gte(BigNumber.from(environment.require_weight * 10 ** 9)));
 
     if (this.p.require_fund) {
       this.fund_progress = (this.p.raised_fund || 0) / (this.p.target_fund || 1) * 100;
