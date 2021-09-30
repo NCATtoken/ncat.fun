@@ -27,4 +27,5 @@ export const environment = {
   chainId: 56,
   require_percentage: 66, // 66%
   require_weight: 100, //100B
+  socketEndpoint: 'https://dao.ncat.fun/',
 };

@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, DoCheck, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Context } from 'vm';
 
 @Component({
@@ -6,16 +6,28 @@ import { Context } from 'vm';
   templateUrl: './circular-progress.component.html',
   styleUrls: ['./circular-progress.component.scss']
 })
-export class CircularProgressComponent implements AfterViewInit {
+export class CircularProgressComponent implements AfterViewInit, DoCheck {
 
   @Input() size = 100;
   @Input() progress = 90;
   @Input() lineWidth = 10;
   @ViewChild('Canvas') canvas!: ElementRef;
 
+  oldval: number | undefined;
+
   constructor() { }
 
   ngAfterViewInit(): void {
+    this.render();
+  }
+
+  ngDoCheck() {
+    if (this.oldval == null || this.oldval == this.progress) return;
+    this.render();
+  }
+
+  render() {
+    this.oldval = this.progress;
     let ctx: Context = this.canvas.nativeElement.getContext("2d")!;
 
     // Set actual size in memory (scaled to account for extra pixel density).

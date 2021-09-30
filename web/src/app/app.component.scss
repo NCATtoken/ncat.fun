@@ -1,0 +1,21 @@
+#toast {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    zoom: 0.75;
+
+    .nes-balloon {
+        max-width: 480px;
+        box-shadow: 0 10px 10px rgb(0, 0, 0, 25%);
+        background: #ffe600;
+
+        &.from-right::before {
+            background-color: #ffe600;
+        }
+
+        &.from-right::after {
+            background-color: #ffe600;
+            box-shadow: -4px 0, 4px 0, 4px 4px #ffe600, 0 4px, 8px 4px, 4px 8px, 8px 8px;
+        }
+    }
+}

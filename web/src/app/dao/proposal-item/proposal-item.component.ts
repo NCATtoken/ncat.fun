@@ -1,4 +1,4 @@
-import { Component, DoCheck, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, DoCheck, EventEmitter, Input, NgZone, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
 import { BigNumber } from '@ethersproject/bignumber';
 import { isNumber } from 'lodash';
 import { environment } from 'src/environments/environment';
@@ -36,7 +36,7 @@ export class ProposalItemComponent implements OnInit, DoCheck {
   showfunders = false;
   funded = false;
 
-  constructor() { }
+  constructor(public ngZone: NgZone) { }
 
   ngDoCheck() {
     this.updatepct();
@@ -80,6 +80,7 @@ export class ProposalItemComponent implements OnInit, DoCheck {
   }
 
   updatepct() {
+
     this.voted = this.p.voters?.includes(this.address) || false;
 
     this.vfor = BigNumber.from(this.p.for);
@@ -101,7 +102,6 @@ export class ProposalItemComponent implements OnInit, DoCheck {
     else {
       this.fund_progress = 0;
     }
-
     this.funded = ((this.p.raised_fund || 0) >= (this.p.target_fund || 1));
   }
 }

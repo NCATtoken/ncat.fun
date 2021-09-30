@@ -5,6 +5,7 @@ import { environment } from 'src/environments/environment';
 import { ApiHttpService } from 'src/services/api-http.service';
 import { MetaMaskService } from 'src/services/metamask.service';
 import { Proposal, States } from 'src/services/models.definitioins';
+import { SocketioService } from 'src/services/socketio.service';
 import { WalletConnectService } from 'src/services/walletconnect.service';
 
 
@@ -56,7 +57,18 @@ export class DAOComponent implements OnInit {
   }
 
 
-  constructor(private ngZone: NgZone, private http: ApiHttpService, public metamask: MetaMaskService, public walletconnect: WalletConnectService) {
+  constructor(private ngZone: NgZone, private http: ApiHttpService, public metamask: MetaMaskService, public walletconnect: WalletConnectService, private socket: SocketioService) {
+    this.socket.onMessage.subscribe((r) => {
+      // watch proposal update message
+      if (r.type == 'proposal' && r.data) {
+        let data = r.data;
+        let idx = this.proposals.findIndex((e) => e.id == data.id);
+        if (idx >= 0) {
+          let p = this.proposals[idx];
+          this.proposals[idx] = Object.assign(p, data);
+        }
+      }
+    });
   }
 
 

@@ -5,3 +5,7 @@
 </section>
 
 <app-nav-bottom></app-nav-bottom>
+
+<div id="toast" class="d-flex flex-column align-items-end">
+  <div class="nes-balloon from-right" *ngFor="let t of toasts">{{t}}</div>
+</div>

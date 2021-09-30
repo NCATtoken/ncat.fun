@@ -10,6 +10,8 @@ import { ApiHttpService } from 'src/services/api-http.service';
 import { MetaMaskService } from 'src/services/metamask.service';
 import { MarkdownPipe, NumPipe, ShortAddressPipe } from 'src/services/pipes';
 import { SessionService } from 'src/services/session.service';
+import { SocketioService } from 'src/services/socketio.service';
+import { WalletConnectService } from 'src/services/walletconnect.service';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CartComponent } from './cart/cart.component';
@@ -78,6 +80,8 @@ import { WebpagesComponent } from './webpages/webpages.component';
     ApiHttpService,
     SessionService,
     MetaMaskService,
+    WalletConnectService,
+    SocketioService,
   ],
   bootstrap: [AppComponent]
 })
