@@ -1,6 +1,9 @@
-<div *ngIf="!session.isCorrectChain" class="nes-container is-rounded bg-danger text-white">
+<div *ngIf="!session.isCorrectChain" class="nes-container is-rounded bg-danger text-white text-center">
     <p><img src="assets/balloon.gif" alt="" style="height:100px"></p>
-    <b>Wrong Network</b>! Please select BSC from MetaMask.
+    <p>Wrong Network! Please select BSC from MetaMask.</p>
+    <p *ngIf="session.isMetamask">
+        <button (click)="session.addchain()" class="nes-btn is-warning">Add BSC Chain</button>
+    </p>
 </div>
 
 <ng-container *ngIf="!session.currentAccount && (session.metamask.provider || session.walletconnect.provider)">

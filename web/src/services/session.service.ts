@@ -117,6 +117,7 @@ export class SessionService {
         if (event == 'start') {
           this.provider = this.metamask.provider;
           this.ethersInjectedProvider = this.metamask.ethersInjectedProvider;
+          this.isMetamask = true;
         }
 
         if (!this.metamask.currentAccount) return;
@@ -126,7 +127,6 @@ export class SessionService {
         this.metamask.streamBalance();
 
         if (this.isCorrectChain && this.currentAccount) {
-          this.isMetamask = true;
           this.login(() => {
             this.readyEvent.emit();
           });
@@ -152,6 +152,7 @@ export class SessionService {
         if (event == 'start') {
           this.provider = this.walletconnect.provider;
           this.ethersInjectedProvider = this.walletconnect.ethersInjectedProvider;
+          this.isMetamask = false;
         }
 
         if (!this.walletconnect.currentAccount) return;
@@ -161,7 +162,6 @@ export class SessionService {
         this.walletconnect.streamBalance();
 
         if (this.isCorrectChain && this.currentAccount) {
-          this.isMetamask = false;
           this.login(() => {
             this.readyEvent.emit();
           });
@@ -191,5 +191,18 @@ export class SessionService {
     }
   }
 
+  async addchain() {
+    if (this.isMetamask) {
+      if (environment.chainId == 56) {
+        this.metamask.provider.request({ method: 'wallet_addEthereumChain', params: [{ chainId: '0x38', chainName: 'Binance Smart Chain', nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 }, rpcUrls: ['https://bsc-dataseed.binance.org/'], blockExplorerUrls: ['https://bscscan.com/'] }] });
+      }
+      else {
+        this.metamask.provider.request({ method: 'wallet_addEthereumChain', params: [{ chainId: '0x61', chainName: 'BSC Testnet', nativeCurrency: { name: 'BNB', symbol: 'BNB', decimals: 18 }, rpcUrls: ['https://data-seed-prebsc-1-s1.binance.org:8545/'], blockExplorerUrls: ['https://testnet.bscscan.com/'] }] });
+      }
+    }
+    else {
+      alert('Please add manually');
+    }
+  }
 
 }

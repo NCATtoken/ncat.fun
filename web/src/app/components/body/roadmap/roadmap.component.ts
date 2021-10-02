@@ -16,7 +16,7 @@ export class RoadmapComponent implements OnInit {
 
   ngOnInit(): void {
     this.http.get(this.http.createUrlWithQueryParameters('roadmaps', (qs) => {
-      qs.push('_sort', 'when')
+      qs.push('_sort', 'when:desc')
     }))
       .subscribe((res: any) => {
         this.roadmaps = res;
