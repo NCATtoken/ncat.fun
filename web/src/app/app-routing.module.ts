@@ -21,8 +21,8 @@ const routes: Routes = [
   { path: 'p/:url/:id', component: WebpageComponent, },
   { path: 'cart', component: CartComponent, },
   { path: 'track/:id', component: TrackOrderComponent, },
-  { path: '**', redirectTo: '/' },
   { path: '', component: HomeComponent },
+  { path: '**', redirectTo: '/' },
 ];
 
 @NgModule({

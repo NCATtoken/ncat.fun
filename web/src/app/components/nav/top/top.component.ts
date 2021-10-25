@@ -26,8 +26,9 @@ export class TopComponent implements OnInit {
       }
     }
     else if (link.fragment) {
-      this.router.navigate(['/', link.fragment]);
+      this.router.navigateByUrl('/' + link.fragment);
     }
+    return false;
   }
 
 }
