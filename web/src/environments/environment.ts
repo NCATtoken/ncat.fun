@@ -8,8 +8,8 @@ export const environment = Object.assign(env, {
   production: false,
   // apiBaseurl: 'http://localhost:1337',
   daoBaseurl: 'http://localhost:3000',
-  paypalClientId: 'ASQqNJ0g03V7qUmUsrGxnnU5iB82B7DgJCKu_3daa5aqLtSYsyL_xcv_oo8fSfyigYYfUJ0ByQwmakCK',
-  chainId: 97,
+  // paypalClientId: 'ASQqNJ0g03V7qUmUsrGxnnU5iB82B7DgJCKu_3daa5aqLtSYsyL_xcv_oo8fSfyigYYfUJ0ByQwmakCK',
+  // chainId: 97,
   socketEndpoint: 'http://localhost:3000',
 });
 

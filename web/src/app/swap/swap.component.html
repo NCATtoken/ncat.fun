@@ -1,0 +1,114 @@
+<div class="bg-warning py-5">
+
+    <h3 class="text-center">Swap NCAT/BNB</h3>
+
+    <section id="heading" class="container">
+        <div *ngIf="!session.isCorrectChain || !session.currentAccount" class="d-flex justify-content-center">
+            <app-connect-wallet></app-connect-wallet>
+        </div>
+    </section>
+
+    <!-- connected -->
+    <section *ngIf="session.isCorrectChain && session.currentAccount" class="container">
+        <div class="d-flex justify-content-center align-items-center my-3">
+            <div>I want to</div>
+            <div class="mx-3">
+                <button class="nes-btn" [class]="buying ? 'is-primary':''" (click)="toggle(false)">BUY NCAT</button>
+            </div>
+            <div>
+                <button class="nes-btn" [class]="buying ? '':'is-primary'" (click)="toggle(true)">SELL NCAT</button>
+            </div>
+        </div>
+
+        <div class="nes-container is-rounded bg-white py-3">
+            <div class="d-flex flex-column align-items-center" [style]="{opacity: isSwapping ? 0.25 : 1.0}">
+                <div class="nes-field flex-grow-1">
+                    <label for="" class="d-flex justify-content-between">
+                        <span class="text-nowrap">
+                            <img [src]="buying ? 'assets/bnb.png' : 'assets/logo.png'" style="height: 1.5em;">
+                            {{ buying ? 'BNB' : 'NCAT'}}
+                        </span>
+                        <div class="small text-right">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+                                <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z" />
+                            </svg>
+                            <a class="text-primary ml-1" (click)="usemax()">
+                                <u *ngIf="buying">{{ bnb_balance | number: '.5'}}</u>
+                                <u *ngIf="!buying">{{ session.currentBalance / 10e14 | number:'.3' }}M</u>
+                            </a>
+                        </div>
+                    </label>
+                    <input type="number" class="nes-input mt-2" placeholder="Enter Amount" [(ngModel)]="amount" (change)="updateOutput()" (keyup)="updateOutput()" [step]="buying ? 0.1 : 1000000000">
+                </div>
+
+                <button [disabled]="isSwapping" class="btn mt-3" (click)=" toggle()">
+                    <svg xmlns="http://www.w3.org/2000/svg" style="height:3em;" fill="currentColor" class="bi bi-arrow-down-up" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M8 1a.5.5 0 0 1 .5.5v11.793l3.146-3.147a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 .708-.708L7.5 13.293V1.5A.5.5 0 0 1 8 1z" />
+                    </svg>
+                </button>
+
+                <div class="nes-field flex-grow-1">
+                    <label for="" class="d-flex justify-content-between">
+                        <span class="text-nowrap">
+                            <img [src]="!buying ? 'assets/bnb.png' : 'assets/logo.png'" style="height: 1.5em;">
+                            {{ buying ? 'NCAT' : 'BNB'}}
+                        </span>
+                        <div class="small text-right">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet" viewBox="0 0 16 16">
+                                <path d="M0 3a2 2 0 0 1 2-2h13.5a.5.5 0 0 1 0 1H15v2a1 1 0 0 1 1 1v8.5a1.5 1.5 0 0 1-1.5 1.5h-12A2.5 2.5 0 0 1 0 12.5V3zm1 1.732V12.5A1.5 1.5 0 0 0 2.5 14h12a.5.5 0 0 0 .5-.5V5H2a1.99 1.99 0 0 1-1-.268zM1 3a1 1 0 0 0 1 1h12V2H2a1 1 0 0 0-1 1z" />
+                            </svg>
+                            <a class="text-dark ml-1">
+                                <u *ngIf="!buying">{{ bnb_balance | number: '.5'}}</u>
+                                <u *ngIf="buying">{{ session.currentBalance / 10e14 | number:'.3' }}M</u>
+                            </a>
+                        </div>
+                    </label>
+                    <input class="nes-input mt-2" disabled placeholder="0.0" [(ngModel)]="outputValue">
+                </div>
+
+                <button [disabled]="isSwapping" (click)="startswap()" class="nes-btn my-3 d-block" [class]="isSwapping ? 'is-disabled':'is-warning' ">{{!isSwapping ? 'SWAP' : 'SWAPPING...'}}</button>
+
+
+                <p class="text-danger small text-center">Tip: Always reserve small amount (~0.01) of BNB for transaction fees, avoid trading all available BNB into tokens.</p>
+
+                <div class="small text-center" style="line-height: 1.5em;">
+                    Router: <span class="text-primary">PancakeSwap v1</span><br>
+                    Slippage: <span class="text-primary">{{slippage*100}}%</span><br>
+                    <div>
+                        <span class="text-nowrap"><img src="assets/bnb.png" style="height: 1.5em;"> 1.0 BNB = </span>
+                        <span class="text-nowrap"><img src="assets/logo.png" style="height: 1.5em;"> {{ncat_per_bnb | number}} NCAT</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+</div>
+
+<div class="bg-white py-5">
+    <div class="container">
+        <h3 class="text-center">Trade on Other Platforms</h3>
+
+        <div *ngIf="session.metadata.where_to_trade; else DefaultTradeContent" [innerHtml]="session.metadata.where_to_trade"></div>
+
+        <ng-template #DefaultTradeContent>
+            <p>
+                <!-- You can trade NCAT on -->
+                <a href="https://v1exchange.pancakeswap.finance/#/swap?outputCurrency=0x0cf011a946f23a03ceff92a4632d5f9288c6c70d" target="_blank" class="nes-btn is-success">Pancake Swap V1</a>
+                <a href="https://snowgecoin.com/swap/#/swap?outputCurrency=0x0cf011a946f23a03ceff92a4632d5f9288c6c70d" target="_blank" class="nes-btn is-primary">Snowge</a>
+                <a href="https://whitebit.com/trade/NCAT_USDT" target="_blank" class="nes-btn">WhiteBit</a>
+                <a href="https://www.hotbit.io/exchange?symbol=NCAT_USDT" target="_blank" class="nes-btn">Hotbit</a>
+            </p>
+            <!-- <div class="text-dark">
+            <h3>Need Help?</h3>
+            <li>
+                <a href="https://ncattoken.medium.com/so-you-wanna-buy-some-ncat-a-step-by-step-guide-c06475980f7c">
+                    How to buy on Pancake Swap / Snowge
+                </a>
+            </li>
+        </div> -->
+        </ng-template>
+
+    </div>
+</div>

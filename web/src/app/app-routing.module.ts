@@ -8,6 +8,7 @@ import { HomeComponent } from './home/home.component';
 import { MerchandiseComponent } from './merchandise/merchandise.component';
 import { MerchandisesComponent } from './merchandises/merchandises.component';
 import { NFTComponent } from './nft/nft.component';
+import { SwapComponent } from './swap/swap.component';
 import { TrackOrderComponent } from './track-order/track-order.component';
 import { WebpageComponent } from './webpage/webpage.component';
 import { WebpagesComponent } from './webpages/webpages.component';
@@ -18,6 +19,7 @@ const routes: Routes = [
   { path: 'merchandise', component: MerchandisesComponent, },
   { path: 'nft', component: NFTComponent, },
   { path: 'dao', component: DAOComponent },
+  { path: 'swap', component: SwapComponent },
   { path: 'p/:url/:id', component: WebpageComponent, },
   { path: 'cart', component: CartComponent, },
   { path: 'track/:id', component: TrackOrderComponent, },

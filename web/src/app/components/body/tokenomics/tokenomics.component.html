@@ -5,25 +5,46 @@
             <br>
             <i class="nes-icon coin is-large"></i>
         </h1>
+
         <div class="row text-center">
-            <div class="col p-2">
+            <div class="col-6 col-md-3 p-2">
                 <p class="small text-muted">1M NCAT =</p>
                 <h4 class="text-primary">${{session.price.price * 1000000 | number : '.4' }}</h4>
             </div>
-            <div class="col p-2">
+            <div class="col-6 col-md-3 p-2">
                 <p class="small text-muted">Holders</p>
                 <h4>{{session.price.holders}}</h4>
             </div>
-            <div class="col p-2">
+            <div class="col-6 col-md-3 p-2">
                 <p class="small text-muted">MarketCap</p>
                 <h4 class="text-warning">${{(session.price.marketcap | num) / 1000000 | number: '.2'}}M</h4>
             </div>
-            <div class="col p-2">
+            <div class="col-6 col-md-3 p-2">
                 <p class="small text-muted">Total Supply</p>
                 <h5 class="text-warning">1,000T<br>NCAT</h5>
             </div>
         </div>
+
+        <div *ngIf="session.isCorrectChain && session.currentAccount" class="text-center">
+            <div class="row text-center">
+                <div class="col-12 col-md-6 p-2">
+                    <p class="small text-muted">Your Wallet</p>
+                    <h5 class="text-primary">{{session.currentAccount | shortaddress }}</h5>
+                </div>
+                <div class="col p-2">
+                    <p class="small text-muted">NCAT Holding</p>
+                    <h4>{{session.currentBalance / 10e17 | number:'.3'}}B</h4>
+                </div>
+                <div class="col p-2">
+                    <p class="small text-muted">USD Value</p>
+                    <h4 class="text-warning">${{session.currentBalance / 10e8 * session.price.price | number:'.2'}}</h4>
+                </div>
+            </div>
+        </div>
+
+
         <progress class="nes-progress is-warning" [value]="session.price.percentage || 0" max="100"></progress>
+
         <div class="d-flex align-items-center">
             <div class="flex-grow-1">
                 <div>
@@ -38,18 +59,9 @@
             <div class="text-right">{{session.price.percentage}}% (<a target="_blank" [href]="environment.burnAddress">View Burn Tx</a>) </div>
         </div>
 
-        <div *ngIf="!session.isCorrectChain || !session.currentAccount" class="mt-5 d-flex justify-content-center">
+        <!-- <div *ngIf="!session.isCorrectChain || !session.currentAccount" class="mt-5 d-flex justify-content-center">
             <app-connect-wallet></app-connect-wallet>
-        </div>
+        </div> -->
 
-        <div *ngIf="session.isCorrectChain && session.currentAccount" class="mt-5 d-flex justify-content-center">
-            <div class="nes-container is-centered is-dark with-title is-rounded">
-                <h3 class="title">{{session.currentAccount | shortaddress}}</h3>
-                <p><img src="assets/balloon.gif" alt="" style="height:100px"></p>
-                <i class="nes-icon coin is-small"></i>
-                {{session.currentBalance / 10e17 | number:'.3'}}B $NCAT /
-                ~USD {{session.currentBalance / 1000000000 * session.price.price | number:'.2-2'}}<br>
-            </div>
-        </div>
     </div>
 </div>

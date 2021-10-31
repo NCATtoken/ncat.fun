@@ -37,6 +37,7 @@ import { TrackOrderComponent } from './track-order/track-order.component';
 import { WebpageComponent } from './webpage/webpage.component';
 import { WebpagesComponent } from './webpages/webpages.component';
 import { ConnectWalletComponent } from './components/connect-wallet/connect-wallet.component';
+import { SwapComponent } from './swap/swap.component';
 
 @NgModule({
   declarations: [
@@ -67,6 +68,7 @@ import { ConnectWalletComponent } from './components/connect-wallet/connect-wall
     CountdownComponent,
     CircularProgressComponent,
     ConnectWalletComponent,
+    SwapComponent,
   ],
   imports: [
     BrowserModule,

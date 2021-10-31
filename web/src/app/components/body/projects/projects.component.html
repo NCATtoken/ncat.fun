@@ -6,21 +6,19 @@
         </p>
     </div>
 
-    <div class="bg-primary">
-        <div class="row no-gutters">
-            <ng-container *ngFor="let item of featureds; let i = index">
-                <div class="col-12 col-md-6 p-0 featured-item" [style]="bgurl(item)">
-                    <div class="d-flex align-items-end w-100 p-3 slidetext">
-                        <div class="text-white flex-grow-1 pr-3">
-                            <h5>{{item.title}}</h5>
-                            <div>{{item.caption}}</div>
-                        </div>
-                        <span>
-                            <a class="nes-btn is-warning" [href]="item.url" target="_blank">Visit</a>
-                        </span>
+    <div class="row no-gutters">
+        <ng-container *ngFor="let item of featureds; let i = index">
+            <div class="col-12 col-md-6 p-0 featured-item" [style]="bgurl(item)">
+                <div class="d-flex align-items-end w-100 p-3 slidetext">
+                    <div class="text-white flex-grow-1 pr-3">
+                        <h5>{{item.title}}</h5>
+                        <div>{{item.caption}}</div>
                     </div>
+                    <span>
+                        <a class="nes-btn is-warning" [href]="item.url" target="_blank">Visit</a>
+                    </span>
                 </div>
-            </ng-container>
-        </div>
+            </div>
+        </ng-container>
     </div>
 </div>

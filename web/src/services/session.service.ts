@@ -100,21 +100,21 @@ export class SessionService {
 
   initwallets() {
     this.metamask.chainEvents.subscribe((event) => {
-      if (!this.metamask.provider) {
-        console.log('No metamask');
-        return;
-      }
-
-      console.log('metamask event', event);
-      if (event == 'balance') {
-        this.currentBalance = this.metamask.currentBalance;
-        console.log(this.currentAccount, 'balance', this.currentBalance);
-        return;
-      }
-
       this.ngZone.run(() => {
+        if (!this.metamask.provider || !this.metamask.ethersInjectedProvider) {
+          console.log('No metamask');
+          return;
+        }
 
-        if (event == 'start') {
+        console.log('metamask event', event);
+        if (event == 'balance') {
+          this.currentBalance = this.metamask.currentBalance;
+          console.log(this.currentAccount, 'balance', this.currentBalance);
+          return;
+        }
+
+
+        if (event == 'accountsChanged') {
           this.provider = this.metamask.provider;
           this.ethersInjectedProvider = this.metamask.ethersInjectedProvider;
           this.isMetamask = true;
@@ -135,21 +135,20 @@ export class SessionService {
     });
 
     this.walletconnect.chainEvents.subscribe((event) => {
-      if (!this.walletconnect.provider) {
-        console.log('No walletconect');
-        return;
-      }
-
-      console.log('walletconnect event', event);
-      if (event == 'balance') {
-        this.currentBalance = this.walletconnect.currentBalance;
-        console.log(this.currentAccount, 'balance', this.currentBalance);
-        return;
-      }
-
       this.ngZone.run(() => {
+        if (!this.walletconnect.provider || !this.walletconnect.ethersInjectedProvider) {
+          console.log('No walletconect');
+          return;
+        }
 
-        if (event == 'start') {
+        console.log('walletconnect event', event);
+        if (event == 'balance') {
+          this.currentBalance = this.walletconnect.currentBalance;
+          console.log(this.currentAccount, 'balance', this.currentBalance);
+          return;
+        }
+
+        if (event == 'accountsChanged') {
           this.provider = this.walletconnect.provider;
           this.ethersInjectedProvider = this.walletconnect.ethersInjectedProvider;
           this.isMetamask = false;

@@ -24,31 +24,3 @@
     </ng-template>
 
 </div>
-
-<app-projects></app-projects>
-
-<div class="container py-5">
-    <a name="trade"></a>
-
-    <h3 class="text-center pb-3">Trade NCAT</h3>
-
-    <div *ngIf="session.metadata.where_to_trade; else DefaultTradeContent" [innerHtml]="session.metadata.where_to_trade"></div>
-
-    <ng-template #DefaultTradeContent>
-        <p>
-            <!-- You can trade NCAT on -->
-            <a href="https://v1exchange.pancakeswap.finance/#/swap?outputCurrency=0x0cf011a946f23a03ceff92a4632d5f9288c6c70d" target="_blank" class="nes-btn is-success">Pancake Swap V1</a>
-            <a href="https://snowgecoin.com/swap/#/swap?outputCurrency=0x0cf011a946f23a03ceff92a4632d5f9288c6c70d" target="_blank" class="nes-btn is-primary">Snowge</a>
-            <a href="https://whitebit.com/trade/NCAT_USDT" target="_blank" class="nes-btn">WhiteBit</a>
-            <a href="https://www.hotbit.io/exchange?symbol=NCAT_USDT" target="_blank" class="nes-btn">Hotbit</a>
-        </p>
-        <!-- <div class="text-dark">
-            <h3>Need Help?</h3>
-            <li>
-                <a href="https://ncattoken.medium.com/so-you-wanna-buy-some-ncat-a-step-by-step-guide-c06475980f7c">
-                    How to buy on Pancake Swap / Snowge
-                </a>
-            </li>
-        </div> -->
-    </ng-template>
-</div>

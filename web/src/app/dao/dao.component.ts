@@ -183,7 +183,9 @@ export class DAOComponent implements OnInit {
           // this.loading = false;
         });
       })
-      .catch((E) => console.log(E.data.message))
+      .catch((error: any) => {
+        alert(error.data?.message || error.message || error);
+      })
       .finally(() => {
         this.isSendingFund = false;
       });
